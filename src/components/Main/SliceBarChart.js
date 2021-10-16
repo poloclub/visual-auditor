@@ -55,7 +55,23 @@ function SliceBarChart({ data }) {
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
         .attr('y', (d) => y1(d.metric))
-        .attr('height', (d) => y1(0) - y1(d.metric));
+        .attr('height', (d) => 0);
+
+      // Animation
+      svg
+        .selectAll('rect')
+        .transition()
+        .duration(800)
+        .attr('y1', function (d) {
+          return y1(d.metric);
+        })
+        .attr('height', function (d) {
+          return y1(0) - y1(d.metric);
+        })
+        .delay(function (d, i) {
+          console.log(i);
+          return i * 100;
+        });
     },
     [data.length]
   );

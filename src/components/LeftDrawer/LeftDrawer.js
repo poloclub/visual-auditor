@@ -33,8 +33,8 @@ const LeftDrawer = ({
   };
 
   const handleReset = (event) => {
-    setNumFeatures(2);
-    setSampleSize(1000);
+    setNumFeatures(1);
+    setSampleSize(0);
     setMetric('accuracy');
   };
 
