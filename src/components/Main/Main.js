@@ -1,11 +1,13 @@
 import React from 'react';
-import Graph from './Graph.png';
+import BarChart from './BarChart';
+import BarPlot from './BarPlot';
 import './Main.css';
+import { data } from '../../data/data';
 
 const Main = () => {
   return (
     <div className='main-container'>
-      <img src={Graph} alt='replace with d3 graph' />
+      <BarChart data={data} />
     </div>
   );
 };
