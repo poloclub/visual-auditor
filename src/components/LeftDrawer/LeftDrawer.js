@@ -12,11 +12,14 @@ import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
 import './LeftDrawer.css';
 
-const LeftDrawer = () => {
-  const [numFeatures, setNumFeatures] = React.useState(2);
-  const [sampleSize, setSampleSize] = React.useState(1000);
-  const [metric, setMetric] = React.useState('accuracy');
-
+const LeftDrawer = ({
+  numFeatures,
+  setNumFeatures,
+  sampleSize,
+  setSampleSize,
+  metric,
+  setMetric,
+}) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
   };
@@ -62,13 +65,13 @@ const LeftDrawer = () => {
         <h2>Minimum Sample Size:</h2>
         <Slider
           size='small'
-          defaultValue={1000}
+          defaultValue={100}
           aria-label='Small'
           value={sampleSize}
           valueLabelDisplay='auto'
           min={0}
-          max={10000}
-          step={100}
+          max={1500}
+          step={10}
           onChange={handleSizeChange}
         />
         <h2>Fairness Metric:</h2>

@@ -27,7 +27,7 @@ function BarPlot() {
       // X axis
       const x = d3
         .scaleBand()
-        .rangeRound([margin.left, width - margin.right])
+        .range([0, width])
         .domain(
           data.map(function (d) {
             return d.Country;
