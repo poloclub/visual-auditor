@@ -35,7 +35,7 @@ const LeftDrawer = ({
   const handleReset = (event) => {
     setNumFeatures(1);
     setSampleSize(0);
-    setMetric('accuracy');
+    setMetric('log loss');
   };
 
   return (
@@ -84,6 +84,7 @@ const LeftDrawer = ({
             label='Metric'
             onChange={handleMetricChange}
           >
+            <MenuItem value={'log loss'}>Log Loss</MenuItem>
             <MenuItem value={'accuracy'}>Accuracy</MenuItem>
             <MenuItem value={'precision'}>Precision</MenuItem>
             <MenuItem value={'recall'}>Recall</MenuItem>
@@ -97,21 +98,6 @@ const LeftDrawer = ({
             </MenuItem>
           </Select>
         </FormControl>
-        {/* <FormGroup style={{ paddingLeft: '1rem' }}>
-          <FormControlLabel control={<Checkbox />} label='Accuracy' />
-          <FormControlLabel control={<Checkbox />} label='Precision' />
-          <FormControlLabel control={<Checkbox />} label='Recall' />
-          <FormControlLabel control={<Checkbox />} label='Specificity' />
-          <FormControlLabel control={<Checkbox />} label='F1' />
-          <FormControlLabel
-            control={<Checkbox />}
-            label='False Negative Rate'
-          />
-          <FormControlLabel
-            control={<Checkbox />}
-            label='False Positive Rate'
-          />
-        </FormGroup> */}
         <Divider style={{ padding: '1rem' }} />
         <Button
           variant='outlined'

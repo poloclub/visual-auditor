@@ -7,7 +7,7 @@ import Main from './components/Main/Main';
 function App() {
   const [numFeatures, setNumFeatures] = React.useState(1);
   const [sampleSize, setSampleSize] = React.useState(0);
-  const [metric, setMetric] = React.useState('accuracy');
+  const [metric, setMetric] = React.useState('log loss');
 
   return (
     <div className='App'>
