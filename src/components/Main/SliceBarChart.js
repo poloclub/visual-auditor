@@ -1,14 +1,13 @@
 import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
-import { data } from '../../data/data';
 
 function SliceBarChart({ data }) {
   const ref = useD3(
     (svg) => {
-      const height = 500;
-      const width = 1000;
-      const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+      const height = 600;
+      const width = 875;
+      const margin = { top: 20, right: 30, bottom: 100, left: 40 };
 
       const x = d3
         .scaleBand()
@@ -24,7 +23,10 @@ function SliceBarChart({ data }) {
       const xAxis = (g) =>
         g
           .attr('transform', `translate(0,${height - margin.bottom})`)
-          .call(d3.axisBottom(x).tickSizeOuter(0));
+          .call(d3.axisBottom(x).tickSizeOuter(0))
+          .selectAll('text')
+          .attr('transform', 'translate(-10,0)rotate(-45)')
+          .style('text-anchor', 'end');
 
       const y1Axis = (g) =>
         g
@@ -54,19 +56,19 @@ function SliceBarChart({ data }) {
         .attr('class', 'bar')
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
-        .attr('y', (d) => y1(d.metric))
-        .attr('height', (d) => 0);
+        .attr('y', (d) => y1(0) - margin.bottom)
+        .attr('height', (d) => height - y1(0));
 
       // Animation
       svg
         .selectAll('rect')
         .transition()
         .duration(800)
-        .attr('y1', function (d) {
-          return y1(d.metric);
+        .attr('y', function (d) {
+          return y1(d.metric) - margin.bottom;
         })
         .attr('height', function (d) {
-          return y1(0) - y1(d.metric);
+          return height - y1(d.metric);
         })
         .delay(function (d, i) {
           console.log(i);
@@ -80,7 +82,7 @@ function SliceBarChart({ data }) {
     <svg
       ref={ref}
       style={{
-        height: 500,
+        height: 700,
         width: '60%',
         margin: 'auto',
         display: 'block',
