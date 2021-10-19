@@ -33,7 +33,7 @@ const RightDrawer = () => {
       anchor='right'
     >
       <div className='right-container'>
-        <h1>Feature Distributions:</h1>
+        <h1>Frequency Distributions:</h1>
         {features.map((feature) => (
           <p>{feature}</p>
         ))}

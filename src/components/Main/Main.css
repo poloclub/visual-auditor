@@ -1,6 +1,7 @@
 .main-container {
   padding: 1rem;
   text-align: center;
+  overflow-x: scroll;
 }
 
 img {

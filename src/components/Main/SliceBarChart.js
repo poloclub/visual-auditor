@@ -7,7 +7,7 @@ function SliceBarChart({ data }) {
     (svg) => {
       const height = 600;
       const width = 875;
-      const margin = { top: 20, right: 30, bottom: 100, left: 40 };
+      const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
       const x = d3
         .scaleBand()

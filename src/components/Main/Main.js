@@ -1,9 +1,13 @@
 import React from 'react';
 import SliceBarChart from './SliceBarChart';
 import './Main.css';
-import { data } from '../../data/data';
+// import { data } from '../../data/data';
+import logloss from '../../data/logloss.json';
 
 const Main = ({ numFeatures, sampleSize, metric }) => {
+  const data = Object.values(logloss['data']).map(
+    (obj) => Object.values(obj)[0]
+  );
   const filteredData = data
     .filter((obj) => obj.size >= sampleSize)
     .filter((obj) => obj.degree <= numFeatures)
