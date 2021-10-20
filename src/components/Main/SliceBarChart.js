@@ -3,6 +3,7 @@ import React from 'react';
 import * as d3 from 'd3';
 
 function SliceBarChart({ data }) {
+  const [fillColor, setFillColor] = React.useState('steelBlue');
   const ref = useD3(
     (svg) => {
       const height = 600;
@@ -49,11 +50,20 @@ function SliceBarChart({ data }) {
 
       svg
         .select('.plot-area')
-        .attr('fill', 'steelblue')
         .selectAll('.bar')
         .data(data)
         .join('rect')
         .attr('class', 'bar')
+        .style('fill', fillColor)
+        .on('mouseover', function (d) {
+          setFillColor('black');
+          d3.select(this).attr('fill', 'black');
+          console.log('over');
+        })
+        .on('mouseout', function (d) {
+          setFillColor('steelBlue');
+          console.log('out');
+        })
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
         .attr('y', (d) => y1(0) - margin.bottom)

@@ -2,12 +2,17 @@ import React from 'react';
 import SliceBarChart from './SliceBarChart';
 import './Main.css';
 import logloss from '../../data/logloss.json';
+import accuracy from '../../data/accuracy.json';
 
 const Main = ({ numFeatures, sampleSize, metric }) => {
   let data;
   switch (metric) {
     case 'log loss':
       data = Object.values(logloss['data']).map((obj) => Object.values(obj)[0]);
+    case 'accuracy':
+      data = Object.values(accuracy['data']).map(
+        (obj) => Object.values(obj)[0]
+      );
     default:
       data = Object.values(logloss['data']).map((obj) => Object.values(obj)[0]);
   }
