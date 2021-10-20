@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Visual Auditor
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Interactive Scalable Auditing of Model Biases and Vulnerabilities with Interpretable Mitigation.
+
+Live Demo: https://visual-auditor.surge.sh/
 
 ## Available Scripts
 
