@@ -2,7 +2,7 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function SliceBarChart({ data }) {
+function SliceBarChart({ data, model, max }) {
   const [fillColor, setFillColor] = React.useState('steelBlue');
   const ref = useD3(
     (svg) => {
@@ -18,7 +18,7 @@ function SliceBarChart({ data }) {
 
       const y1 = d3
         .scaleLinear()
-        .domain([0, d3.max(data, (d) => d.metric)])
+        .domain([0, max])
         .rangeRound([height - margin.bottom, margin.top]);
 
       const xAxis = (g) =>
@@ -84,6 +84,22 @@ function SliceBarChart({ data }) {
           console.log(i);
           return i * 100;
         });
+
+      svg
+        .append('svg:line')
+        .attr('x1', 0)
+        .attr('x2', width)
+        .attr('y1', y1(model))
+        .attr('y2', y1(model))
+        .style('stroke', 'rgb(26, 214, 249)');
+
+      svg
+        .append('svg:line')
+        .attr('x1', 0)
+        .attr('x2', width)
+        .attr('y1', y1(model))
+        .attr('y2', y1(model))
+        .style('stroke', 'rgb(26, 214, 249)');
     },
     [data.length]
   );
