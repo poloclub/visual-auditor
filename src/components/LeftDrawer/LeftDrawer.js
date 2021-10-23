@@ -70,7 +70,7 @@ const LeftDrawer = ({
           value={sampleSize}
           valueLabelDisplay='auto'
           min={0}
-          max={1500}
+          max={250}
           step={10}
           onChange={handleSizeChange}
         />

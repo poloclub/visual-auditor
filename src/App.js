@@ -8,10 +8,11 @@ function App() {
   const [numFeatures, setNumFeatures] = React.useState(1);
   const [sampleSize, setSampleSize] = React.useState(0);
   const [metric, setMetric] = React.useState('log loss');
+  const [view, setView] = React.useState('bar');
 
   return (
     <div className='App'>
-      <Nav />
+      <Nav view={view} setView={setView} />
       <LeftDrawer
         numFeatures={numFeatures}
         setNumFeatures={setNumFeatures}
@@ -21,7 +22,12 @@ function App() {
         setMetric={setMetric}
       />
       <RightDrawer />
-      <Main numFeatures={numFeatures} sampleSize={sampleSize} metric={metric} />
+      <Main
+        numFeatures={numFeatures}
+        sampleSize={sampleSize}
+        metric={metric}
+        view={view}
+      />
     </div>
   );
 }

@@ -4,11 +4,25 @@ import * as d3 from 'd3';
 
 function SliceBarChart({ data, model, max }) {
   const [fillColor, setFillColor] = React.useState('steelBlue');
+  function useForceUpdate() {
+    const [value, setValue] = React.useState(0); // integer state
+    return () => setValue((value) => value + 1); // update the state to force render
+  }
+  const forceUpdate = useForceUpdate();
+
   const ref = useD3(
     (svg) => {
       const height = 600;
       const width = 875;
       const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+
+      let div = d3
+        .select('.tooltip')
+        .style('opacity', 0)
+        .style('width', '200px')
+        .style('height', '150px')
+        .style('padding', '1rem 0.5rem 0 0.5rem')
+        .style('border-radius', '20px');
 
       const x = d3
         .scaleBand()
@@ -55,14 +69,37 @@ function SliceBarChart({ data, model, max }) {
         .join('rect')
         .attr('class', 'bar')
         .style('fill', fillColor)
-        .on('mouseover', function (d) {
-          setFillColor('black');
-          d3.select(this).attr('fill', 'black');
-          console.log('over');
+        .on('mouseover', function (d, i) {
+          console.log(i);
+          d3.select(this).style('opacity', '0.7');
+          div
+            .transition()
+            .duration(200)
+            .style('opacity', 0.9)
+            .style('left', width + 'px')
+            .style('top', height / 4 + 'px');
+          div.html(
+            '<strong>Slice Description: </strong>' +
+              '<br><div style={{margin: "1rem"}}> </div>' +
+              i.slice +
+              '<br>' +
+              '<strong>Size: </strong>' +
+              '<br>' +
+              i.size +
+              ' samples' +
+              '<br>' +
+              '<strong>Metric: </strong>' +
+              '<br>' +
+              i.metric.toFixed(2)
+          );
         })
         .on('mouseout', function (d) {
-          setFillColor('steelBlue');
-          console.log('out');
+          d3.select(this).style('opacity', '1');
+          div
+            .transition()
+            .style('opacity', 0)
+            .style('left', width + 'px')
+            .style('top', height + 'px');
         })
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
@@ -105,19 +142,27 @@ function SliceBarChart({ data, model, max }) {
   );
 
   return (
-    <svg
-      ref={ref}
-      style={{
-        height: 700,
-        width: '60%',
-        margin: 'auto',
-        display: 'block',
-      }}
-    >
-      <g className='plot-area' />
-      <g className='x-axis' />
-      <g className='y-axis' />
-    </svg>
+    <div>
+      <div
+        className='tooltip'
+        style={{ position: 'absolute', background: 'lightgray' }}
+      ></div>
+      <svg
+        ref={ref}
+        style={{
+          height: 700,
+          width: '60%',
+          margin: 'auto',
+          display: 'block',
+        }}
+        onMouseEnter={forceUpdate}
+        onMouseLeave={forceUpdate}
+      >
+        <g className='plot-area' />
+        <g className='x-axis' />
+        <g className='y-axis' />
+      </svg>
+    </div>
   );
 }
 

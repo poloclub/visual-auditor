@@ -4,8 +4,9 @@ import './Main.css';
 import logloss from '../../data/logloss.json';
 import accuracy from '../../data/accuracy.json';
 import precision from '../../data/precision.json';
+import ForceLayout from './ForceLayout';
 
-const Main = ({ numFeatures, sampleSize, metric }) => {
+const Main = ({ numFeatures, sampleSize, metric, view }) => {
   let data;
   let modelMetric;
   switch (metric) {
@@ -30,17 +31,32 @@ const Main = ({ numFeatures, sampleSize, metric }) => {
       modelMetric = logloss['model'];
   }
   const metricArray = data.map((obj) => obj.metric);
+  const sizeArray = data.map((obj) => obj.size);
   const max = Math.max(...metricArray);
-  const filteredData = data
+  const sizeMax = Math.max(...sizeArray);
+  let filteredData = data
     .filter((obj) => obj.size >= sampleSize)
     .filter((obj) => obj.degree <= numFeatures)
     .sort(function (a, b) {
       return b.metric - a.metric;
-    })
-    .slice(0, 10);
+    });
+  if (view === 'bar') {
+    filteredData = filteredData.slice(0, 10);
+  }
   return (
     <div className='main-container'>
-      <SliceBarChart data={filteredData} model={modelMetric} max={max} />
+      {view === 'bar' ? (
+        <SliceBarChart data={filteredData} model={modelMetric} max={max} />
+      ) : (
+        <ForceLayout
+          data={filteredData}
+          model={modelMetric}
+          max={max}
+          sizeMax={sizeMax}
+          degree={numFeatures}
+          view={view}
+        />
+      )}
     </div>
   );
 };
