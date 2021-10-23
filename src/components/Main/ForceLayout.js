@@ -2,7 +2,7 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function ForceLayout({ data, model, max, sizeMax, degree, view }) {
+function ForceLayout({ data, sizeMax, degree, view, metric }) {
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -13,7 +13,6 @@ function ForceLayout({ data, model, max, sizeMax, degree, view }) {
   const height = 800;
   const ref = useD3(
     (svg) => {
-      let colorScale = ['orange', 'lightblue', '#B19CD9'];
       let div = d3
         .select('.tooltip')
         .style('opacity', 0)
@@ -101,7 +100,7 @@ function ForceLayout({ data, model, max, sizeMax, degree, view }) {
             return d.y;
           })
           .style('fill', function (d) {
-            return colorScale[d.category];
+            return d3.interpolateBlues(d.metric);
           })
           .style('opacity', function (d) {
             return '1';
@@ -126,7 +125,10 @@ function ForceLayout({ data, model, max, sizeMax, degree, view }) {
                 i.size +
                 ' samples' +
                 '<br>' +
-                '<strong>Metric: </strong>' +
+                '<strong>' +
+                metric +
+                ': ' +
+                '</strong>' +
                 '<br>' +
                 i.metric.toFixed(2)
             );
@@ -141,7 +143,7 @@ function ForceLayout({ data, model, max, sizeMax, degree, view }) {
           });
       }
     },
-    [data.length]
+    [data]
   );
 
   if (view === 'bar') return null;

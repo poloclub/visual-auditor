@@ -6,21 +6,22 @@ import accuracy from '../../data/accuracy.json';
 import precision from '../../data/precision.json';
 import ForceLayout from './ForceLayout';
 
-const Main = ({ numFeatures, sampleSize, metric, view }) => {
+const Main = ({ numFeatures, sampleSize, metric, view, sortBy }) => {
   let data;
   let modelMetric;
+  console.log(sortBy);
   switch (metric) {
-    case 'log loss':
+    case 'Log Loss':
       data = Object.values(logloss['data']).map((obj) => Object.values(obj)[0]);
       modelMetric = logloss['model'];
       break;
-    case 'accuracy':
+    case 'Accuracy':
       data = Object.values(accuracy['data']).map(
         (obj) => Object.values(obj)[0]
       );
       modelMetric = accuracy['model'];
       break;
-    case 'precision':
+    case 'Precision':
       data = Object.values(precision['data']).map(
         (obj) => Object.values(obj)[0]
       );
@@ -38,6 +39,7 @@ const Main = ({ numFeatures, sampleSize, metric, view }) => {
     .filter((obj) => obj.size >= sampleSize)
     .filter((obj) => obj.degree <= numFeatures)
     .sort(function (a, b) {
+      if (sortBy === 'size') return b.size - a.size;
       return b.metric - a.metric;
     });
   if (view === 'bar') {
@@ -50,11 +52,10 @@ const Main = ({ numFeatures, sampleSize, metric, view }) => {
       ) : (
         <ForceLayout
           data={filteredData}
-          model={modelMetric}
-          max={max}
           sizeMax={sizeMax}
           degree={numFeatures}
           view={view}
+          metric={metric}
         />
       )}
     </div>

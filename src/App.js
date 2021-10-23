@@ -5,10 +5,11 @@ import RightDrawer from './components/RightDrawer/RightDrawer';
 import Main from './components/Main/Main';
 
 function App() {
-  const [numFeatures, setNumFeatures] = React.useState(1);
+  const [numFeatures, setNumFeatures] = React.useState(2);
   const [sampleSize, setSampleSize] = React.useState(0);
-  const [metric, setMetric] = React.useState('log loss');
+  const [metric, setMetric] = React.useState('Log Loss');
   const [view, setView] = React.useState('bar');
+  const [sortBy, setSortBy] = React.useState('metric');
 
   return (
     <div className='App'>
@@ -20,6 +21,8 @@ function App() {
         setSampleSize={setSampleSize}
         metric={metric}
         setMetric={setMetric}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
       <RightDrawer />
       <Main
@@ -27,6 +30,7 @@ function App() {
         sampleSize={sampleSize}
         metric={metric}
         view={view}
+        sortBy={sortBy}
       />
     </div>
   );

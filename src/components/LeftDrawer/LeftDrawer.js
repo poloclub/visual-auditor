@@ -19,6 +19,8 @@ const LeftDrawer = ({
   setSampleSize,
   metric,
   setMetric,
+  sortBy,
+  setSortBy,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
@@ -32,10 +34,15 @@ const LeftDrawer = ({
     setMetric(event.target.value);
   };
 
+  const handleSortByChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
   const handleReset = (event) => {
-    setNumFeatures(1);
+    setNumFeatures(2);
     setSampleSize(0);
-    setMetric('log loss');
+    setMetric('Log Loss');
+    setSortBy('metric');
   };
 
   return (
@@ -84,18 +91,34 @@ const LeftDrawer = ({
             label='Metric'
             onChange={handleMetricChange}
           >
-            <MenuItem value={'log loss'}>Log Loss</MenuItem>
-            <MenuItem value={'accuracy'}>Accuracy</MenuItem>
-            <MenuItem value={'precision'}>Precision</MenuItem>
-            <MenuItem value={'recall'}>Recall</MenuItem>
-            <MenuItem value={'specificity'}>Specificity</MenuItem>
-            <MenuItem value={'f1'}>F1</MenuItem>
-            <MenuItem value={'false negative rate'}>
+            <MenuItem value={'Log Loss'}>Log Loss</MenuItem>
+            <MenuItem value={'Accuracy'}>Accuracy</MenuItem>
+            <MenuItem value={'Precision'}>Precision</MenuItem>
+            <MenuItem value={'Recall'}>Recall</MenuItem>
+            <MenuItem value={'Specificity'}>Specificity</MenuItem>
+            <MenuItem value={'F1'}>F1</MenuItem>
+            <MenuItem value={'False Negative Rate'}>
               False Negative Rate
             </MenuItem>
-            <MenuItem value={'false positive rate'}>
+            <MenuItem value={'False Positive Rate'}>
               False Positive Rate
             </MenuItem>
+          </Select>
+        </FormControl>
+        <h2>Order By:</h2>
+        <FormControl sx={{ m: 1, minWidth: 175 }}>
+          <InputLabel id='demo-simple-select-helper-label'>
+            Order By:
+          </InputLabel>
+          <Select
+            labelId='demo-simple-select-helper-label'
+            id='demo-simple-select-helper'
+            value={sortBy}
+            label='Order By'
+            onChange={handleSortByChange}
+          >
+            <MenuItem value={'metric'}>{metric}</MenuItem>
+            <MenuItem value={'size'}>Sample Size</MenuItem>
           </Select>
         </FormControl>
         <Divider style={{ padding: '1rem' }} />

@@ -3,7 +3,6 @@ import React from 'react';
 import * as d3 from 'd3';
 
 function SliceBarChart({ data, model, max }) {
-  const [fillColor, setFillColor] = React.useState('steelBlue');
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -68,7 +67,9 @@ function SliceBarChart({ data, model, max }) {
         .data(data)
         .join('rect')
         .attr('class', 'bar')
-        .style('fill', fillColor)
+        .style('fill', (d) => {
+          return d3.interpolateBlues(d.metric);
+        })
         .on('mouseover', function (d, i) {
           console.log(i);
           d3.select(this).style('opacity', '0.7');
@@ -138,7 +139,7 @@ function SliceBarChart({ data, model, max }) {
         .attr('y2', y1(model))
         .style('stroke', 'rgb(26, 214, 249)');
     },
-    [data.length]
+    [data]
   );
 
   return (
