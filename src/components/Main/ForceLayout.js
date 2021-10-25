@@ -149,7 +149,7 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
     <div id='content'>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: 'lightgray' }}
+        style={{ position: 'absolute', background: '#e6e6e6' }}
       ></div>
       <svg
         width={width}
