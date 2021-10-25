@@ -5,8 +5,8 @@ import './StickyForceLayout.css';
 import Button from '@mui/material/Button';
 
 function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
+  const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
-    const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
   }
   const forceUpdate = useForceUpdate();
@@ -184,7 +184,7 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
         simulation.alpha(1).restart();
       }
     },
-    [data]
+    [data, value]
   );
 
   if (view === 'bar') return null;
