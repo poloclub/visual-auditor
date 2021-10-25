@@ -1,21 +1,25 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import './Nav.css';
 
 const Nav = ({ view, setView }) => {
-  const handleViewClick = (event) => {
-    if (view === 'bar') {
-      setView('graph');
-    } else {
-      setView('bar');
-    }
+  const handleViewChange = (event) => {
+    setView(event.target.value);
   };
   return (
     <div className='nav-container'>
       <h1>Adults Dataset</h1>
-      <Button variant='outlined' onClick={handleViewClick}>
-        Switch View
-      </Button>
+      <FormControl sx={{ s: 1, minWidth: 175 }}>
+        <InputLabel>View:</InputLabel>
+        <Select value={view} label='View' onChange={handleViewChange}>
+          <MenuItem value={'bar'}>Bar Graph</MenuItem>
+          <MenuItem value={'force'}>Force Layout</MenuItem>
+          <MenuItem value={'sticky'}>Sticky Force Layout</MenuItem>
+        </Select>
+      </FormControl>
     </div>
   );
 };

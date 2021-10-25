@@ -36,14 +36,12 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
           }
         }
       });
-      console.log(data);
       const xCenter = [];
       const yCenter = [];
       for (let i = 0; i < features.length; i++) {
         xCenter.push(((width - 200) / features.length) * i + 100);
         yCenter.push(((height - 200) / features.length) * i - 100);
       }
-      const numNodes = data.length;
       const nodes = data.map((obj) => {
         return {
           radius: Math.max((obj.size / sizeMax) * 80, 10),
@@ -55,11 +53,11 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
           metric: obj.metric,
         };
       });
-      console.log(nodes);
 
       const simulation = d3
         .forceSimulation(nodes)
         .force('charge', d3.forceManyBody().strength(5))
+
         .force(
           'x',
           d3.forceX().x(function (d) {
