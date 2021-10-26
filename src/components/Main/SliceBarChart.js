@@ -71,7 +71,6 @@ function SliceBarChart({ data, model, max }) {
           return d3.interpolateBlues(d.metric);
         })
         .on('mouseover', function (d, i) {
-          console.log(i);
           d3.select(this).style('opacity', '0.7');
           div
             .transition()
@@ -119,7 +118,6 @@ function SliceBarChart({ data, model, max }) {
           return height - y1(d.metric);
         })
         .delay(function (d, i) {
-          console.log(i);
           return i * 100;
         });
 
@@ -138,6 +136,7 @@ function SliceBarChart({ data, model, max }) {
         .attr('y1', y1(model))
         .attr('y2', y1(model))
         .style('stroke', 'rgb(26, 214, 249)');
+      d3.select('#force-g').remove();
     },
     [data]
   );

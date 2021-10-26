@@ -35,7 +35,7 @@ const RightDrawer = () => {
       <div className='right-container'>
         <h1>Frequency Distributions:</h1>
         {features.map((feature) => (
-          <p>{feature}</p>
+          <p key={feature}>{feature}</p>
         ))}
       </div>
     </Drawer>

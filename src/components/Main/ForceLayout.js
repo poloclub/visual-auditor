@@ -30,7 +30,6 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
           if (!features.includes(temp)) features.push(temp);
           if (str.indexOf(',') !== -1) {
             str = str.substring(str.indexOf(',') + 2);
-            console.log(str);
           } else {
             str = '';
           }
@@ -57,7 +56,6 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
       const simulation = d3
         .forceSimulation(nodes)
         .force('charge', d3.forceManyBody().strength(5))
-
         .force(
           'x',
           d3.forceX().x(function (d) {
@@ -83,8 +81,7 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
         .on('tick', ticked);
 
       function ticked() {
-        var u = d3
-          .select('svg g')
+        d3.select('svg g')
           .selectAll('circle')
           .data(nodes)
           .join('circle')
@@ -141,12 +138,11 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
           });
       }
     },
-    [data]
+    [data, view]
   );
 
-  if (view === 'bar') return null;
   return (
-    <div id='content'>
+    <div>
       <div
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6' }}
@@ -156,8 +152,9 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
         height={height}
         onMouseEnter={forceUpdate}
         onMouseLeave={forceUpdate}
+        id='force-svg'
       >
-        <g transform='translate(50, 200)'></g>
+        <g id='force-g' className='g' transform='translate(50, 200)'></g>
       </svg>
     </div>
   );

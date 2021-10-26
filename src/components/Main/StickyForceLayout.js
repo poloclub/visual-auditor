@@ -25,7 +25,6 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
       if (!features.includes(temp)) features.push(temp);
       if (str.indexOf(',') !== -1) {
         str = str.substring(str.indexOf(',') + 2);
-        console.log(str);
       } else {
         str = '';
       }
@@ -61,7 +60,6 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      console.log(nodes[i].classifiers);
       if (findCommonElements(nodes[i].classifiers, nodes[j].classifiers)) {
         links.push({ source: i, target: j });
       }
@@ -175,7 +173,7 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
 
       function dragstart() {
         d3.select(this).classed('fixed', true);
-        d3.select(this).style('fill', 'blue');
+        d3.select(this).style('fill', 'lightgray');
       }
 
       function dragged(event, d) {
@@ -183,13 +181,14 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
         d.fy = clamp(event.y, 0, height);
         simulation.alpha(1).restart();
       }
+
+      d3.select('svg g').remove();
     },
     [data, value]
   );
 
-  if (view === 'bar') return null;
   return (
-    <div id='content' className='container' style={{ overflow: 'scroll' }}>
+    <div className='container' style={{ overflow: 'scroll' }}>
       <div
         className='tooltip'
         style={{
