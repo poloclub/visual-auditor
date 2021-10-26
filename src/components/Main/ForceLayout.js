@@ -100,24 +100,24 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
           .style('opacity', function (d) {
             return '1';
           })
-          .on('mouseover', function (d, i) {
+          .on('mouseover', function (event, d) {
             d3.select(this)
-              .attr('r', i.radius * 1.1)
+              .attr('r', d.radius * 1.1)
               .style('opacity', '0.7');
             div
               .transition()
               .duration(200)
               .style('opacity', 0.9)
-              .style('left', width / 3 + i.x + 'px')
-              .style('top', height / 2.2 + i.y + 'px');
+              .style('left', width / 3 + d.x + 'px')
+              .style('top', height / 2.2 + d.y + 'px');
             div.html(
               '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
-                i.slice +
+                d.slice +
                 '<br>' +
                 '<strong>Size: </strong>' +
                 '<br>' +
-                i.size +
+                d.size +
                 ' samples' +
                 '<br>' +
                 '<strong>' +
@@ -125,11 +125,11 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
                 ': ' +
                 '</strong>' +
                 '<br>' +
-                i.metric.toFixed(2)
+                d.metric.toFixed(2)
             );
           })
-          .on('mouseout', function (d, i) {
-            d3.select(this).attr('r', i.radius).style('opacity', '1');
+          .on('mouseout', function (event, d) {
+            d3.select(this).attr('r', d.radius).style('opacity', '1');
             div
               .transition()
               .style('opacity', 0)
@@ -141,8 +141,10 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
     [data, view]
   );
 
+  if (view !== 'force') return null;
+
   return (
-    <div>
+    <div className='force'>
       <div
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6' }}
@@ -153,6 +155,7 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
         onMouseEnter={forceUpdate}
         onMouseLeave={forceUpdate}
         id='force-svg'
+        className='svg'
       >
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
       </svg>

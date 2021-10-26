@@ -136,7 +136,6 @@ function SliceBarChart({ data, model, max }) {
         .attr('y1', y1(model))
         .attr('y2', y1(model))
         .style('stroke', 'rgb(26, 214, 249)');
-      d3.select('#force-g').remove();
     },
     [data]
   );

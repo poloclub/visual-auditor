@@ -48,7 +48,12 @@ const Main = ({ numFeatures, sampleSize, metric, view, sortBy }) => {
   return (
     <div className='main-container' style={{ display: 'block' }}>
       {view === 'bar' ? (
-        <SliceBarChart data={filteredData} model={modelMetric} max={max} />
+        <SliceBarChart
+          data={filteredData}
+          model={modelMetric}
+          max={max}
+          view={view}
+        />
       ) : view === 'force' ? (
         <ForceLayout
           data={filteredData}

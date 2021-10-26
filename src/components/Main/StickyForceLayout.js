@@ -167,7 +167,7 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
         delete d.fx;
         delete d.fy;
         d3.select(this).classed('fixed', false);
-        d3.select(this).style('fill', 'lightgray');
+        d3.select(this).style('fill', d3.interpolateBlues(d.metric));
         simulation.alpha(1).restart();
       }
 
