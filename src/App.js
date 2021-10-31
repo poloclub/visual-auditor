@@ -10,6 +10,7 @@ function App() {
   const [metric, setMetric] = React.useState('Log Loss');
   const [view, setView] = React.useState('bar');
   const [sortBy, setSortBy] = React.useState('metric');
+  const [overperforming, setOverperforming] = React.useState(false);
 
   return (
     <div className='App'>
@@ -23,6 +24,8 @@ function App() {
         setMetric={setMetric}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        overperforming={overperforming}
+        setOverperforming={setOverperforming}
       />
       <RightDrawer />
       <Main
@@ -31,6 +34,7 @@ function App() {
         metric={metric}
         view={view}
         sortBy={sortBy}
+        overperforming={overperforming}
       />
     </div>
   );

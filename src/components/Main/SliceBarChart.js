@@ -68,9 +68,9 @@ function SliceBarChart({ data, model, max }) {
         .join('rect')
         .attr('class', 'bar')
         .style('fill', (d) => {
-          return d3.interpolateBlues(d.metric);
+          return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
         })
-        .on('mouseover', function (d, i) {
+        .on('mouseover', function (event, d) {
           d3.select(this).style('opacity', '0.7');
           div
             .transition()
@@ -81,16 +81,18 @@ function SliceBarChart({ data, model, max }) {
           div.html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
-              i.slice +
+              d.slice +
               '<br>' +
               '<strong>Size: </strong>' +
               '<br>' +
-              i.size +
+              d.size +
               ' samples' +
               '<br>' +
               '<strong>Metric: </strong>' +
               '<br>' +
-              i.metric.toFixed(2)
+              d.metric.toFixed(2) +
+              '<br>' +
+              `(${Math.round(((d.metric - model) / model) * 100)}% difference)`
           );
         })
         .on('mouseout', function (d) {

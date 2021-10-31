@@ -1,10 +1,10 @@
 import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
-import './StickyForceLayout.css';
+import './GraphLayout.css';
 import Button from '@mui/material/Button';
 
-function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
+function GraphLayout({ data, metric, model }) {
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
@@ -41,7 +41,7 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
 
   const nodes = data.map((obj) => {
     return {
-      radius: Math.max((obj.size / sizeMax) * 80, 20),
+      radius: Math.sqrt(obj.size),
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -95,28 +95,26 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
           return d.radius;
         })
         .style('fill', function (d) {
-          return d3.interpolateBlues(d.metric);
+          return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
-        .on('mouseover', function (d, i) {
-          d3.select(this)
-            .attr('r', i.radius * 1.1)
-            .style('opacity', '0.7');
+        .on('mouseover', function (event, d) {
+          d3.select(this).attr('r', d.radius).style('opacity', '0.7');
           d3.select('.tooltip')
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width / 3 + i.x + 'px')
-            .style('top', height / 2.5 + i.y + 'px');
+            .style('left', width / 3 + d.x + 'px')
+            .style('top', height / 2.5 + d.y + 'px');
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
-              i.slice +
+              d.slice +
               '<br>' +
               '<strong>Size: </strong>' +
               '<br>' +
-              i.size +
+              d.size +
               ' samples' +
               '<br>' +
               '<strong>' +
@@ -124,7 +122,9 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
               ': ' +
               '</strong>' +
               '<br>' +
-              i.metric.toFixed(2)
+              d.metric.toFixed(2) +
+              '<br>' +
+              `(${Math.round(((d.metric - model) / model) * 100)}% difference)`
           );
         })
         .on('mouseout', function (d, i) {
@@ -167,7 +167,10 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
         delete d.fx;
         delete d.fy;
         d3.select(this).classed('fixed', false);
-        d3.select(this).style('fill', d3.interpolateBlues(d.metric));
+        d3.select(this).style(
+          'fill',
+          d3.interpolateRdBu(Math.abs((d.metric - model) / model))
+        );
         simulation.alpha(1).restart();
       }
 
@@ -213,4 +216,4 @@ function StickyForceLayout({ data, sizeMax, degree, view, metric }) {
   );
 }
 
-export default StickyForceLayout;
+export default GraphLayout;

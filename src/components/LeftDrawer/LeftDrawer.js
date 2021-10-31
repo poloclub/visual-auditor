@@ -10,6 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
+import Switch from '@mui/material/Switch';
 import './LeftDrawer.css';
 
 const LeftDrawer = ({
@@ -21,6 +22,8 @@ const LeftDrawer = ({
   setMetric,
   sortBy,
   setSortBy,
+  overperforming,
+  setOverperforming,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
@@ -36,6 +39,10 @@ const LeftDrawer = ({
 
   const handleSortByChange = (event) => {
     setSortBy(event.target.value);
+  };
+
+  const handleSwitchChange = (event) => {
+    setOverperforming(event.target.checked);
   };
 
   const handleReset = (event) => {
@@ -121,6 +128,12 @@ const LeftDrawer = ({
             <MenuItem value={'size'}>Sample Size</MenuItem>
           </Select>
         </FormControl>
+        <h2>Overperforming Slices:</h2>
+        <Switch
+          checked={overperforming}
+          onChange={handleSwitchChange}
+          label='Overperforming Slices'
+        />
         <Divider style={{ padding: '1rem' }} />
         <Button
           variant='outlined'

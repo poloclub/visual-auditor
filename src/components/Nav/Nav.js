@@ -17,7 +17,7 @@ const Nav = ({ view, setView }) => {
         <Select value={view} label='View' onChange={handleViewChange}>
           <MenuItem value={'bar'}>Bar Graph</MenuItem>
           <MenuItem value={'force'}>Force Layout</MenuItem>
-          <MenuItem value={'sticky'}>Sticky Force Layout</MenuItem>
+          <MenuItem value={'graph'}>Graph Layout</MenuItem>
         </Select>
       </FormControl>
     </div>

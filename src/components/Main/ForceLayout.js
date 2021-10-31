@@ -2,7 +2,7 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function ForceLayout({ data, sizeMax, degree, view, metric }) {
+function ForceLayout({ data, degree, view, metric, model }) {
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -43,7 +43,7 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
       }
       const nodes = data.map((obj) => {
         return {
-          radius: Math.max((obj.size / sizeMax) * 80, 10),
+          radius: Math.sqrt(obj.size),
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -95,7 +95,7 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
             return d.y;
           })
           .style('fill', function (d) {
-            return d3.interpolateBlues(d.metric);
+            return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
           })
           .style('opacity', function (d) {
             return '1';
@@ -125,7 +125,11 @@ function ForceLayout({ data, sizeMax, degree, view, metric }) {
                 ': ' +
                 '</strong>' +
                 '<br>' +
-                d.metric.toFixed(2)
+                d.metric.toFixed(2) +
+                '<br>' +
+                `(${Math.round(
+                  ((d.metric - model) / model) * 100
+                )}% difference)`
             );
           })
           .on('mouseout', function (event, d) {
