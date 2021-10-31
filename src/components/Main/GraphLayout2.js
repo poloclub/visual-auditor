@@ -3,8 +3,9 @@ import React from 'react';
 import * as d3 from 'd3';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
+import samples from '../../data/samples.json';
 
-function GraphLayout({ data, metric, model }) {
+function GraphLayout2({ data, degree, metric, model }) {
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
@@ -36,7 +37,7 @@ function GraphLayout({ data, metric, model }) {
 
   for (let i = 0; i < features.length; i++) {
     xCenter.push(((width - 200) / features.length) * i + 100);
-    yCenter.push(((height - 200) / features.length) * i - 100);
+    yCenter.push(((height - 200) / features.length) * i + 100);
   }
 
   const nodes = data.map((obj) => {
@@ -56,11 +57,23 @@ function GraphLayout({ data, metric, model }) {
     return arr1.sort().join(',') === arr2.sort().join(',');
   }
 
+  function countCommonSamples(slice1, slice2) {
+    let arr1 = samples[slice1];
+    let arr2 = samples[slice2];
+    if (!arr1 || !arr2) return 0;
+    arr1 = arr1.sort().slice(0, 1000);
+    arr2 = arr2.sort().slice(0, 1000);
+    return arr1.filter((sample) => arr2.includes(sample)).length;
+  }
+
   const links = [];
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      if (findCommonElements(nodes[i].classifiers, nodes[j].classifiers)) {
+      // if (findCommonElements(nodes[i].classifiers, nodes[j].classifiers)) {
+      //   links.push({ source: i, target: j });
+      // }
+      if (countCommonSamples(nodes[i].slice, nodes[j].slice) > 500) {
         links.push({ source: i, target: j });
       }
     }
@@ -143,21 +156,19 @@ function GraphLayout({ data, metric, model }) {
         // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.01))
         .force(
           'x',
-          d3
-            .forceX()
-            .x(function (d) {
-              return width / 2;
-            })
-            .strength(0.05)
+          d3.forceX().x(function (d) {
+            return xCenter[features.indexOf(d.xFeature)];
+          })
         )
         .force(
           'y',
-          d3
-            .forceY()
-            .y(function (d) {
-              return height / 2;
-            })
-            .strength(0.05)
+          d3.forceY().y(function (d) {
+            if (degree > 1) {
+              return yCenter[features.indexOf(d.yFeature)];
+            } else {
+              return height / 4;
+            }
+          })
         )
         .force('link', d3.forceLink(graph.links))
         .force(
@@ -234,4 +245,4 @@ function GraphLayout({ data, metric, model }) {
   );
 }
 
-export default GraphLayout;
+export default GraphLayout2;

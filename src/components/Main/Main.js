@@ -7,6 +7,7 @@ import precision from '../../data/precision.json';
 import reverselogloss from '../../data/reverselogloss.json';
 import ForceLayout from './ForceLayout';
 import GraphLayout from './GraphLayout';
+import GraphLayout2 from './GraphLayout2';
 
 const Main = ({
   numFeatures,
@@ -120,7 +121,12 @@ const Main = ({
           model={modelMetric}
         />
       ) : (
-        <GraphLayout data={filteredData} metric={metric} model={modelMetric} />
+        <GraphLayout2
+          data={filteredData}
+          degree={numFeatures}
+          metric={metric}
+          model={modelMetric}
+        />
       )}
     </div>
   );

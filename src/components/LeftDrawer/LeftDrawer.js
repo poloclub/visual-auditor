@@ -50,6 +50,7 @@ const LeftDrawer = ({
     setSampleSize(0);
     setMetric('Log Loss');
     setSortBy('metric');
+    setOverperforming(false);
   };
 
   return (
@@ -72,7 +73,7 @@ const LeftDrawer = ({
           step={1}
           marks
           min={1}
-          max={4}
+          max={3}
           size='small'
           onChange={handleFeaturesChange}
         />

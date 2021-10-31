@@ -13,7 +13,7 @@ function SliceBarChart({ data, model, max }) {
     (svg) => {
       const height = 600;
       const width = 875;
-      const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+      const margin = { top: 20, right: 30, bottom: 50, left: 80 };
 
       let div = d3
         .select('.tooltip')
@@ -125,19 +125,17 @@ function SliceBarChart({ data, model, max }) {
 
       svg
         .append('svg:line')
-        .attr('x1', 0)
+        .attr('x1', 60)
         .attr('x2', width)
         .attr('y1', y1(model))
         .attr('y2', y1(model))
         .style('stroke', 'rgb(26, 214, 249)');
-
       svg
-        .append('svg:line')
-        .attr('x1', 0)
-        .attr('x2', width)
-        .attr('y1', y1(model))
-        .attr('y2', y1(model))
-        .style('stroke', 'rgb(26, 214, 249)');
+        .append('text')
+        .text('Overall')
+        .attr('x', 0)
+        .attr('y', y1(model) + 5)
+        .style('fill', 'rgb(26, 214, 249)');
     },
     [data]
   );
