@@ -148,7 +148,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
       const simulation = d3
         .forceSimulation()
         .nodes(graph.nodes)
-        .force('charge', d3.forceManyBody().strength(-10))
+        .force('charge', d3.forceManyBody().strength(-50))
         // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.01))
         .force(
           'x',
@@ -166,7 +166,14 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
             }
           })
         )
-        .force('link', d3.forceLink(graph.links))
+        .force(
+          'link',
+          d3.forceLink(graph.links).strength((d) => {
+            // console.log(d.count);
+            // Math.log(d.count / 1000);
+            return d.count / 10000;
+          })
+        )
         .force(
           'collision',
           d3.forceCollide().radius(function (d) {
@@ -193,10 +200,11 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
         delete d.fx;
         delete d.fy;
         d3.select(this).classed('fixed', false);
-        d3.select(this).style(
-          'fill',
-          d3.interpolateRdBu(Math.abs((d.metric - model) / model))
-        );
+        d3.select(this).style('fill', () => {
+          if (overperforming)
+            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+        });
         simulation.alpha(1).restart();
       }
 
