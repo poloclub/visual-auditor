@@ -5,7 +5,7 @@ import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import samples from '../../data/samples.json';
 
-function GraphLayout2({ data, degree, metric, model }) {
+function GraphLayout2({ data, degree, metric, model, overperforming }) {
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
@@ -53,10 +53,6 @@ function GraphLayout2({ data, degree, metric, model }) {
     };
   });
 
-  function findCommonElements(arr1, arr2) {
-    return arr1.sort().join(',') === arr2.sort().join(',');
-  }
-
   function countCommonSamples(slice1, slice2) {
     let arr1 = samples[slice1];
     let arr2 = samples[slice2];
@@ -70,11 +66,9 @@ function GraphLayout2({ data, degree, metric, model }) {
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      // if (findCommonElements(nodes[i].classifiers, nodes[j].classifiers)) {
-      //   links.push({ source: i, target: j });
-      // }
-      if (countCommonSamples(nodes[i].slice, nodes[j].slice) > 500) {
-        links.push({ source: i, target: j });
+      const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
+      if (count > 300) {
+        links.push({ source: i, target: j, count: count });
       }
     }
   }
@@ -108,7 +102,9 @@ function GraphLayout2({ data, degree, metric, model }) {
           return d.radius;
         })
         .style('fill', function (d) {
-          return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
+          if (overperforming)
+            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+          return d3.interpolateReds(Math.abs((d.metric - model) / model));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
@@ -188,7 +184,8 @@ function GraphLayout2({ data, degree, metric, model }) {
           .attr('x1', (d) => d.source.x)
           .attr('y1', (d) => d.source.y)
           .attr('x2', (d) => d.target.x)
-          .attr('y2', (d) => d.target.y);
+          .attr('y2', (d) => d.target.y)
+          .style('stroke-width', (d) => Math.pow(d.count / 1000, 2) * 2);
         node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
       }
 

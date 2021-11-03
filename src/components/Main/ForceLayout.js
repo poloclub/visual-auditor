@@ -2,7 +2,7 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function ForceLayout({ data, degree, view, metric, model }) {
+function ForceLayout({ data, degree, view, metric, model, overperforming }) {
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -95,7 +95,9 @@ function ForceLayout({ data, degree, view, metric, model }) {
             return d.y;
           })
           .style('fill', function (d) {
-            return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
+            if (overperforming)
+              return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+            return d3.interpolateReds(Math.abs((d.metric - model) / model));
           })
           .style('opacity', function (d) {
             return '1';

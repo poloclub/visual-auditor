@@ -2,7 +2,7 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function SliceBarChart({ data, model, max }) {
+function SliceBarChart({ data, model, max, overperforming, metric }) {
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -68,7 +68,9 @@ function SliceBarChart({ data, model, max }) {
         .join('rect')
         .attr('class', 'bar')
         .style('fill', (d) => {
-          return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
+          if (overperforming)
+            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+          return d3.interpolateReds(Math.abs((d.metric - model) / model));
         })
         .on('mouseover', function (event, d) {
           d3.select(this).style('opacity', '0.7');
@@ -129,15 +131,16 @@ function SliceBarChart({ data, model, max }) {
         .attr('x2', width)
         .attr('y1', y1(model))
         .attr('y2', y1(model))
-        .style('stroke', 'rgb(26, 214, 249)');
+        .style('stroke', '#e6e6e6');
       svg
+        .selectAll('.label')
         .append('text')
         .text('Overall')
         .attr('x', 0)
         .attr('y', y1(model) + 5)
-        .style('fill', 'rgb(26, 214, 249)');
+        .style('fill', 'gray');
     },
-    [data]
+    [data, metric]
   );
 
   return (
@@ -160,6 +163,7 @@ function SliceBarChart({ data, model, max }) {
         <g className='plot-area' />
         <g className='x-axis' />
         <g className='y-axis' />
+        <g className='label' />
       </svg>
     </div>
   );
