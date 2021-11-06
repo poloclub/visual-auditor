@@ -42,7 +42,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
 
   const nodes = data.map((obj) => {
     return {
-      radius: Math.sqrt(obj.size),
+      radius: Math.log(obj.size),
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -67,7 +67,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
-      if (count > 300) {
+      if (count > 0) {
         links.push({ source: i, target: j, count: count });
       }
     }
@@ -149,23 +149,23 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
         .forceSimulation()
         .nodes(graph.nodes)
         .force('charge', d3.forceManyBody().strength(-50))
-        // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.01))
-        .force(
-          'x',
-          d3.forceX().x(function (d) {
-            return xCenter[features.indexOf(d.xFeature)];
-          })
-        )
-        .force(
-          'y',
-          d3.forceY().y(function (d) {
-            if (degree > 1) {
-              return yCenter[features.indexOf(d.yFeature)];
-            } else {
-              return height / 4;
-            }
-          })
-        )
+        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1))
+        // .force(
+        //   'x',
+        //   d3.forceX().x(function (d) {
+        //     return xCenter[features.indexOf(d.xFeature)];
+        //   })
+        // )
+        // .force(
+        //   'y',
+        //   d3.forceY().y(function (d) {
+        //     if (degree > 1) {
+        //       return yCenter[features.indexOf(d.yFeature)];
+        //     } else {
+        //       return height / 4;
+        //     }
+        //   })
+        // )
         .force(
           'link',
           d3.forceLink(graph.links).strength((d) => {

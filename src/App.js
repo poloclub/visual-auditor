@@ -11,6 +11,21 @@ function App() {
   const [view, setView] = React.useState('bar');
   const [sortBy, setSortBy] = React.useState('metric');
   const [overperforming, setOverperforming] = React.useState(false);
+  const [features, setFeatures] = React.useState([
+    'Age',
+    'Workclass',
+    'Education',
+    'Education-Num',
+    'Marital Status',
+    'Occupation',
+    'Relationship',
+    'Race',
+    'Sex',
+    'Capital Gain',
+    'Capital Loss',
+    'Hours Per Week',
+    'Country',
+  ]);
 
   return (
     <div className='App'>
@@ -26,6 +41,8 @@ function App() {
         setSortBy={setSortBy}
         overperforming={overperforming}
         setOverperforming={setOverperforming}
+        features={features}
+        setFeatures={setFeatures}
       />
       <RightDrawer />
       <Main
@@ -35,6 +52,7 @@ function App() {
         view={view}
         sortBy={sortBy}
         overperforming={overperforming}
+        features={features}
       />
     </div>
   );

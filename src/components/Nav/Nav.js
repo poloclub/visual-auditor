@@ -3,6 +3,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import './Nav.css';
 
 const Nav = ({ view, setView }) => {

@@ -22,6 +22,7 @@ const Main = ({
   view,
   sortBy,
   overperforming,
+  features,
 }) => {
   let data;
   let reversedata;
@@ -143,6 +144,16 @@ const Main = ({
   const max = Math.max(...metricArray, ...reverseMetricArray, modelMetric);
   const sizeMax = Math.max(...sizeArray);
   let filteredData = data
+    .filter((obj) => {
+      let sliceStr = obj.slice;
+      while (sliceStr.includes(':')) {
+        if (features.includes(sliceStr.substring(0, sliceStr.indexOf(':')))) {
+          return true;
+        }
+        sliceStr = sliceStr.substring(sliceStr.indexOf(':') + 1);
+      }
+      return false;
+    })
     .filter((obj) => obj.size >= sampleSize)
     .filter((obj) => obj.degree <= numFeatures)
     .sort(function (a, b) {

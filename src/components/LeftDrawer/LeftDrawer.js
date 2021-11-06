@@ -2,9 +2,9 @@ import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
-// import FormGroup from '@mui/material/FormGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,6 +24,8 @@ const LeftDrawer = ({
   setSortBy,
   overperforming,
   setOverperforming,
+  features,
+  setFeatures,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
@@ -43,6 +45,14 @@ const LeftDrawer = ({
 
   const handleSwitchChange = (event) => {
     setOverperforming(event.target.checked);
+  };
+
+  const handleCheckboxChange = (event, label) => {
+    if (event.target.checked) {
+      setFeatures([...features, label]);
+    } else {
+      setFeatures(features.filter((feature) => feature !== label));
+    }
   };
 
   const handleReset = (event) => {
@@ -103,14 +113,7 @@ const LeftDrawer = ({
             <MenuItem value={'Accuracy'}>Accuracy</MenuItem>
             <MenuItem value={'Precision'}>Precision</MenuItem>
             <MenuItem value={'Recall'}>Recall</MenuItem>
-            <MenuItem value={'Specificity'}>Specificity</MenuItem>
             <MenuItem value={'F1'}>F1</MenuItem>
-            <MenuItem value={'False Negative Rate'}>
-              False Negative Rate
-            </MenuItem>
-            <MenuItem value={'False Positive Rate'}>
-              False Positive Rate
-            </MenuItem>
           </Select>
         </FormControl>
         <h2>Order By:</h2>
@@ -135,6 +138,74 @@ const LeftDrawer = ({
           onChange={handleSwitchChange}
           label='Overperforming Slices'
         />
+        <h2>Select Features:</h2>
+        <FormGroup style={{ marginLeft: '1rem' }}>
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Age'
+            onChange={(event) => handleCheckboxChange(event, 'Age')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Workclass'
+            onChange={(event) => handleCheckboxChange(event, 'Workclass')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Education'
+            onChange={(event) => handleCheckboxChange(event, 'Education')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Education-Num'
+            onChange={(event) => handleCheckboxChange(event, 'Education-Num')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Marital Status'
+            onChange={(event) => handleCheckboxChange(event, 'Marital Status')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Occupation'
+            onChange={(event) => handleCheckboxChange(event, 'Occupation')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Relationship'
+            onChange={(event) => handleCheckboxChange(event, 'Relationship')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Race'
+            onChange={(event) => handleCheckboxChange(event, 'Race')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Sex'
+            onChange={(event) => handleCheckboxChange(event, 'Sex')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Capital Gain'
+            onChange={(event) => handleCheckboxChange(event, 'Capital Gain')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Capital Loss'
+            onChange={(event) => handleCheckboxChange(event, 'Capital Loss')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Hours Per Week'
+            onChange={(event) => handleCheckboxChange(event, 'Hours Per Week')}
+          />
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label='Country'
+            onChange={(event) => handleCheckboxChange(event, 'Country')}
+          />
+        </FormGroup>
         <Divider style={{ padding: '1rem' }} />
         <Button
           variant='outlined'
