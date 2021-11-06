@@ -23,6 +23,10 @@ const Main = ({
   sortBy,
   overperforming,
   features,
+  radius,
+  edgeFiltering,
+  edgeThickness,
+  edgeForce,
 }) => {
   let data;
   let reversedata;
@@ -198,6 +202,10 @@ const Main = ({
           metric={metric}
           model={modelMetric}
           overperforming={overperforming}
+          radiusType={radius}
+          edgeFiltering={edgeFiltering}
+          edgeThickness={edgeThickness}
+          edgeForce={edgeForce}
         />
       )}
     </div>

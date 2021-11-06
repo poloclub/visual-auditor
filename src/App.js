@@ -11,6 +11,10 @@ function App() {
   const [view, setView] = React.useState('bar');
   const [sortBy, setSortBy] = React.useState('metric');
   const [overperforming, setOverperforming] = React.useState(false);
+  const [radius, setRadius] = React.useState('log');
+  const [edgeFiltering, setEdgeFiltering] = React.useState(100);
+  const [edgeThickness, setEdgeThickness] = React.useState(1);
+  const [edgeForce, setEdgeForce] = React.useState(1);
   const [features, setFeatures] = React.useState([
     'Age',
     'Workclass',
@@ -29,7 +33,18 @@ function App() {
 
   return (
     <div className='App'>
-      <Nav view={view} setView={setView} />
+      <Nav
+        view={view}
+        setView={setView}
+        radius={radius}
+        setRadius={setRadius}
+        edgeFiltering={edgeFiltering}
+        setEdgeFiltering={setEdgeFiltering}
+        edgeThickness={edgeThickness}
+        setEdgeThickness={setEdgeThickness}
+        edgeForce={edgeForce}
+        setEdgeForce={setEdgeForce}
+      />
       <LeftDrawer
         numFeatures={numFeatures}
         setNumFeatures={setNumFeatures}
@@ -53,6 +68,10 @@ function App() {
         sortBy={sortBy}
         overperforming={overperforming}
         features={features}
+        radius={radius}
+        edgeFiltering={edgeFiltering}
+        edgeThickness={edgeThickness}
+        edgeForce={edgeForce}
       />
     </div>
   );

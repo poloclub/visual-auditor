@@ -1,3 +1,12 @@
 .nav-container {
   text-align: center;
 }
+
+.settings {
+  margin: 1rem;
+}
+
+.settings:hover {
+  opacity: 50%;
+  cursor: pointer;
+}

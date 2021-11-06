@@ -5,7 +5,17 @@ import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import samples from '../../data/samples.json';
 
-function GraphLayout2({ data, degree, metric, model, overperforming }) {
+function GraphLayout2({
+  data,
+  degree,
+  metric,
+  model,
+  overperforming,
+  radiusType,
+  edgeFiltering,
+  edgeThickness,
+  edgeForce,
+}) {
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
@@ -42,7 +52,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
 
   const nodes = data.map((obj) => {
     return {
-      radius: Math.log(obj.size),
+      radius: radiusType === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -57,6 +67,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
     let arr1 = samples[slice1];
     let arr2 = samples[slice2];
     if (!arr1 || !arr2) return 0;
+    console.log(arr1.length);
     arr1 = arr1.sort().slice(0, 1000);
     arr2 = arr2.sort().slice(0, 1000);
     return arr1.filter((sample) => arr2.includes(sample)).length;
@@ -67,7 +78,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
-      if (count > 0) {
+      if (count > edgeFiltering) {
         links.push({ source: i, target: j, count: count });
       }
     }
@@ -171,7 +182,7 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
           d3.forceLink(graph.links).strength((d) => {
             // console.log(d.count);
             // Math.log(d.count / 1000);
-            return d.count / 10000;
+            return (d.count / 10000) * edgeForce;
           })
         )
         .force(
@@ -192,8 +203,13 @@ function GraphLayout2({ data, degree, metric, model, overperforming }) {
           .attr('y1', (d) => d.source.y)
           .attr('x2', (d) => d.target.x)
           .attr('y2', (d) => d.target.y)
-          .style('stroke-width', (d) => Math.pow(d.count / 1000, 2) * 2);
-        node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+          .style(
+            'stroke-width',
+            (d) => Math.pow(d.count / 1000, 2) * edgeThickness
+          );
+        node
+          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius))
+          .attr('cy', (d) => Math.max(Math.min(d.y, height), d.radius));
       }
 
       function click(event, d) {
