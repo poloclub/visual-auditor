@@ -3,7 +3,10 @@ import React from 'react';
 import * as d3 from 'd3';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
-import samples from '../../data/samples.json';
+import logLossSamples from '../../data/loglosssamples.json';
+import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
+import accuracySamples from '../../data/accuracysamples.json';
+import precisionSamples from '../../data/precisionsamples.json';
 
 function GraphLayout2({
   data,
@@ -26,6 +29,27 @@ function GraphLayout2({
   const height = 600;
 
   const features = [];
+
+  let samples;
+
+  switch (metric) {
+    case 'log loss':
+      if (overperforming) samples = reverseLogLossSamples;
+      else samples = logLossSamples;
+      break;
+    case 'accuracy':
+      if (overperforming) samples = accuracySamples;
+      else samples = accuracySamples;
+      break;
+    case 'precision':
+      if (overperforming) samples = precisionSamples;
+      else samples = precisionSamples;
+      break;
+    default:
+      if (overperforming) samples = reverseLogLossSamples;
+      else samples = logLossSamples;
+      break;
+  }
 
   data.forEach((obj) => {
     obj.classifiers = [];
@@ -125,8 +149,8 @@ function GraphLayout2({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width / 3 + d.x + 'px')
-            .style('top', height / 2.5 + d.y + 'px');
+            .style('left', Math.min(Math.max(0, d.x), width) + 100 + 'px')
+            .style('top', Math.min(height, Math.max(0, d.y)) + 'px');
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -152,8 +176,8 @@ function GraphLayout2({
           d3.select('.tooltip')
             .transition()
             .style('opacity', 0)
-            .style('left', width + 'px')
-            .style('top', height + 'px');
+            .style('left', 0 + 'px')
+            .style('top', 0 + 'px');
         });
 
       const simulation = d3
