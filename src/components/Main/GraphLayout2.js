@@ -33,15 +33,15 @@ function GraphLayout2({
   let samples;
 
   switch (metric) {
-    case 'log loss':
+    case 'Log Loss':
       if (overperforming) samples = reverseLogLossSamples;
       else samples = logLossSamples;
       break;
-    case 'accuracy':
+    case 'Accuracy':
       if (overperforming) samples = accuracySamples;
       else samples = accuracySamples;
       break;
-    case 'precision':
+    case 'Precision':
       if (overperforming) samples = precisionSamples;
       else samples = precisionSamples;
       break;
@@ -91,9 +91,8 @@ function GraphLayout2({
     let arr1 = samples[slice1];
     let arr2 = samples[slice2];
     if (!arr1 || !arr2) return 0;
-    console.log(arr1.length);
-    arr1 = arr1.sort().slice(0, 1000);
-    arr2 = arr2.sort().slice(0, 1000);
+    arr1 = arr1.sort().slice(0, 2000);
+    arr2 = arr2.sort().slice(0, 2000);
     return arr1.filter((sample) => arr2.includes(sample)).length;
   }
 
