@@ -2,7 +2,16 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function ForceLayout({ data, degree, view, metric, model, overperforming }) {
+function ForceLayout({
+  data,
+  degree,
+  view,
+  metric,
+  model,
+  overperforming,
+  setDetails,
+}) {
+  const [selected, setSelected] = React.useState(null);
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -95,6 +104,9 @@ function ForceLayout({ data, degree, view, metric, model, overperforming }) {
             return d.y;
           })
           .style('fill', function (d) {
+            if (d.slice === selected) {
+              return d3.interpolateGreys(0.5);
+            }
             if (overperforming)
               return d3.interpolateBlues(Math.abs((d.metric - model) / model));
             return d3.interpolateReds(Math.abs((d.metric - model) / model));
@@ -111,7 +123,7 @@ function ForceLayout({ data, degree, view, metric, model, overperforming }) {
               .duration(200)
               .style('opacity', 0.9)
               .style('left', width / 3 + d.x + 'px')
-              .style('top', height / 2.2 + d.y + 'px');
+              .style('top', height / 6 + d.y + 'px');
             div.html(
               '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
@@ -140,7 +152,16 @@ function ForceLayout({ data, degree, view, metric, model, overperforming }) {
               .transition()
               .style('opacity', 0)
               .style('left', width + 'px')
-              .style('top', height + 'px');
+              .style('top', 0 + 'px');
+          })
+          .on('click', function (event, d) {
+            setSelected(d.slice);
+            setDetails({
+              slice: d.slice,
+              size: d.size,
+              metric: d.metric,
+              similarSlices: [],
+            });
           });
       }
     },

@@ -3,22 +3,8 @@ import React from 'react';
 import * as d3 from 'd3';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
-import logLossSamples from '../../data/loglosssamples.json';
-import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
-import accuracySamples from '../../data/accuracysamples.json';
-import precisionSamples from '../../data/precisionsamples.json';
 
-function GraphLayout2({
-  data,
-  degree,
-  metric,
-  model,
-  overperforming,
-  radiusType,
-  edgeFiltering,
-  edgeThickness,
-  edgeForce,
-}) {
+function GraphLayout({ data, metric, model }) {
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
@@ -29,27 +15,6 @@ function GraphLayout2({
   const height = 600;
 
   const features = [];
-
-  let samples;
-
-  switch (metric) {
-    case 'Log Loss':
-      if (overperforming) samples = reverseLogLossSamples;
-      else samples = logLossSamples;
-      break;
-    case 'Accuracy':
-      if (overperforming) samples = accuracySamples;
-      else samples = accuracySamples;
-      break;
-    case 'Precision':
-      if (overperforming) samples = precisionSamples;
-      else samples = precisionSamples;
-      break;
-    default:
-      if (overperforming) samples = reverseLogLossSamples;
-      else samples = logLossSamples;
-      break;
-  }
 
   data.forEach((obj) => {
     obj.classifiers = [];
@@ -71,12 +36,12 @@ function GraphLayout2({
 
   for (let i = 0; i < features.length; i++) {
     xCenter.push(((width - 200) / features.length) * i + 100);
-    yCenter.push(((height - 200) / features.length) * i + 100);
+    yCenter.push(((height - 200) / features.length) * i - 100);
   }
 
   const nodes = data.map((obj) => {
     return {
-      radius: radiusType === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
+      radius: Math.sqrt(obj.size),
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -87,22 +52,16 @@ function GraphLayout2({
     };
   });
 
-  function countCommonSamples(slice1, slice2) {
-    let arr1 = samples[slice1];
-    let arr2 = samples[slice2];
-    if (!arr1 || !arr2) return 0;
-    arr1 = arr1.sort().slice(0, 2000);
-    arr2 = arr2.sort().slice(0, 2000);
-    return arr1.filter((sample) => arr2.includes(sample)).length;
+  function findCommonElements(arr1, arr2) {
+    return arr1.sort().join(',') === arr2.sort().join(',');
   }
 
   const links = [];
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
-      if (count > edgeFiltering) {
-        links.push({ source: i, target: j, count: count });
+      if (findCommonElements(nodes[i].classifiers, nodes[j].classifiers)) {
+        links.push({ source: i, target: j });
       }
     }
   }
@@ -136,9 +95,7 @@ function GraphLayout2({
           return d.radius;
         })
         .style('fill', function (d) {
-          if (overperforming)
-            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+          return d3.interpolateRdBu(Math.abs((d.metric - model) / model));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
@@ -148,8 +105,8 @@ function GraphLayout2({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', Math.min(Math.max(0, d.x), width) + 100 + 'px')
-            .style('top', Math.min(height, Math.max(0, d.y)) + 'px');
+            .style('left', width / 3 + d.x + 'px')
+            .style('top', height / 2.5 + d.y + 'px');
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -175,39 +132,34 @@ function GraphLayout2({
           d3.select('.tooltip')
             .transition()
             .style('opacity', 0)
-            .style('left', 0 + 'px')
-            .style('top', 0 + 'px');
+            .style('left', width + 'px')
+            .style('top', height + 'px');
         });
 
       const simulation = d3
         .forceSimulation()
         .nodes(graph.nodes)
-        .force('charge', d3.forceManyBody().strength(-50))
-        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1))
-        // .force(
-        //   'x',
-        //   d3.forceX().x(function (d) {
-        //     return xCenter[features.indexOf(d.xFeature)];
-        //   })
-        // )
-        // .force(
-        //   'y',
-        //   d3.forceY().y(function (d) {
-        //     if (degree > 1) {
-        //       return yCenter[features.indexOf(d.yFeature)];
-        //     } else {
-        //       return height / 4;
-        //     }
-        //   })
-        // )
+        .force('charge', d3.forceManyBody().strength(-10))
+        // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.01))
         .force(
-          'link',
-          d3.forceLink(graph.links).strength((d) => {
-            // console.log(d.count);
-            // Math.log(d.count / 1000);
-            return (d.count / 10000) * edgeForce;
-          })
+          'x',
+          d3
+            .forceX()
+            .x(function (d) {
+              return width / 2;
+            })
+            .strength(0.05)
         )
+        .force(
+          'y',
+          d3
+            .forceY()
+            .y(function (d) {
+              return height / 2;
+            })
+            .strength(0.05)
+        )
+        .force('link', d3.forceLink(graph.links))
         .force(
           'collision',
           d3.forceCollide().radius(function (d) {
@@ -225,25 +177,18 @@ function GraphLayout2({
           .attr('x1', (d) => d.source.x)
           .attr('y1', (d) => d.source.y)
           .attr('x2', (d) => d.target.x)
-          .attr('y2', (d) => d.target.y)
-          .style(
-            'stroke-width',
-            (d) => Math.pow(d.count / 1000, 2) * edgeThickness
-          );
-        node
-          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius))
-          .attr('cy', (d) => Math.max(Math.min(d.y, height), d.radius));
+          .attr('y2', (d) => d.target.y);
+        node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
       }
 
       function click(event, d) {
         delete d.fx;
         delete d.fy;
         d3.select(this).classed('fixed', false);
-        d3.select(this).style('fill', () => {
-          if (overperforming)
-            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-          return d3.interpolateReds(Math.abs((d.metric - model) / model));
-        });
+        d3.select(this).style(
+          'fill',
+          d3.interpolateRdBu(Math.abs((d.metric - model) / model))
+        );
         simulation.alpha(1).restart();
       }
 
@@ -289,4 +234,4 @@ function GraphLayout2({
   );
 }
 
-export default GraphLayout2;
+export default GraphLayout;

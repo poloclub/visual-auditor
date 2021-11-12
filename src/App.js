@@ -15,6 +15,7 @@ function App() {
   const [edgeFiltering, setEdgeFiltering] = React.useState(100);
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
+  const [pointerMode, setPointerMode] = React.useState('drag');
   const [features, setFeatures] = React.useState([
     'Age',
     'Workclass',
@@ -30,6 +31,7 @@ function App() {
     'Hours Per Week',
     'Country',
   ]);
+  const [details, setDetails] = React.useState(null);
 
   return (
     <div className='App'>
@@ -44,6 +46,8 @@ function App() {
         setEdgeThickness={setEdgeThickness}
         edgeForce={edgeForce}
         setEdgeForce={setEdgeForce}
+        pointerMode={pointerMode}
+        setPointerMode={setPointerMode}
       />
       <LeftDrawer
         numFeatures={numFeatures}
@@ -59,7 +63,7 @@ function App() {
         features={features}
         setFeatures={setFeatures}
       />
-      <RightDrawer />
+      <RightDrawer details={details} metric={metric} />
       <Main
         numFeatures={numFeatures}
         sampleSize={sampleSize}
@@ -72,6 +76,8 @@ function App() {
         edgeFiltering={edgeFiltering}
         edgeThickness={edgeThickness}
         edgeForce={edgeForce}
+        setDetails={setDetails}
+        pointerMode={pointerMode}
       />
     </div>
   );

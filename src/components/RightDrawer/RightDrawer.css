@@ -9,6 +9,18 @@ h2 {
   padding: 0.5rem;
 }
 
+p {
+  color: rgb(95, 95, 95);
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.thin {
+  font-weight: 300;
+}
+
 .right-container {
   text-align: center;
   padding: 0.5rem;

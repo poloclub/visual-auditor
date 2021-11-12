@@ -2,7 +2,15 @@ import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
 
-function SliceBarChart({ data, model, max, overperforming, metric }) {
+function SliceBarChart({
+  data,
+  model,
+  max,
+  overperforming,
+  metric,
+  setDetails,
+}) {
+  const [selected, setSelected] = React.useState(null);
   function useForceUpdate() {
     const [value, setValue] = React.useState(0); // integer state
     return () => setValue((value) => value + 1); // update the state to force render
@@ -68,6 +76,9 @@ function SliceBarChart({ data, model, max, overperforming, metric }) {
         .join('rect')
         .attr('class', 'bar')
         .style('fill', (d) => {
+          if (d.slice === selected) {
+            return d3.interpolateGreys(0.5);
+          }
           if (overperforming)
             return d3.interpolateBlues(Math.abs((d.metric - model) / model));
           return d3.interpolateReds(Math.abs((d.metric - model) / model));
@@ -103,7 +114,16 @@ function SliceBarChart({ data, model, max, overperforming, metric }) {
             .transition()
             .style('opacity', 0)
             .style('left', width + 'px')
-            .style('top', height + 'px');
+            .style('top', 0 + 'px');
+        })
+        .on('click', function (event, d) {
+          setSelected(d.slice);
+          setDetails({
+            slice: d.slice,
+            size: d.size,
+            metric: d.metric,
+            similarSlices: [],
+          });
         })
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())

@@ -22,11 +22,14 @@ const Nav = ({
   setEdgeThickness,
   edgeForce,
   setEdgeForce,
+  pointerMode,
+  setPointerMode,
 }) => {
   const [edgeValue, setEdgeValue] = React.useState(edgeFiltering);
   const [radiusValue, setRadiusValue] = React.useState(radius);
   const [thicknessValue, setThicknessValue] = React.useState(edgeThickness);
   const [edgeForceValue, setEdgeForceValue] = React.useState(edgeForce);
+  const [pointerModeValue, setPointerModeValue] = React.useState(pointerMode);
   const [open, setOpen] = React.useState(false);
   const handleViewChange = (event) => {
     setView(event.target.value);
@@ -42,6 +45,7 @@ const Nav = ({
     setEdgeThickness(thicknessValue);
     setEdgeForce(edgeForceValue);
     setOpen(false);
+    setPointerMode(pointerModeValue);
   };
 
   const boxStyle = {
@@ -124,6 +128,18 @@ const Nav = ({
             size='small'
             onChange={(event) => setEdgeForceValue(event.target.value)}
           />
+          <h2>Cursor Mode:</h2>
+          <FormControl sx={{ s: 1, minWidth: 175 }}>
+            <InputLabel>Cursor Mode:</InputLabel>
+            <Select
+              value={pointerModeValue}
+              label='Cursor Mode'
+              onChange={(event) => setPointerModeValue(event.target.value)}
+            >
+              <MenuItem value={'select'}>Select</MenuItem>
+              <MenuItem value={'drag'}>Drag</MenuItem>
+            </Select>
+          </FormControl>
           <div>
             <Button
               variant='outlined'

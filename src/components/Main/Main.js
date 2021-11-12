@@ -13,7 +13,6 @@ import reverserecall from '../../data/reverserecall.json';
 import reversef1 from '../../data/reversef1.json';
 import ForceLayout from './ForceLayout';
 import GraphLayout from './GraphLayout';
-import GraphLayout2 from './GraphLayout2';
 
 const Main = ({
   numFeatures,
@@ -27,6 +26,8 @@ const Main = ({
   edgeFiltering,
   edgeThickness,
   edgeForce,
+  setDetails,
+  pointerMode,
 }) => {
   let data;
   let reversedata;
@@ -185,6 +186,7 @@ const Main = ({
           view={view}
           overperforming={overperforming}
           metric={metric}
+          setDetails={setDetails}
         />
       ) : view === 'force' ? (
         <ForceLayout
@@ -194,9 +196,10 @@ const Main = ({
           metric={metric}
           model={modelMetric}
           overperforming={overperforming}
+          setDetails={setDetails}
         />
       ) : (
-        <GraphLayout2
+        <GraphLayout
           data={filteredData}
           degree={numFeatures}
           metric={metric}
@@ -206,6 +209,8 @@ const Main = ({
           edgeFiltering={edgeFiltering}
           edgeThickness={edgeThickness}
           edgeForce={edgeForce}
+          setDetails={setDetails}
+          pointerMode={pointerMode}
         />
       )}
     </div>
