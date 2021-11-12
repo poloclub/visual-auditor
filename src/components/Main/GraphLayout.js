@@ -21,6 +21,7 @@ function GraphLayout({
   setDetails,
   pointerMode,
 }) {
+  const margin = { top: 20, right: 30, bottom: 50, left: 80 };
   const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
@@ -29,7 +30,7 @@ function GraphLayout({
   const forceUpdate = useForceUpdate();
 
   const width = 800;
-  const height = 600;
+  const height = 700;
 
   const features = [];
 
@@ -76,6 +77,27 @@ function GraphLayout({
     xCenter.push(((width - 200) / features.length) * i + 100);
     yCenter.push(((height - 200) / features.length) * i + 100);
   }
+
+  const x = d3
+    .scaleBand()
+    .domain(features)
+    .rangeRound([margin.left, width - margin.right])
+    .padding(0.1);
+
+  const xAxis = (g) =>
+    g
+      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .selectAll('text')
+      .attr('transform', 'translate(-10,0)rotate(-45)')
+      .style('text-anchor', 'end');
+
+  const yAxis = (g) =>
+    g
+      .attr('transform', `translate(${margin.left},${0 - 2 * margin.bottom})`)
+      .call(d3.axisLeft(x).tickSizeOuter(0))
+      .selectAll('text')
+      .style('text-anchor', 'end');
 
   const nodes = data.map((obj) => {
     return {
@@ -127,6 +149,8 @@ function GraphLayout({
 
   const ref = useD3(
     (svg) => {
+      // svg.select('.y-axis').call(y1Axis);
+
       svg = d3.select('.svg').style('width', '60%').style('height', '60%');
       const link = svg
         .selectAll('.link')
@@ -156,8 +180,8 @@ function GraphLayout({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', Math.min(Math.max(0, d.x), width) + 100 + 'px')
-            .style('top', Math.min(height, Math.max(0, d.y)) + 'px');
+            .style('left', Math.min(Math.max(0, d.x), width - 200) + 100 + 'px')
+            .style('top', Math.min(height - 200, Math.max(0, d.y)) + 'px');
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -183,7 +207,7 @@ function GraphLayout({
           d3.select('.tooltip')
             .transition()
             .style('opacity', 0)
-            .style('left', 0 + 'px')
+            .style('left', width + 'px')
             .style('top', 0 + 'px');
         })
         .on('click', click);
@@ -239,8 +263,8 @@ function GraphLayout({
             (d) => Math.pow(d.count / 1000, 2) * edgeThickness
           );
         node
-          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius))
-          .attr('cy', (d) => Math.max(Math.min(d.y, height), d.radius));
+          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100))
+          .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius));
       }
       function click(event, d) {
         if (pointerMode === 'select') {
@@ -291,6 +315,8 @@ function GraphLayout({
       }
 
       d3.select('svg g').remove();
+      svg.select('.x-axis').call(xAxis);
+      svg.select('.y-axis').call(yAxis);
     },
     [data, value]
   );
@@ -308,6 +334,8 @@ function GraphLayout({
       ></div>
       <svg className='svg' width={width} height={height}>
         <g transform='translate(50, 200)'></g>
+        <g className='x-axis' />
+        <g className='y-axis' />
       </svg>
       <br />
       <Button
