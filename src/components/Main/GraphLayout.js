@@ -328,9 +328,12 @@ function GraphLayout({
         simulation.alpha(1).restart();
       }
 
-      d3.select('svg g').remove();
       svg.select('.x-axis').call(xAxis);
-      svg.select('.y-axis').call(yAxis);
+      if (degree >= 2) {
+        svg.append('g').attr('class', 'y-axis').call(yAxis);
+      } else {
+        svg.selectAll('.y-axis').remove();
+      }
     },
     [data, value]
   );
