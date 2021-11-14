@@ -242,7 +242,7 @@ function GraphLayout({
         .force(
           'link',
           d3.forceLink(graph.links).strength((d) => {
-            return (Math.log(d.count) / 1000) * edgeForce;
+            return (d.count / 10000) * edgeForce;
           })
         )
         .force(
@@ -267,10 +267,18 @@ function GraphLayout({
         //   .join('line')
         //   .classed('link', true);
         link
-          .attr('x1', (d) => d.source.x)
-          .attr('y1', (d) => d.source.y)
-          .attr('x2', (d) => d.target.x)
-          .attr('y2', (d) => d.target.y)
+          .attr('x1', (d) =>
+            Math.max(Math.min(d.source.x, width), d.source.radius + 100)
+          )
+          .attr('y1', (d) =>
+            Math.max(Math.min(d.source.y, height - 75), d.source.radius)
+          )
+          .attr('x2', (d) =>
+            Math.max(Math.min(d.target.x, width), d.target.radius + 100)
+          )
+          .attr('y2', (d) =>
+            Math.max(Math.min(d.target.y, height - 75), d.target.radius)
+          )
           .style(
             'stroke-width',
             (d) => Math.pow(d.count / 1000, 2) * edgeThickness
@@ -282,28 +290,27 @@ function GraphLayout({
       function click(event, d) {
         if (pointerMode === 'select') {
           setSelected(d.slice);
-          // setDetails({
-          //   slice: d.slice,
-          //   size: d.size,
-          //   metric: d.metric,
-          //   similarSlices: [],
-          //   // similarSlices: graphData.links
-          //   //   .map((link) => {
-          //   //     if (
-          //   //       link.count > edgeFiltering &&
-          //   //       link.sliceSource === d.slice
-          //   //     ) {
-          //   //       return link.sliceTarget;
-          //   //     } else if (
-          //   //       link.count > edgeFiltering &&
-          //   //       link.sliceTarget === d.slice
-          //   //     ) {
-          //   //       return link.sliceSource;
-          //   //     }
-          //   //     return undefined;
-          //   //   })
-          //   //   .filter((link) => link !== undefined),
-          // });
+          setDetails({
+            slice: d.slice,
+            size: d.size,
+            metric: d.metric,
+            similarSlices: graphData.links
+              .map((link) => {
+                if (
+                  link.count > edgeFiltering &&
+                  link.sliceSource === d.slice
+                ) {
+                  return link.sliceTarget;
+                } else if (
+                  link.count > edgeFiltering &&
+                  link.sliceTarget === d.slice
+                ) {
+                  return link.sliceSource;
+                }
+                return undefined;
+              })
+              .filter((link) => link !== undefined),
+          });
         } else {
           delete d.fx;
           delete d.fy;
