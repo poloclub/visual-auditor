@@ -7,6 +7,8 @@ import logLossSamples from '../../data/loglosssamples.json';
 import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
+import graphData from '../../data/links.json';
+import linksData from '../../data/links5000.json';
 
 function GraphLayout({
   data,
@@ -116,12 +118,11 @@ function GraphLayout({
     let arr1 = samples[slice1];
     let arr2 = samples[slice2];
     if (!arr1 || !arr2) return 0;
-    arr1 = arr1.sort().slice(0, 1000);
-    arr2 = arr2.sort().slice(0, 1000);
+    arr1 = arr1.sort((a, b) => 0.5 - Math.random()).slice(0, 1000);
     return arr1.filter((sample) => arr2.includes(sample)).length;
   }
 
-  const links = [];
+  let links = [];
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
@@ -138,6 +139,11 @@ function GraphLayout({
     }
   }
 
+  // let links = graphData.links;
+  // let links = linksData;
+
+  // console.log(JSON.stringify(links));
+
   const graph = {
     nodes: nodes,
     links: links,
@@ -150,10 +156,10 @@ function GraphLayout({
   const ref = useD3(
     (svg) => {
       // svg.select('.y-axis').call(y1Axis);
-
       svg = d3.select('.svg').style('width', '60%').style('height', '60%');
-      const link = svg
+      let link = svg
         .selectAll('.link')
+        .attr('class', 'link')
         .data(graph.links)
         .join('line')
         .classed('link', true);
@@ -236,7 +242,7 @@ function GraphLayout({
         .force(
           'link',
           d3.forceLink(graph.links).strength((d) => {
-            return (d.count / 10000) * edgeForce;
+            return (Math.log(d.count) / 1000) * edgeForce;
           })
         )
         .force(
@@ -253,6 +259,13 @@ function GraphLayout({
       }
 
       function tick() {
+        // d3.selectAll('.link').remove();
+        // console.log(links);
+        // d3.selectAll('.link')
+        //   .attr('class', 'link')
+        //   .data(links)
+        //   .join('line')
+        //   .classed('link', true);
         link
           .attr('x1', (d) => d.source.x)
           .attr('y1', (d) => d.source.y)
@@ -269,27 +282,28 @@ function GraphLayout({
       function click(event, d) {
         if (pointerMode === 'select') {
           setSelected(d.slice);
-          setDetails({
-            slice: d.slice,
-            size: d.size,
-            metric: d.metric,
-            similarSlices: links
-              .map((link) => {
-                if (
-                  link.count > edgeFiltering &&
-                  link.sliceSource === d.slice
-                ) {
-                  return link.sliceTarget;
-                } else if (
-                  link.count > edgeFiltering &&
-                  link.sliceTarget === d.slice
-                ) {
-                  return link.sliceSource;
-                }
-                return undefined;
-              })
-              .filter((link) => link !== undefined),
-          });
+          // setDetails({
+          //   slice: d.slice,
+          //   size: d.size,
+          //   metric: d.metric,
+          //   similarSlices: [],
+          //   // similarSlices: graphData.links
+          //   //   .map((link) => {
+          //   //     if (
+          //   //       link.count > edgeFiltering &&
+          //   //       link.sliceSource === d.slice
+          //   //     ) {
+          //   //       return link.sliceTarget;
+          //   //     } else if (
+          //   //       link.count > edgeFiltering &&
+          //   //       link.sliceTarget === d.slice
+          //   //     ) {
+          //   //       return link.sliceSource;
+          //   //     }
+          //   //     return undefined;
+          //   //   })
+          //   //   .filter((link) => link !== undefined),
+          // });
         } else {
           delete d.fx;
           delete d.fy;

@@ -145,16 +145,20 @@ function SliceBarChart({
           return i * 100;
         });
 
+      svg.selectAll('.line').remove();
+      svg.selectAll('.label').remove();
+
       svg
         .append('svg:line')
+        .attr('class', 'line')
         .attr('x1', 60)
         .attr('x2', width)
         .attr('y1', y1(model))
         .attr('y2', y1(model))
         .style('stroke', '#e6e6e6');
       svg
-        .selectAll('.label')
         .append('text')
+        .attr('class', 'label')
         .text('Overall')
         .attr('x', 0)
         .attr('y', y1(model) + 5)

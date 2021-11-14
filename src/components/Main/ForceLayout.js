@@ -94,6 +94,7 @@ function ForceLayout({
           .selectAll('circle')
           .data(nodes)
           .join('circle')
+          .attr('class', 'node')
           .attr('r', function (d) {
             return d.radius;
           })
