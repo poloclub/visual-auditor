@@ -22,7 +22,7 @@ function GraphLayout({
   setDetails,
   pointerMode,
 }) {
-  const margin = { top: 20, right: 30, bottom: 60, left: 80 };
+  const margin = { top: 20, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
@@ -31,7 +31,7 @@ function GraphLayout({
   const forceUpdate = useForceUpdate();
 
   const width = 800;
-  const height = 710;
+  const height = 800;
 
   const features = [];
 
@@ -75,8 +75,8 @@ function GraphLayout({
   const yCenter = [];
 
   for (let i = 0; i < features.length; i++) {
-    xCenter.push(((width - 200) / features.length) * i + 100);
-    yCenter.push(((height - 200) / features.length) * i + 100);
+    xCenter.push(((width - 150) / features.length) * i + 100);
+    yCenter.push(((height - 175) / features.length) * i + 100);
   }
 
   const x = d3
@@ -95,7 +95,7 @@ function GraphLayout({
 
   const yAxis = (g) =>
     g
-      .attr('transform', `translate(${margin.left},${0 - 2 * margin.bottom})`)
+      .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
       .style('text-anchor', 'end');
@@ -154,7 +154,6 @@ function GraphLayout({
 
   const ref = useD3(
     (svg) => {
-      // svg.select('.y-axis').call(y1Axis);
       svg = d3.select('.svg').style('width', '60%').style('height', '60%');
       let link = svg
         .selectAll('.link')
@@ -185,7 +184,10 @@ function GraphLayout({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', Math.min(Math.max(0, d.x), width - 200) + 100 + 'px')
+            .style(
+              'left',
+              Math.min(Math.max(200, d.x), width - 200) + 100 + 'px'
+            )
             .style('top', Math.min(height - 200, Math.max(0, d.y)) + 'px');
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
@@ -220,8 +222,8 @@ function GraphLayout({
       const simulation = d3
         .forceSimulation()
         .nodes(graph.nodes)
-        .force('charge', d3.forceManyBody().strength(-50))
-        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1))
+        .force('charge', d3.forceManyBody().strength(-10))
+        // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1))
         .force(
           'x',
           d3.forceX().x(function (d) {
