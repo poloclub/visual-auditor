@@ -145,9 +145,7 @@ const Main = ({
   }
   const metricArray = data.map((obj) => obj.metric);
   const reverseMetricArray = reversedata.map((obj) => obj.metric);
-  const sizeArray = data.map((obj) => obj.size);
   const max = Math.max(...metricArray, ...reverseMetricArray, modelMetric);
-  const sizeMax = Math.max(...sizeArray);
   let filteredData = data
     .filter((obj) => {
       let sliceStr = obj.slice;
@@ -163,7 +161,7 @@ const Main = ({
     .filter((obj) => obj.degree <= numFeatures)
     .sort(function (a, b) {
       if (sortBy === 'size') return b.size - a.size;
-      if (metric == 'Log Loss') {
+      if (metric === 'Log Loss') {
         if (overperforming) return a.metric - b.metric;
         return b.metric - a.metric;
       } else {

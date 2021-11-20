@@ -7,7 +7,6 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Slider from '@mui/material/Slider';
 import './Nav.css';
 
