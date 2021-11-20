@@ -7,7 +7,7 @@ import logLossSamples from '../../data/loglosssamples.json';
 import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
-import graphData from '../../data/links.json';
+import commonSamples from '../../data/commonSamples.json';
 
 function GraphLayout({
   data,
@@ -17,14 +17,13 @@ function GraphLayout({
   overperforming,
   radiusType,
   edgeFiltering,
-  edgeThickness,
   edgeForce,
   setDetails,
   pointerMode,
 }) {
   const margin = { top: 20, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
-  const [value, setValue] = React.useState(0); // integer state
+  const [value, setValue] = React.useState(0);
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
   }
@@ -142,15 +141,19 @@ function GraphLayout({
     let arr1 = samples[slice1];
     let arr2 = samples[slice2];
     if (!arr1 || !arr2) return 0;
-    arr1 = arr1.sort((a, b) => 0.5 - Math.random()).slice(0, 1000);
+    arr1 = arr1.sort((a, b) => 0.5 - Math.random()).slice(0, 2000);
     return arr1.filter((sample) => arr2.includes(sample)).length;
   }
 
   let links = [];
+  // let common = {};
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
+      const count = commonSamples[nodes[i].slice + '-' + nodes[j].slice];
+      // const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
+      // common[nodes[i].slice + '-' + nodes[j].slice] = count;
+      // common[nodes[j].slice + '-' + nodes[i].slice] = count;
       if (count > edgeFiltering) {
         links.push({
           source: i,
@@ -163,15 +166,17 @@ function GraphLayout({
     }
   }
 
-  // let links = graphData.links;
-  // let links = linksData;
+  // console.log(JSON.stringify(common));
 
+  // const links = linksData;
   // console.log(JSON.stringify(links));
 
   const graph = {
     nodes: nodes,
     links: links,
   };
+
+  console.log(graph.links);
 
   function clamp(x, lo, hi) {
     return x < lo ? lo : x > hi ? hi : x;
@@ -305,9 +310,11 @@ function GraphLayout({
           .attr('y2', (d) =>
             Math.max(Math.min(d.target.y, height - 75), d.target.radius)
           )
-          .style(
-            'stroke-width',
-            (d) => Math.pow(d.count / 1000, 2) * edgeThickness
+          .style('stroke-width', (d) =>
+            Math.min(
+              Math.pow(d.count / 2000, 2) * edgeForce,
+              Math.pow(d.count / 2000, 2) * 3
+            )
           );
         node
           .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100))
@@ -320,7 +327,7 @@ function GraphLayout({
             slice: d.slice,
             size: d.size,
             metric: d.metric,
-            similarSlices: graphData.links
+            similarSlices: links
               .map((link) => {
                 if (
                   link.count > edgeFiltering &&

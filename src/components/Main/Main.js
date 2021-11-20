@@ -24,7 +24,6 @@ const Main = ({
   features,
   radius,
   edgeFiltering,
-  edgeThickness,
   edgeForce,
   setDetails,
   pointerMode,
@@ -195,6 +194,7 @@ const Main = ({
           model={modelMetric}
           overperforming={overperforming}
           setDetails={setDetails}
+          radius={radius}
         />
       ) : (
         <GraphLayout
@@ -205,7 +205,6 @@ const Main = ({
           overperforming={overperforming}
           radiusType={radius}
           edgeFiltering={edgeFiltering}
-          edgeThickness={edgeThickness}
           edgeForce={edgeForce}
           setDetails={setDetails}
           pointerMode={pointerMode}

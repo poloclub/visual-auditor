@@ -26,6 +26,13 @@ const LeftDrawer = ({
   setOverperforming,
   features,
   setFeatures,
+  view,
+  radius,
+  setRadius,
+  edgeFiltering,
+  setEdgeFiltering,
+  edgeForce,
+  setEdgeForce,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
@@ -61,6 +68,8 @@ const LeftDrawer = ({
     setMetric('Log Loss');
     setSortBy('metric');
     setOverperforming(false);
+    setEdgeFiltering(300);
+    setEdgeForce(1);
   };
 
   return (
@@ -99,6 +108,34 @@ const LeftDrawer = ({
           step={10}
           onChange={handleSizeChange}
         />
+        {view === 'graph' && (
+          <>
+            <h2>Edge Filtering:</h2>
+            <Slider
+              aria-label='Edge Filtering'
+              defaultValue={300}
+              value={edgeFiltering}
+              valueLabelDisplay='auto'
+              step={10}
+              min={0}
+              max={1000}
+              size='small'
+              onChange={(event) => setEdgeFiltering(event.target.value)}
+            />
+            <h2>Edge Force Strength:</h2>
+            <Slider
+              aria-label='Edge Force Strength'
+              defaultValue={1}
+              value={edgeForce}
+              valueLabelDisplay='auto'
+              step={0.01}
+              min={0}
+              max={5}
+              size='small'
+              onChange={(event) => setEdgeForce(event.target.value)}
+            />
+          </>
+        )}
         <h2>Fairness Metric:</h2>
         <FormControl sx={{ m: 1, minWidth: 175 }}>
           <InputLabel id='demo-simple-select-helper-label'>Metric</InputLabel>
@@ -116,22 +153,41 @@ const LeftDrawer = ({
             <MenuItem value={'F1'}>F1</MenuItem>
           </Select>
         </FormControl>
-        <h2>Order By:</h2>
-        <FormControl sx={{ m: 1, minWidth: 175 }}>
-          <InputLabel id='demo-simple-select-helper-label'>
-            Order By:
-          </InputLabel>
-          <Select
-            labelId='demo-simple-select-helper-label'
-            id='demo-simple-select-helper'
-            value={sortBy}
-            label='Order By'
-            onChange={handleSortByChange}
-          >
-            <MenuItem value={'metric'}>{metric}</MenuItem>
-            <MenuItem value={'size'}>Sample Size</MenuItem>
-          </Select>
-        </FormControl>
+        {view === 'bar' ? (
+          <>
+            <h2>Order By:</h2>
+            <FormControl sx={{ m: 1, minWidth: 175 }}>
+              <InputLabel id='demo-simple-select-helper-label'>
+                Order By:
+              </InputLabel>
+              <Select
+                labelId='demo-simple-select-helper-label'
+                id='demo-simple-select-helper'
+                value={sortBy}
+                label='Order By'
+                onChange={handleSortByChange}
+              >
+                <MenuItem value={'metric'}>{metric}</MenuItem>
+                <MenuItem value={'size'}>Sample Size</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        ) : (
+          <>
+            <h2>Radius Function:</h2>
+            <FormControl sx={{ s: 1, minWidth: 175 }}>
+              <InputLabel>Radius:</InputLabel>
+              <Select
+                value={radius}
+                label='Radius'
+                onChange={(event) => setRadius(event.target.value)}
+              >
+                <MenuItem value={'log'}>Log</MenuItem>
+                <MenuItem value={'sqrt'}>Square Root</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        )}
         <h2>Overperforming Slices:</h2>
         <Switch
           checked={overperforming}

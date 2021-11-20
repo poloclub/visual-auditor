@@ -10,6 +10,7 @@ function ForceLayout({
   model,
   overperforming,
   setDetails,
+  radius,
 }) {
   const [selected, setSelected] = React.useState(null);
   const margin = { top: 20, right: 30, bottom: 70, left: 85 };
@@ -31,8 +32,6 @@ function ForceLayout({
       }
     }
   });
-
-  console.log(features);
 
   const x = d3
     .scaleBand()
@@ -97,7 +96,7 @@ function ForceLayout({
       }
       const nodes = data.map((obj) => {
         return {
-          radius: Math.log(obj.size),
+          radius: radius === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],

@@ -35,20 +35,7 @@ function App() {
 
   return (
     <div className='App'>
-      <Nav
-        view={view}
-        setView={setView}
-        radius={radius}
-        setRadius={setRadius}
-        edgeFiltering={edgeFiltering}
-        setEdgeFiltering={setEdgeFiltering}
-        edgeThickness={edgeThickness}
-        setEdgeThickness={setEdgeThickness}
-        edgeForce={edgeForce}
-        setEdgeForce={setEdgeForce}
-        pointerMode={pointerMode}
-        setPointerMode={setPointerMode}
-      />
+      <Nav view={view} setView={setView} />
       <LeftDrawer
         numFeatures={numFeatures}
         setNumFeatures={setNumFeatures}
@@ -62,6 +49,13 @@ function App() {
         setOverperforming={setOverperforming}
         features={features}
         setFeatures={setFeatures}
+        view={view}
+        radius={radius}
+        setRadius={setRadius}
+        edgeFiltering={edgeFiltering}
+        setEdgeFiltering={setEdgeFiltering}
+        edgeForce={edgeForce}
+        setEdgeForce={setEdgeForce}
       />
       <RightDrawer details={details} metric={metric} />
       <Main
@@ -74,7 +68,6 @@ function App() {
         features={features}
         radius={radius}
         edgeFiltering={edgeFiltering}
-        edgeThickness={edgeThickness}
         edgeForce={edgeForce}
         setDetails={setDetails}
         pointerMode={pointerMode}
