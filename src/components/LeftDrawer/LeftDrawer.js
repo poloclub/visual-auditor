@@ -87,7 +87,7 @@ const LeftDrawer = ({
           size='small'
           onChange={handleFeaturesChange}
         />
-        <h2>Minimum Sample Size:</h2>
+        <h2>Minimum Slice Size:</h2>
         <Slider
           size='small'
           defaultValue={100}

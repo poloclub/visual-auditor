@@ -11,17 +11,12 @@ function SliceBarChart({
   setDetails,
 }) {
   const [selected, setSelected] = React.useState(null);
-  function useForceUpdate() {
-    const [value, setValue] = React.useState(0); // integer state
-    return () => setValue((value) => value + 1); // update the state to force render
-  }
-  const forceUpdate = useForceUpdate();
 
   const ref = useD3(
     (svg) => {
       const height = 600;
       const width = 875;
-      const margin = { top: 20, right: 30, bottom: 50, left: 80 };
+      const margin = { top: 20, right: 30, bottom: 50, left: 90 };
 
       let div = d3
         .select('.tooltip')
@@ -84,7 +79,7 @@ function SliceBarChart({
           return d3.interpolateReds(Math.abs((d.metric - model) / model));
         })
         .on('mouseover', function (event, d) {
-          d3.select(this).style('opacity', '0.7');
+          d3.select(this).style('opacity', '0.7').style('cursor', 'pointer');
           div
             .transition()
             .duration(200)
@@ -159,9 +154,16 @@ function SliceBarChart({
       svg
         .append('text')
         .attr('class', 'label')
-        .text('Overall')
+        .text('Model')
         .attr('x', 0)
         .attr('y', y1(model) + 5)
+        .style('fill', 'gray');
+      svg
+        .append('text')
+        .attr('class', 'label')
+        .text(metric)
+        .attr('x', 0)
+        .attr('y', y1(model) + 25)
         .style('fill', 'gray');
     },
     [data, metric]
@@ -181,8 +183,6 @@ function SliceBarChart({
           margin: 'auto',
           display: 'block',
         }}
-        onMouseEnter={forceUpdate}
-        onMouseLeave={forceUpdate}
       >
         <g className='plot-area' />
         <g className='x-axis' />

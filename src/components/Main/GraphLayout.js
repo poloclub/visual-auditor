@@ -8,7 +8,6 @@ import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
 import graphData from '../../data/links.json';
-import linksData from '../../data/links5000.json';
 
 function GraphLayout({
   data,
@@ -23,7 +22,7 @@ function GraphLayout({
   setDetails,
   pointerMode,
 }) {
-  const margin = { top: 20, right: 30, bottom: 50, left: 80 };
+  const margin = { top: 20, right: 30, bottom: 60, left: 80 };
   const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0); // integer state
   function useForceUpdate() {
@@ -32,7 +31,7 @@ function GraphLayout({
   const forceUpdate = useForceUpdate();
 
   const width = 800;
-  const height = 700;
+  const height = 710;
 
   const features = [];
 
@@ -337,9 +336,9 @@ function GraphLayout({
 
       svg.select('.x-axis').call(xAxis);
       if (degree >= 2) {
-        svg.append('g').attr('class', 'y-axis').call(yAxis);
+        svg.select('.y-axis').call(yAxis).style('opacity', '1');
       } else {
-        svg.selectAll('.y-axis').remove();
+        svg.select('.y-axis').style('opacity', '0');
       }
     },
     [data, value]
