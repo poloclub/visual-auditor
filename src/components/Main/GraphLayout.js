@@ -100,6 +100,31 @@ function GraphLayout({
       .selectAll('text')
       .style('text-anchor', 'end');
 
+  const xAxisGrid = (g) =>
+    g
+      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .call(
+        d3
+          .axisBottom(x)
+          .tickSizeOuter(0)
+          .tickSizeInner(-height - margin.top + 2 * margin.bottom)
+      )
+      .style('opacity', 0.1)
+      .selectAll('text')
+      .style('display', 'none');
+  const yAxisGrid = (g) =>
+    g
+      .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
+      .call(
+        d3
+          .axisLeft(x)
+          .tickSizeOuter(0)
+          .tickSizeInner(-width - margin.right + 2 * margin.left)
+      )
+      .style('opacity', 0.1)
+      .selectAll('text')
+      .style('display', 'none');
+
   const nodes = data.map((obj) => {
     return {
       radius: radiusType === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
@@ -336,6 +361,8 @@ function GraphLayout({
         simulation.alpha(1).restart();
       }
 
+      svg.select('.x-axis-grid').call(xAxisGrid);
+      svg.select('.y-axis-grid').call(yAxisGrid);
       svg.select('.x-axis').call(xAxis);
       if (degree >= 2) {
         svg.select('.y-axis').call(yAxis).style('opacity', '1');
@@ -361,6 +388,8 @@ function GraphLayout({
         <g transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
+        <g className='x-axis-grid' />
+        <g className='y-axis-grid' />
       </svg>
       <br />
       <Button

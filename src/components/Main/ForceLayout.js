@@ -55,6 +55,31 @@ function ForceLayout({
       .selectAll('text')
       .style('text-anchor', 'end');
 
+  const xAxisGrid = (g) =>
+    g
+      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .call(
+        d3
+          .axisBottom(x)
+          .tickSizeOuter(0)
+          .tickSizeInner(-height - margin.top + 2 * margin.bottom)
+      )
+      .style('opacity', 0.1)
+      .selectAll('text')
+      .style('display', 'none');
+  const yAxisGrid = (g) =>
+    g
+      .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
+      .call(
+        d3
+          .axisLeft(x)
+          .tickSizeOuter(0)
+          .tickSizeInner(-width - margin.right + 2 * margin.left)
+      )
+      .style('opacity', 0.1)
+      .selectAll('text')
+      .style('display', 'none');
+
   const ref = useD3(
     (svg) => {
       let div = d3
@@ -192,6 +217,8 @@ function ForceLayout({
           });
       }
 
+      d3.select('.x-axis-grid').call(xAxisGrid);
+      d3.select('.y-axis-grid').call(yAxisGrid);
       d3.select('.x-axis').call(xAxis);
       if (degree >= 2) {
         d3.select('.y-axis').call(yAxis).style('opacity', '1');
@@ -214,6 +241,8 @@ function ForceLayout({
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
+        <g className='x-axis-grid' />
+        <g className='y-axis-grid' />
       </svg>
     </div>
   );
