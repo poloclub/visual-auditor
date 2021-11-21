@@ -8,6 +8,7 @@ import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
 import commonSamples from '../../data/commonSamples.json';
+import reverseCommonSamples from '../../data/reverseCommonSamples.json';
 
 function GraphLayout({
   data,
@@ -35,11 +36,17 @@ function GraphLayout({
   const features = [];
 
   let samples;
+  let matches = {};
 
   switch (metric) {
     case 'Log Loss':
-      if (overperforming) samples = reverseLogLossSamples;
-      else samples = logLossSamples;
+      if (overperforming) {
+        samples = reverseLogLossSamples;
+        matches = reverseCommonSamples;
+      } else {
+        samples = logLossSamples;
+        matches = commonSamples;
+      }
       break;
     case 'Accuracy':
       if (overperforming) samples = accuracySamples;
@@ -150,7 +157,7 @@ function GraphLayout({
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      const count = commonSamples[nodes[i].slice + '-' + nodes[j].slice];
+      const count = matches[nodes[i].slice + '-' + nodes[j].slice];
       // const count = countCommonSamples(nodes[i].slice, nodes[j].slice);
       // common[nodes[i].slice + '-' + nodes[j].slice] = count;
       // common[nodes[j].slice + '-' + nodes[i].slice] = count;
@@ -168,15 +175,13 @@ function GraphLayout({
 
   // console.log(JSON.stringify(common));
 
-  // const links = linksData;
+  // const links = [];
   // console.log(JSON.stringify(links));
 
   const graph = {
     nodes: nodes,
     links: links,
   };
-
-  console.log(graph.links);
 
   function clamp(x, lo, hi) {
     return x < lo ? lo : x > hi ? hi : x;
