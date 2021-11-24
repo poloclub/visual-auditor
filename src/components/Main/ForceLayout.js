@@ -217,11 +217,11 @@ function ForceLayout({
 
       const vertices = nodes.map((d) => [d.x + 100, d.y + 100]);
 
-      d3.select('.hull')
-        .datum(vertices)
-        .attr('d', function (d) {
-          return 'M' + d.join('L') + 'Z';
-        });
+      // d3.select('.hull')
+      //   .datum(vertices)
+      //   .attr('d', function (d) {
+      //     return 'M' + d.join('L') + 'Z';
+      //   });
 
       // redraw();
 
