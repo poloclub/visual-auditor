@@ -26,7 +26,7 @@ const Main = ({
   edgeFiltering,
   edgeForce,
   setDetails,
-  pointerMode,
+  cursorMode,
 }) => {
   let data;
   let reversedata;
@@ -207,7 +207,7 @@ const Main = ({
           edgeFiltering={edgeFiltering}
           edgeForce={edgeForce}
           setDetails={setDetails}
-          pointerMode={pointerMode}
+          cursorMode={cursorMode}
         />
       )}
     </div>

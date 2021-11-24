@@ -20,7 +20,7 @@ function GraphLayout({
   edgeFiltering,
   edgeForce,
   setDetails,
-  pointerMode,
+  cursorMode,
 }) {
   const margin = { top: 20, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
@@ -214,7 +214,17 @@ function GraphLayout({
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
         .on('mouseover', function (event, d) {
-          d3.select(this).attr('r', d.radius).style('opacity', '0.7');
+          cursorMode === 'select'
+            ? d3
+                .select(this)
+                .attr('r', d.radius)
+                .style('opacity', '0.7')
+                .style('cursor', 'pointer')
+            : d3
+                .select(this)
+                .attr('r', d.radius)
+                .style('opacity', '0.7')
+                .style('cursor', 'grab');
           d3.select('.tooltip')
             .transition()
             .duration(200)
@@ -288,20 +298,13 @@ function GraphLayout({
           })
         )
         .on('tick', tick);
-      if (pointerMode === 'drag') {
+      if (cursorMode === 'drag') {
         const drag = d3.drag().on('start', dragstart).on('drag', dragged);
 
         node.call(drag).on('click', click);
       }
 
       function tick() {
-        // d3.selectAll('.link').remove();
-        // console.log(links);
-        // d3.selectAll('.link')
-        //   .attr('class', 'link')
-        //   .data(links)
-        //   .join('line')
-        //   .classed('link', true);
         link
           .attr('x1', (d) =>
             Math.max(Math.min(d.source.x, width), d.source.radius + 100)
@@ -326,7 +329,7 @@ function GraphLayout({
           .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius));
       }
       function click(event, d) {
-        if (pointerMode === 'select') {
+        if (cursorMode === 'select') {
           setSelected(d.slice);
           setDetails({
             slice: d.slice,

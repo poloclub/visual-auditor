@@ -33,6 +33,8 @@ const LeftDrawer = ({
   setEdgeFiltering,
   edgeForce,
   setEdgeForce,
+  cursorMode,
+  setCursorMode,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
@@ -134,6 +136,18 @@ const LeftDrawer = ({
               size='small'
               onChange={(event) => setEdgeForce(event.target.value)}
             />
+            <h2>Cursor Mode:</h2>
+            <FormControl sx={{ s: 1, minWidth: 175 }}>
+              <InputLabel>Mode:</InputLabel>
+              <Select
+                value={cursorMode}
+                label='Mode'
+                onChange={(event) => setCursorMode(event.target.value)}
+              >
+                <MenuItem value={'drag'}>Drag</MenuItem>
+                <MenuItem value={'select'}>Select</MenuItem>
+              </Select>
+            </FormControl>
           </>
         )}
         <h2>Fairness Metric:</h2>

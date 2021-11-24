@@ -1,6 +1,7 @@
 import { useD3 } from '../../hooks/useD3';
 import React from 'react';
 import * as d3 from 'd3';
+import './ForceLayout.css';
 
 function ForceLayout({
   data,
@@ -105,8 +106,6 @@ function ForceLayout({
           metric: obj.metric,
         };
       });
-
-      console.log(nodes);
 
       const simulation = d3
         .forceSimulation(nodes)
@@ -216,6 +215,22 @@ function ForceLayout({
           });
       }
 
+      const vertices = nodes.map((d) => [d.x + 100, d.y + 100]);
+
+      d3.select('.hull')
+        .datum(vertices)
+        .attr('d', function (d) {
+          return 'M' + d.join('L') + 'Z';
+        });
+
+      // redraw();
+
+      // function redraw() {
+      //   hull.datum(d3.polygonHull(vertices.slice(10))).attr('d', function (d) {
+      //     return 'M' + d.join('L') + 'Z';
+      //   });
+      // }
+
       d3.select('.x-axis-grid').call(xAxisGrid);
       d3.select('.y-axis-grid').call(yAxisGrid);
       d3.select('.x-axis').call(xAxis);
@@ -242,6 +257,7 @@ function ForceLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
+        <path className='hull' />
       </svg>
     </div>
   );

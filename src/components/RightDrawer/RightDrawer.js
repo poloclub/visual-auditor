@@ -3,7 +3,6 @@ import Drawer from '@mui/material/Drawer';
 import './RightDrawer.css';
 
 const RightDrawer = ({ details, metric }) => {
-  console.log(details?.similarSlices);
   return (
     <Drawer
       sx={{

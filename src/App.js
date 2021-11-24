@@ -15,7 +15,7 @@ function App() {
   const [edgeFiltering, setEdgeFiltering] = React.useState(100);
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
-  const [pointerMode, setPointerMode] = React.useState('drag');
+  const [cursorMode, setCursorMode] = React.useState('drag');
   const [features, setFeatures] = React.useState([
     'Age',
     'Workclass',
@@ -56,6 +56,8 @@ function App() {
         setEdgeFiltering={setEdgeFiltering}
         edgeForce={edgeForce}
         setEdgeForce={setEdgeForce}
+        cursorMode={cursorMode}
+        setCursorMode={setCursorMode}
       />
       <RightDrawer details={details} metric={metric} />
       <Main
@@ -70,7 +72,7 @@ function App() {
         edgeFiltering={edgeFiltering}
         edgeForce={edgeForce}
         setDetails={setDetails}
-        pointerMode={pointerMode}
+        cursorMode={cursorMode}
       />
     </div>
   );
