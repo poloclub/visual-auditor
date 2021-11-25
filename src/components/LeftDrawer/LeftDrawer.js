@@ -94,7 +94,7 @@ const LeftDrawer = ({
           step={1}
           marks
           min={1}
-          max={3}
+          max={4}
           size='small'
           onChange={handleFeaturesChange}
         />

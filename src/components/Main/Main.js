@@ -1,6 +1,9 @@
 import React from 'react';
 import SliceBarChart from './SliceBarChart';
 import './Main.css';
+import ForceLayout from './ForceLayout';
+import GraphLayout from './GraphLayout';
+
 import logloss from '../../data/logloss.json';
 import accuracy from '../../data/accuracy.json';
 import precision from '../../data/precision.json';
@@ -11,8 +14,7 @@ import reverseaccuracy from '../../data/reverseaccuracy.json';
 import reverseprecision from '../../data/reverseprecision.json';
 import reverserecall from '../../data/reverserecall.json';
 import reversef1 from '../../data/reversef1.json';
-import ForceLayout from './ForceLayout';
-import GraphLayout from './GraphLayout';
+import logloss_sliceline from '../../data/logloss_sliceline.json';
 
 const Main = ({
   numFeatures,
@@ -27,6 +29,7 @@ const Main = ({
   edgeForce,
   setDetails,
   cursorMode,
+  algorithm,
 }) => {
   let data;
   let reversedata;
@@ -90,13 +93,18 @@ const Main = ({
   } else {
     switch (metric) {
       case 'Log Loss':
-        data = Object.values(logloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
+        data = Object.values(
+          algorithm === 'slicefinder'
+            ? logloss['data']
+            : logloss_sliceline['data']
+        ).map((obj) => Object.values(obj)[0]);
         reversedata = Object.values(reverselogloss['data']).map(
           (obj) => Object.values(obj)[0]
         );
-        modelMetric = logloss['model'];
+        modelMetric =
+          algorithm === 'slicefinder'
+            ? logloss['model']
+            : logloss_sliceline['model'];
         break;
       case 'Accuracy':
         data = Object.values(accuracy['data']).map(
@@ -168,6 +176,7 @@ const Main = ({
         return a.metric - b.metric;
       }
     });
+  console.log(filteredData);
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
   } else {

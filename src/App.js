@@ -5,6 +5,7 @@ import RightDrawer from './components/RightDrawer/RightDrawer';
 import Main from './components/Main/Main';
 
 function App() {
+  const [algorithm, setAlgorithm] = React.useState('slicefinder');
   const [numFeatures, setNumFeatures] = React.useState(2);
   const [sampleSize, setSampleSize] = React.useState(0);
   const [metric, setMetric] = React.useState('Log Loss');
@@ -35,7 +36,12 @@ function App() {
 
   return (
     <div className='App'>
-      <Nav view={view} setView={setView} />
+      <Nav
+        view={view}
+        setView={setView}
+        algorithm={algorithm}
+        setAlgorithm={setAlgorithm}
+      />
       <LeftDrawer
         numFeatures={numFeatures}
         setNumFeatures={setNumFeatures}
@@ -73,6 +79,7 @@ function App() {
         edgeForce={edgeForce}
         setDetails={setDetails}
         cursorMode={cursorMode}
+        algorithm={algorithm}
       />
     </div>
   );
