@@ -330,11 +330,14 @@ function GraphLayout({
               Math.pow(d.count / 2000, 2) * edgeForce,
               Math.pow(d.count / 2000, 2) * 3
             )
-          );
+          )
+          .style('visibility', 'visible');
         node
           .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100))
-          .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius));
+          .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius))
+          .style('visibility', 'visible');
       }
+
       function click(event, d) {
         if (cursorMode === 'select') {
           setSelected(d.slice);
@@ -359,6 +362,7 @@ function GraphLayout({
               })
               .filter((link) => link !== undefined),
           });
+          simulation.alpha(1).restart();
         } else {
           delete d.fx;
           delete d.fy;
