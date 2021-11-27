@@ -330,12 +330,10 @@ function GraphLayout({
               Math.pow(d.count / 2000, 2) * edgeForce,
               Math.pow(d.count / 2000, 2) * 3
             )
-          )
-          .style('visibility', 'visible');
+          );
         node
           .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100))
-          .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius))
-          .style('visibility', 'visible');
+          .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius));
       }
 
       function click(event, d) {
