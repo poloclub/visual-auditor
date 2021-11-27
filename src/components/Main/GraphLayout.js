@@ -8,6 +8,7 @@ import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
 import commonSamples from '../../data/commonSamples.json';
+import commonSamplesSliceline from '../../data/commonSamplesSliceline.json'
 import reverseCommonSamples from '../../data/reverseCommonSamples.json';
 
 function GraphLayout({
@@ -21,6 +22,7 @@ function GraphLayout({
   edgeForce,
   setDetails,
   cursorMode,
+  algorithm
 }) {
   const margin = { top: 30, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
@@ -44,8 +46,13 @@ function GraphLayout({
         samples = reverseLogLossSamples;
         matches = reverseCommonSamples;
       } else {
+        if (algorithm === 'sliceline') {
+          matches = commonSamplesSliceline;
+        }
+        else {
+          matches = commonSamples;
+        }
         samples = logLossSamples;
-        matches = commonSamples;
       }
       break;
     case 'Accuracy':
@@ -158,7 +165,7 @@ function GraphLayout({
   }
 
   let links = [];
-  // let common = {};
+  let common = {};
 
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {

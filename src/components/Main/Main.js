@@ -217,6 +217,7 @@ const Main = ({
           edgeForce={edgeForce}
           setDetails={setDetails}
           cursorMode={cursorMode}
+          algorithm={algorithm}
         />
       )}
     </div>
