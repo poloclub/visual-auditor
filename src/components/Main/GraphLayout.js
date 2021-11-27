@@ -22,7 +22,7 @@ function GraphLayout({
   setDetails,
   cursorMode,
 }) {
-  const margin = { top: 20, right: 30, bottom: 60, left: 85 };
+  const margin = { top: 30, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0);
   function useForceUpdate() {
@@ -80,9 +80,14 @@ function GraphLayout({
   const xCenter = [];
   const yCenter = [];
 
+  const xTickDistance =
+    (width - margin.left - margin.right) / (features.length + 1);
+  const yTickDistance =
+    (width - margin.top - margin.bottom) / (features.length + 1);
+
   for (let i = 0; i < features.length; i++) {
-    xCenter.push(((width - 150) / features.length) * i + 100);
-    yCenter.push(((height - 175) / features.length) * i + 100);
+    xCenter.push(margin.left + (i + 1) * xTickDistance);
+    yCenter.push(margin.top + (i + 1) * yTickDistance);
   }
 
   const x = d3
@@ -272,6 +277,8 @@ function GraphLayout({
         .force(
           'x',
           d3.forceX().x(function (d) {
+            console.log(features);
+            console.log(xCenter);
             return xCenter[features.indexOf(d.xFeature)];
           })
         )
@@ -281,7 +288,7 @@ function GraphLayout({
             if (degree > 1) {
               return yCenter[features.indexOf(d.yFeature)];
             } else {
-              return height / 4;
+              return height / 2;
             }
           })
         )
