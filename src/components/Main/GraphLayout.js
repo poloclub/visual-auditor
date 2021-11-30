@@ -28,6 +28,7 @@ function GraphLayout({
   const margin = { top: 30, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0);
+  const hulls = Array.from(Array(100).keys());
   function useForceUpdate() {
     return () => setValue((value) => value + 1); // update the state to force render
   }
@@ -444,7 +445,7 @@ function GraphLayout({
       }
       if (showConvexHull) {
         setTimeout(() => {
-          d3.selectAll(`.hull${Math.min(degree, 2)}`)
+          d3.select(`.hull`)
             .call(convexHull)
             .style('opacity', '0')
             .transition()
@@ -452,10 +453,8 @@ function GraphLayout({
             .style('opacity', '0.5');
         }, 4000);
       } else {
-        d3.selectAll(`.hull${Math.min(degree, 2)}`)
-          .transition()
-          .duration(0)
-          .style('opacity', '0');
+        d3.select(`.hull`).remove();
+        d3.selectAll(`.hull`).transition().duration(0).style('opacity', '0');
       }
     },
     [data, value]
@@ -478,8 +477,9 @@ function GraphLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        <g className='hull1' />
-        <g className='hull2' />
+        {hulls.map((hull) => (
+          <g className={'hull'} key={hull} />
+        ))}
       </svg>
       <br />
       <Button
