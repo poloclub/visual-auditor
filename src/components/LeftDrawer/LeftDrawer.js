@@ -38,6 +38,7 @@ const LeftDrawer = ({
   showConvexHull,
   setShowConvexHull,
 }) => {
+  const [switchDisabled, setSwitchDisabled] = React.useState(false);
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
     setShowConvexHull(false);
@@ -45,18 +46,22 @@ const LeftDrawer = ({
 
   const handleSizeChange = (event) => {
     setSampleSize(event.target.value);
+    setShowConvexHull(false);
   };
 
   const handleMetricChange = (event) => {
     setMetric(event.target.value);
+    setShowConvexHull(false);
   };
 
   const handleSortByChange = (event) => {
     setSortBy(event.target.value);
+    setShowConvexHull(false);
   };
 
   const handleSwitchChange = (event) => {
     setOverperforming(event.target.checked);
+    setShowConvexHull(false);
   };
 
   const handleCheckboxChange = (event, label) => {
@@ -65,6 +70,7 @@ const LeftDrawer = ({
     } else {
       setFeatures(features.filter((feature) => feature !== label));
     }
+    setShowConvexHull(false);
   };
 
   const handleReset = (event) => {
@@ -126,7 +132,10 @@ const LeftDrawer = ({
               min={0}
               max={1000}
               size='small'
-              onChange={(event) => setEdgeFiltering(event.target.value)}
+              onChange={(event) => {
+                setEdgeFiltering(event.target.value);
+                setShowConvexHull(false);
+              }}
             />
             <h2>Edge Force Strength:</h2>
             <Slider
@@ -138,7 +147,10 @@ const LeftDrawer = ({
               min={0}
               max={5}
               size='small'
-              onChange={(event) => setEdgeForce(event.target.value)}
+              onChange={(event) => {
+                setEdgeForce(event.target.value);
+                setShowConvexHull(false);
+              }}
             />
             <h2>Cursor Mode:</h2>
             <FormControl sx={{ s: 1, minWidth: 175 }}>
@@ -146,7 +158,10 @@ const LeftDrawer = ({
               <Select
                 value={cursorMode}
                 label='Mode'
-                onChange={(event) => setCursorMode(event.target.value)}
+                onChange={(event) => {
+                  setCursorMode(event.target.value);
+                  setShowConvexHull(false);
+                }}
               >
                 <MenuItem value={'drag'}>Drag</MenuItem>
                 <MenuItem value={'select'}>Select</MenuItem>
@@ -154,7 +169,7 @@ const LeftDrawer = ({
             </FormControl>
           </>
         )}
-        <h2>Fairness Metric:</h2>
+        {/* <h2>Fairness Metric:</h2>
         <FormControl sx={{ m: 1, minWidth: 175 }}>
           <InputLabel id='demo-simple-select-helper-label'>Metric</InputLabel>
           <Select
@@ -170,7 +185,7 @@ const LeftDrawer = ({
             <MenuItem value={'Recall'}>Recall</MenuItem>
             <MenuItem value={'F1'}>F1</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
         {view === 'bar' ? (
           <>
             <h2>Order By:</h2>
@@ -198,7 +213,10 @@ const LeftDrawer = ({
               <Select
                 value={radius}
                 label='Radius'
-                onChange={(event) => setRadius(event.target.value)}
+                onChange={(event) => {
+                  setRadius(event.target.value);
+                  setShowConvexHull(false);
+                }}
               >
                 <MenuItem value={'log'}>Log</MenuItem>
                 <MenuItem value={'sqrt'}>Square Root</MenuItem>
@@ -207,8 +225,17 @@ const LeftDrawer = ({
             <h2>Show Convex Hull:</h2>
             <Switch
               checked={showConvexHull}
-              onChange={(event) => setShowConvexHull(event.target.checked)}
+              onChange={(event) => {
+                if (event.target.checked) {
+                  setSwitchDisabled(true);
+                  setTimeout(() => {
+                    setSwitchDisabled(false);
+                  }, 4000);
+                }
+                setShowConvexHull(event.target.checked);
+              }}
               label='Show Convex Hull'
+              disabled={switchDisabled}
             />
           </>
         )}

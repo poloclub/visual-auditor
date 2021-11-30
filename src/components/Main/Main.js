@@ -220,6 +220,7 @@ const Main = ({
           setDetails={setDetails}
           cursorMode={cursorMode}
           algorithm={algorithm}
+          showConvexHull={showConvexHull}
         />
       )}
     </div>

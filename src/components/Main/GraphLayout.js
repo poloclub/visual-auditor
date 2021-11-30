@@ -8,7 +8,7 @@ import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import accuracySamples from '../../data/accuracysamples.json';
 import precisionSamples from '../../data/precisionsamples.json';
 import commonSamples from '../../data/commonSamples.json';
-import commonSamplesSliceline from '../../data/commonSamplesSliceline.json'
+import commonSamplesSliceline from '../../data/commonSamplesSliceline.json';
 import reverseCommonSamples from '../../data/reverseCommonSamples.json';
 
 function GraphLayout({
@@ -22,7 +22,8 @@ function GraphLayout({
   edgeForce,
   setDetails,
   cursorMode,
-  algorithm
+  algorithm,
+  showConvexHull,
 }) {
   const margin = { top: 30, right: 30, bottom: 60, left: 85 };
   const [selected, setSelected] = React.useState(null);
@@ -36,6 +37,7 @@ function GraphLayout({
   const height = 800;
 
   const features = [];
+  const groupings = {};
 
   let samples;
   let matches = {};
@@ -48,8 +50,7 @@ function GraphLayout({
       } else {
         if (algorithm === 'sliceline') {
           matches = commonSamplesSliceline;
-        }
-        else {
+        } else {
           matches = commonSamples;
         }
         samples = logLossSamples;
@@ -76,6 +77,11 @@ function GraphLayout({
       let temp = str.substring(0, str.indexOf(':'));
       obj.classifiers.push(temp);
       if (!features.includes(temp)) features.push(temp);
+      if (degree === obj.classifiers.length) {
+        if (groupings[obj.classifiers.join(', ')])
+          groupings[obj.classifiers.join(', ')]++;
+        else groupings[obj.classifiers.join(', ')] = 1;
+      }
       if (str.indexOf(',') !== -1) {
         str = str.substring(str.indexOf(',') + 2);
       } else {
@@ -84,17 +90,23 @@ function GraphLayout({
     }
   });
 
+  const groupingsArray = Object.keys(groupings)
+    .map((key) => [key, groupings[key]])
+    .sort((a, b) => b[1] - a[1]);
+
+  const topGroupings = groupingsArray.slice(0, 5);
+
   const xCenter = [];
   const yCenter = [];
 
   const xTickDistance =
     (width - margin.left - margin.right) / (features.length + 1);
   const yTickDistance =
-    (width - margin.top - margin.bottom) / (features.length + 1);
+    (height - margin.top - margin.bottom) / (features.length + 2);
 
   for (let i = 0; i < features.length; i++) {
     xCenter.push(margin.left + (i + 1) * xTickDistance);
-    yCenter.push(margin.top + (i + 1) * yTickDistance);
+    yCenter.push(2 * margin.top + (i + 1) * yTickDistance);
   }
 
   const x = d3
@@ -392,6 +404,36 @@ function GraphLayout({
         simulation.alpha(1).restart();
       }
 
+      const convexHull = (g) => {
+        const colors = ['blue', 'green', 'yellow', 'black', 'purple'];
+        let vertices = [];
+
+        for (let i = 0; i < topGroupings.length; i++) {
+          vertices = [];
+          for (let j = 0; j < nodes.length; j++) {
+            if (
+              nodes[j].xFeature === topGroupings[i][0].split(', ')[0] &&
+              (degree < 2 ||
+                nodes[j].yFeature === topGroupings[i][0].split(', ')[1])
+            ) {
+              if (degree < 2) {
+                vertices.push([nodes[j].x, height / 2]);
+              } else {
+                vertices.push([nodes[j].x, nodes[j].y]);
+              }
+            }
+          }
+          const hull = d3.polygonHull(vertices);
+          const line = d3.line().curve(d3.curveLinearClosed);
+          if (!hull || !showConvexHull) return;
+          g.append('path')
+            .attr('class', `path${degree}`)
+            .attr('d', line(hull))
+            .attr('fill', colors[i])
+            .attr('stroke', colors[i]);
+        }
+      };
+
       svg.select('.x-axis-grid').call(xAxisGrid);
       svg.select('.y-axis-grid').call(yAxisGrid);
       svg.select('.x-axis').call(xAxis);
@@ -399,6 +441,21 @@ function GraphLayout({
         svg.select('.y-axis').call(yAxis).style('opacity', '1');
       } else {
         svg.select('.y-axis').style('opacity', '0');
+      }
+      if (showConvexHull) {
+        setTimeout(() => {
+          d3.selectAll(`.hull${Math.min(degree, 2)}`)
+            .call(convexHull)
+            .style('opacity', '0')
+            .transition()
+            .duration(500)
+            .style('opacity', '0.5');
+        }, 4000);
+      } else {
+        d3.selectAll(`.hull${Math.min(degree, 2)}`)
+          .transition()
+          .duration(0)
+          .style('opacity', '0');
       }
     },
     [data, value]
@@ -421,6 +478,8 @@ function GraphLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
+        <g className='hull1' />
+        <g className='hull2' />
       </svg>
       <br />
       <Button

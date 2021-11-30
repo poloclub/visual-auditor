@@ -232,24 +232,40 @@ function ForceLayout({
 
       const convexHull = (g) => {
         const colors = ['blue', 'green', 'yellow', 'black', 'purple'];
+        let vertices = [];
 
         for (let i = 0; i < topGroupings.length; i++) {
-          const groupX =
-            xCenter[features.indexOf(topGroupings[i][0].split(', ')[0])] + 25;
-          const groupY =
-            degree < 2
-              ? height / 2
-              : (yCenter[features.indexOf(topGroupings[i][0].split(', ')[1])] +
-                  175) *
-                1.075;
-          const vertices = [
-            [groupX - 25, groupY - 25],
-            [groupX + 25, groupY - 25],
-            [groupX + 25, groupY + 25],
-            [groupX - 25, groupY + 25],
-          ];
+          vertices = [];
+          for (let j = 0; j < nodes.length; j++) {
+            if (
+              nodes[j].xFeature === topGroupings[i][0].split(', ')[0] &&
+              (degree < 2 ||
+                nodes[j].yFeature === topGroupings[i][0].split(', ')[1])
+            ) {
+              if (degree < 2) {
+                vertices.push([nodes[j].x, height / 2]);
+              } else {
+                vertices.push([nodes[j].x + 50, nodes[j].y + 200]);
+              }
+            }
+          }
+          // const groupX =
+          //   xCenter[features.indexOf(topGroupings[i][0].split(', ')[0])] + 25;
+          // const groupY =
+          //   degree < 2
+          //     ? height / 2
+          //     : (yCenter[features.indexOf(topGroupings[i][0].split(', ')[1])] +
+          //         175) *
+          //       1.075;
+          // const vertices = [
+          //   [groupX - 25, groupY - 25],
+          //   [groupX + 25, groupY - 25],
+          //   [groupX + 25, groupY + 25],
+          //   [groupX - 25, groupY + 25],
+          // ];
           const hull = d3.polygonHull(vertices);
-          const line = d3.line().curve(d3.curveCardinalClosed);
+          const line = d3.line().curve(d3.curveLinearClosed);
+          if (!hull || !showConvexHull) return;
           g.append('path')
             .attr('class', `path${degree}`)
             .attr('d', line(hull))
@@ -267,16 +283,18 @@ function ForceLayout({
         d3.select('.y-axis').style('opacity', '0');
       }
       if (showConvexHull) {
-        d3.select(`.hull${Math.min(degree, 2)}`)
-          .call(convexHull)
-          .style('opacity', '0')
-          .transition()
-          .duration(500)
-          .style('opacity', '0.5');
+        setTimeout(() => {
+          d3.select(`.hull${Math.min(degree, 2)}`)
+            .call(convexHull)
+            .style('opacity', '0')
+            .transition()
+            .duration(500)
+            .style('opacity', '0.5');
+        }, 1000);
       } else {
         d3.selectAll(`.hull${Math.min(degree, 2)}`)
           .transition()
-          .duration(200)
+          .duration(0)
           .style('opacity', '0');
       }
     },
