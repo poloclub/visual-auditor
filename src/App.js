@@ -33,6 +33,7 @@ function App() {
     'Country',
   ]);
   const [details, setDetails] = React.useState(null);
+  const [showConvexHull, setShowConvexHull] = React.useState(false);
 
   return (
     <div className='App'>
@@ -64,6 +65,8 @@ function App() {
         setEdgeForce={setEdgeForce}
         cursorMode={cursorMode}
         setCursorMode={setCursorMode}
+        showConvexHull={showConvexHull}
+        setShowConvexHull={setShowConvexHull}
       />
       <RightDrawer details={details} metric={metric} />
       <Main
@@ -80,6 +83,7 @@ function App() {
         setDetails={setDetails}
         cursorMode={cursorMode}
         algorithm={algorithm}
+        showConvexHull={showConvexHull}
       />
     </div>
   );

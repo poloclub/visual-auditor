@@ -35,9 +35,12 @@ const LeftDrawer = ({
   setEdgeForce,
   cursorMode,
   setCursorMode,
+  showConvexHull,
+  setShowConvexHull,
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
+    setShowConvexHull(false);
   };
 
   const handleSizeChange = (event) => {
@@ -72,6 +75,7 @@ const LeftDrawer = ({
     setOverperforming(false);
     setEdgeFiltering(300);
     setEdgeForce(1);
+    setShowConvexHull(false);
   };
 
   return (
@@ -200,6 +204,12 @@ const LeftDrawer = ({
                 <MenuItem value={'sqrt'}>Square Root</MenuItem>
               </Select>
             </FormControl>
+            <h2>Show Convex Hull:</h2>
+            <Switch
+              checked={showConvexHull}
+              onChange={(event) => setShowConvexHull(event.target.checked)}
+              label='Show Convex Hull'
+            />
           </>
         )}
         <h2>Overperforming Slices:</h2>

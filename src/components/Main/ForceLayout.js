@@ -12,6 +12,7 @@ function ForceLayout({
   overperforming,
   setDetails,
   radius,
+  showConvexHull,
 }) {
   const [selected, setSelected] = React.useState(null);
   const margin = { top: 20, right: 30, bottom: 70, left: 85 };
@@ -242,14 +243,15 @@ function ForceLayout({
                   175) *
                 1.075;
           const vertices = [
-            [groupX - 20, groupY - 20],
-            [groupX + 20, groupY - 20],
-            [groupX + 20, groupY + 20],
-            [groupX - 20, groupY + 20],
+            [groupX - 25, groupY - 25],
+            [groupX + 25, groupY - 25],
+            [groupX + 25, groupY + 25],
+            [groupX - 25, groupY + 25],
           ];
           const hull = d3.polygonHull(vertices);
-          const line = d3.line().curve(d3.curveLinearClosed);
+          const line = d3.line().curve(d3.curveCardinalClosed);
           g.append('path')
+            .attr('class', `path${degree}`)
             .attr('d', line(hull))
             .attr('fill', colors[i])
             .attr('stroke', colors[i]);
@@ -258,12 +260,24 @@ function ForceLayout({
 
       d3.select('.x-axis-grid').call(xAxisGrid);
       d3.select('.y-axis-grid').call(yAxisGrid);
-      d3.select('.hull').call(convexHull).style('opacity', '0.5');
       d3.select('.x-axis').call(xAxis);
       if (degree >= 2) {
         d3.select('.y-axis').call(yAxis).style('opacity', '1');
       } else {
         d3.select('.y-axis').style('opacity', '0');
+      }
+      if (showConvexHull) {
+        d3.select(`.hull${Math.min(degree, 2)}`)
+          .call(convexHull)
+          .style('opacity', '0')
+          .transition()
+          .duration(500)
+          .style('opacity', '0.5');
+      } else {
+        d3.selectAll(`.hull${Math.min(degree, 2)}`)
+          .transition()
+          .duration(200)
+          .style('opacity', '0');
       }
     },
     [data, view]
@@ -283,7 +297,8 @@ function ForceLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        <g className='hull' />
+        <g className='hull1' />
+        <g className='hull2' />
       </svg>
     </div>
   );
