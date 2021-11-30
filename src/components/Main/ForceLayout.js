@@ -19,6 +19,8 @@ function ForceLayout({
   const height = 800;
 
   const features = [];
+  const groupings = {};
+
   data.forEach((obj) => {
     obj.classifiers = [];
     let str = obj.slice;
@@ -26,6 +28,11 @@ function ForceLayout({
       let temp = str.substring(0, str.indexOf(':'));
       obj.classifiers.push(temp);
       if (!features.includes(temp)) features.push(temp);
+      if (degree === obj.classifiers.length) {
+        if (groupings[obj.classifiers.join(', ')])
+          groupings[obj.classifiers.join(', ')]++;
+        else groupings[obj.classifiers.join(', ')] = 1;
+      }
       if (str.indexOf(',') !== -1) {
         str = str.substring(str.indexOf(',') + 2);
       } else {
@@ -33,6 +40,12 @@ function ForceLayout({
       }
     }
   });
+
+  const groupingsArray = Object.keys(groupings)
+    .map((key) => [key, groupings[key]])
+    .sort((a, b) => b[1] - a[1]);
+
+  const topGroupings = groupingsArray.slice(0, 5);
 
   const x = d3
     .scaleBand()
@@ -67,6 +80,7 @@ function ForceLayout({
       .style('opacity', 0.1)
       .selectAll('text')
       .style('display', 'none');
+
   const yAxisGrid = (g) =>
     g
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
@@ -215,24 +229,36 @@ function ForceLayout({
           });
       }
 
-      const vertices = nodes.map((d) => [d.x + 100, d.y + 100]);
+      const convexHull = (g) => {
+        const colors = ['blue', 'green', 'yellow', 'black', 'purple'];
 
-      // d3.select('.hull')
-      //   .datum(vertices)
-      //   .attr('d', function (d) {
-      //     return 'M' + d.join('L') + 'Z';
-      //   });
-
-      // redraw();
-
-      // function redraw() {
-      //   hull.datum(d3.polygonHull(vertices.slice(10))).attr('d', function (d) {
-      //     return 'M' + d.join('L') + 'Z';
-      //   });
-      // }
+        for (let i = 0; i < topGroupings.length; i++) {
+          const groupX =
+            xCenter[features.indexOf(topGroupings[i][0].split(', ')[0])] + 25;
+          const groupY =
+            degree < 2
+              ? height / 2
+              : (yCenter[features.indexOf(topGroupings[i][0].split(', ')[1])] +
+                  175) *
+                1.075;
+          const vertices = [
+            [groupX - 20, groupY - 20],
+            [groupX + 20, groupY - 20],
+            [groupX + 20, groupY + 20],
+            [groupX - 20, groupY + 20],
+          ];
+          const hull = d3.polygonHull(vertices);
+          const line = d3.line().curve(d3.curveLinearClosed);
+          g.append('path')
+            .attr('d', line(hull))
+            .attr('fill', colors[i])
+            .attr('stroke', colors[i]);
+        }
+      };
 
       d3.select('.x-axis-grid').call(xAxisGrid);
       d3.select('.y-axis-grid').call(yAxisGrid);
+      d3.select('.hull').call(convexHull).style('opacity', '0.5');
       d3.select('.x-axis').call(xAxis);
       if (degree >= 2) {
         d3.select('.y-axis').call(yAxis).style('opacity', '1');
@@ -257,7 +283,7 @@ function ForceLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        <path className='hull' />
+        <g className='hull' />
       </svg>
     </div>
   );
