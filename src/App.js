@@ -32,6 +32,7 @@ function App() {
     'Country',
   ]);
   const [details, setDetails] = React.useState(null);
+  const [algorithm, setAlgorithm] = React.useState('SliceFinder');
 
   return (
     <div className='App'>
@@ -58,6 +59,8 @@ function App() {
         setEdgeForce={setEdgeForce}
         cursorMode={cursorMode}
         setCursorMode={setCursorMode}
+        algorithm={algorithm}
+        setAlgorithm={setAlgorithm}
       />
       <RightDrawer details={details} metric={metric} />
       <Main
@@ -73,6 +76,8 @@ function App() {
         edgeForce={edgeForce}
         setDetails={setDetails}
         cursorMode={cursorMode}
+        algorithm={algorithm}
+        setAlgorithm={setAlgorithm}
       />
     </div>
   );

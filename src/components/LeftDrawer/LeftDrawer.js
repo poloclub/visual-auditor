@@ -35,10 +35,16 @@ const LeftDrawer = ({
   setEdgeForce,
   cursorMode,
   setCursorMode,
+  algorithm,
+  setAlgorithm
 }) => {
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
   };
+
+  const handleAlgorithmChange = (event) => {
+    setAlgorithm(event.target.value);
+  }
 
   const handleSizeChange = (event) => {
     setSampleSize(event.target.value);
@@ -85,6 +91,26 @@ const LeftDrawer = ({
     >
       <div className='left-container'>
         <h1>Slice Filters:</h1>
+
+        <h2>Select Algorithm:</h2>
+        <FormControl sx={{ m: 1, minWidth: 175 }}>
+          <InputLabel id='demo-simple-select-helper-label'>Algorithm</InputLabel>
+          <Select
+            labelId='demo-simple-select-helper-label'
+            id='demo-simple-select-helper'
+            value={algorithm}
+            label={algorithm}
+            onChange={handleAlgorithmChange}
+          >
+            <MenuItem value={'SliceFinder'}>SliceFinder</MenuItem>
+            <MenuItem value={'SliceLine'}>SliceLine</MenuItem>
+          </Select>
+        </FormControl>
+
+
+
+
+
         <h2>Number of Features:</h2>
         <Slider
           aria-label='Number of Features'

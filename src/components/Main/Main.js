@@ -10,6 +10,7 @@ import reverselogloss from '../../data/reverselogloss.json';
 import reverseaccuracy from '../../data/reverseaccuracy.json';
 import reverseprecision from '../../data/reverseprecision.json';
 import reverserecall from '../../data/reverserecall.json';
+import slicelineLogLoss from '../../data/logloss_sliceline.json'
 import reversef1 from '../../data/reversef1.json';
 import ForceLayout from './ForceLayout';
 import GraphLayout from './GraphLayout';
@@ -27,11 +28,13 @@ const Main = ({
   edgeForce,
   setDetails,
   cursorMode,
+  algorithm
 }) => {
   let data;
   let reversedata;
   let modelMetric;
-  if (overperforming) {
+
+  if (overperforming && algorithm != "SliceLine") {
     switch (metric) {
       case 'Log Loss':
         data = Object.values(reverselogloss['data']).map(
@@ -87,7 +90,7 @@ const Main = ({
         );
         modelMetric = reverselogloss['model'];
     }
-  } else {
+  } else if (!overperforming && algorithm != "SliceLine") {
     switch (metric) {
       case 'Log Loss':
         data = Object.values(logloss['data']).map(
@@ -141,8 +144,17 @@ const Main = ({
         );
         modelMetric = logloss['model'];
     }
+  } else {
+    // sliceline
+      data = Object.values(slicelineLogLoss['data']).map((obj) => Object.values(obj)[0]);
+      reversedata = Object.values(slicelineLogLoss['data']).map(
+        (obj) => Object.values(obj)[0]
+      );
+      modelMetric = slicelineLogLoss['model'];
   }
   const metricArray = data.map((obj) => obj.metric);
+
+
   const reverseMetricArray = reversedata.map((obj) => obj.metric);
   const max = Math.max(...metricArray, ...reverseMetricArray, modelMetric);
   let filteredData = data
@@ -168,8 +180,11 @@ const Main = ({
         return a.metric - b.metric;
       }
     });
+
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
+
+
   } else {
     filteredData = filteredData.slice(0, 100);
   }
