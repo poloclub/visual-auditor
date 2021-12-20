@@ -1,8 +1,8 @@
 import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import './RightDrawer.css';
-import RedGradient from './RedGradientLarge.png';
-import BlueGradient from './BlueGradientLarge.png';
+import RedGradient from './RedGradient.png';
+import BlueGradient from './BlueGradient.png';
 
 const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
   return (
@@ -22,7 +22,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
       {view === 'bar' ? (
         <div className='right-container'>
           <h1>Legend</h1>
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Bar Color:</strong>
             </p>
@@ -42,7 +42,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
       ) : (
         <div className='right-container'>
           <h1>Legend</h1>
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Node Color:</strong>
             </p>
@@ -58,14 +58,14 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
               paddingLeft: '0.9rem',
             }}
           />
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Node Size:</strong>
             </p>
             <p>Slice Sample Size</p>
           </div>
           {view === 'graph' && (
-            <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+            <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
               <p>
                 <strong>Graph Edges:</strong>
               </p>
@@ -73,7 +73,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
             </div>
           )}
           {convexHull && (
-            <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+            <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
               <p>
                 <strong>Convex Hull:</strong>
               </p>
@@ -90,19 +90,21 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
       ) : (
         <div className='right-container'>
           <h1>Selected Slice</h1>
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Slice Definition:</strong>
             </p>
-            <p>{details?.slice}</p>
+            {details.slice.split(', ').map((feature) => {
+              return <p>{feature}</p>;
+            })}
           </div>
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Slice Size:</strong>
             </p>
             <p> {details?.size} samples</p>
           </div>
-          <div style={{ paddingTop: '0.25rem', lineHeight: '0.25rem' }}>
+          <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Slice {metric}:</strong>
             </p>
