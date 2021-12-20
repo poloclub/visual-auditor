@@ -68,7 +68,13 @@ function App() {
         showConvexHull={showConvexHull}
         setShowConvexHull={setShowConvexHull}
       />
-      <RightDrawer details={details} metric={metric} />
+      <RightDrawer
+        details={details}
+        metric={metric}
+        overperforming={overperforming}
+        view={view}
+        convexHull={showConvexHull}
+      />
       <Main
         numFeatures={numFeatures}
         sampleSize={sampleSize}

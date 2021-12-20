@@ -94,7 +94,7 @@ const LeftDrawer = ({
       open
     >
       <div className='left-container'>
-        <h1>Slice Filters:</h1>
+        <h1>Slice Filters</h1>
         <h2>Number of Features:</h2>
         <Slider
           aria-label='Number of Features'

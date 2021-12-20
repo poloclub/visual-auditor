@@ -95,7 +95,7 @@ function GraphLayout({
     .map((key) => [key, groupings[key]])
     .sort((a, b) => b[1] - a[1]);
 
-  const topGroupings = groupingsArray.slice(0, 5);
+  const topGroupings = groupingsArray.slice(0, 15);
 
   const xCenter = [];
   const yCenter = [];
@@ -292,7 +292,7 @@ function GraphLayout({
       const simulation = d3
         .forceSimulation()
         .nodes(graph.nodes)
-        .force('charge', d3.forceManyBody().strength(-10))
+        .force('charge', d3.forceManyBody().strength(-5))
         // .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1))
         .force(
           'x',
@@ -406,7 +406,26 @@ function GraphLayout({
       }
 
       const convexHull = (g) => {
-        const colors = ['blue', 'green', 'yellow', 'black', 'purple'];
+        const colors = [
+          'blue',
+          'green',
+          'yellow',
+          'black',
+          'purple',
+          'pink',
+          'red',
+          'orange',
+          'brown',
+          'gray',
+          'cyan',
+          'magenta',
+          'lime',
+          'navy',
+          'olive',
+          'teal',
+          'violet',
+          'wheat',
+        ];
         let vertices = [];
 
         for (let i = 0; i < topGroupings.length; i++) {
@@ -450,7 +469,7 @@ function GraphLayout({
             .style('opacity', '0')
             .transition()
             .duration(500)
-            .style('opacity', '0.5');
+            .style('opacity', '0.25');
         }, 4000);
       } else {
         d3.select(`.hull`).remove();

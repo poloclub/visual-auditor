@@ -11,10 +11,10 @@ h2 {
 
 p {
   color: rgb(95, 95, 95);
-  font-weight: 700;
-  font-size: 1.25rem;
-  padding: 0.5rem;
-  text-align: center;
+  text-align: left;
+  font-weight: 300;
+  font-size: 1.1rem;
+  padding: 0 1rem;
 }
 
 .thin {
