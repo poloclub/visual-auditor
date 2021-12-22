@@ -46,7 +46,7 @@ function ForceLayout({
     .map((key) => [key, groupings[key]])
     .sort((a, b) => b[1] - a[1]);
 
-  const topGroupings = groupingsArray.slice(0, 5);
+  const topGroupings = groupingsArray.slice(0, 15);
 
   const x = d3
     .scaleBand()
@@ -230,8 +230,8 @@ function ForceLayout({
           });
       }
 
-      const convexHull = (g) => {
-        const colors = ['blue', 'green', 'yellow', 'black', 'purple'];
+      const convexHull = (g, opacity) => {
+        const colors = ['gray', 'green', 'yellow', 'black', 'purple'];
         let vertices = [];
 
         for (let i = 0; i < topGroupings.length; i++) {
@@ -269,8 +269,9 @@ function ForceLayout({
           g.append('path')
             .attr('class', `path${degree}`)
             .attr('d', line(hull))
-            .attr('fill', colors[i])
-            .attr('stroke', colors[i]);
+            .attr('fill', colors[0])
+            .attr('stroke', colors[0])
+            .attr('opacity', opacity);
         }
       };
 
@@ -285,11 +286,11 @@ function ForceLayout({
       if (showConvexHull) {
         setTimeout(() => {
           d3.select(`.hull${Math.min(degree, 2)}`)
-            .call(convexHull)
+            .call(convexHull, 0.25)
             .style('opacity', '0')
             .transition()
             .duration(500)
-            .style('opacity', '0.5');
+            .style('opacity', '1');
         }, 1000);
       } else {
         d3.selectAll(`.hull${Math.min(degree, 2)}`)

@@ -405,9 +405,9 @@ function GraphLayout({
         simulation.alpha(1).restart();
       }
 
-      const convexHull = (g) => {
+      const convexHull = (g, opacity) => {
         const colors = [
-          'blue',
+          'gray',
           'green',
           'yellow',
           'black',
@@ -416,7 +416,7 @@ function GraphLayout({
           'red',
           'orange',
           'brown',
-          'gray',
+          'blue',
           'cyan',
           'magenta',
           'lime',
@@ -449,8 +449,9 @@ function GraphLayout({
           g.append('path')
             .attr('class', `path${degree}`)
             .attr('d', line(hull))
-            .attr('fill', colors[i])
-            .attr('stroke', colors[i]);
+            .attr('fill', colors[0])
+            .attr('stroke', colors[0])
+            .attr('opacity', opacity);
         }
       };
 
@@ -465,11 +466,11 @@ function GraphLayout({
       if (showConvexHull) {
         setTimeout(() => {
           d3.select(`.hull`)
-            .call(convexHull)
             .style('opacity', '0')
+            .call(convexHull, 0.25)
             .transition()
             .duration(500)
-            .style('opacity', '0.25');
+            .style('opacity', '1');
         }, 4000);
       } else {
         d3.select(`.hull`).remove();
