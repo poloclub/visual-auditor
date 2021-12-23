@@ -256,20 +256,6 @@ function ForceLayout({
               }
             }
           }
-          // const groupX =
-          //   xCenter[features.indexOf(topGroupings[i][0].split(', ')[0])] + 25;
-          // const groupY =
-          //   degree < 2
-          //     ? height / 2
-          //     : (yCenter[features.indexOf(topGroupings[i][0].split(', ')[1])] +
-          //         175) *
-          //       1.075;
-          // const vertices = [
-          //   [groupX - 25, groupY - 25],
-          //   [groupX + 25, groupY - 25],
-          //   [groupX + 25, groupY + 25],
-          //   [groupX - 25, groupY + 25],
-          // ];
           const hull = d3.polygonHull(vertices);
           const line = d3.line().curve(d3.curveLinearClosed);
           if (!hull || !showConvexHull) return;
