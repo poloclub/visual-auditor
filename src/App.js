@@ -4,6 +4,10 @@ import LeftDrawer from './components/LeftDrawer/LeftDrawer';
 import RightDrawer from './components/RightDrawer/RightDrawer';
 import Main from './components/Main/Main';
 
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+};
+
 function App() {
   const [algorithm, setAlgorithm] = React.useState('slicefinder');
   const [numFeatures, setNumFeatures] = React.useState(2);

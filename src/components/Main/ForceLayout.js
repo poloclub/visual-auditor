@@ -14,7 +14,6 @@ function ForceLayout({
   radius,
   showConvexHull,
 }) {
-  const [selected, setSelected] = React.useState(null);
   const margin = { top: 20, right: 30, bottom: 70, left: 85 };
   const width = 800;
   const height = 800;
@@ -149,31 +148,30 @@ function ForceLayout({
         )
         .on('tick', ticked);
 
+      let bubbles = d3
+        .select('.g')
+        .selectAll('circle')
+        .data(nodes)
+        .join('circle')
+        .attr('class', 'node')
+        .attr('r', function (d) {
+          return d.radius;
+        })
+        .style('fill', function (d) {
+          if (overperforming)
+            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+        })
+        .style('opacity', function (d) {
+          return '1';
+        });
       function ticked() {
-        d3.select('.g')
-          .selectAll('circle')
-          .data(nodes)
-          .join('circle')
-          .attr('class', 'node')
-          .attr('r', function (d) {
-            return d.radius;
-          })
+        bubbles
           .attr('cx', function (d) {
             return d.x;
           })
           .attr('cy', function (d) {
             return d.y;
-          })
-          .style('fill', function (d) {
-            if (d.slice === selected) {
-              return d3.interpolateGreys(0.5);
-            }
-            if (overperforming)
-              return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-            return d3.interpolateReds(Math.abs((d.metric - model) / model));
-          })
-          .style('opacity', function (d) {
-            return '1';
           })
           .on('mouseover', function (event, d) {
             d3.select(this)
@@ -220,7 +218,16 @@ function ForceLayout({
               .style('top', 0 + 'px');
           })
           .on('click', function (event, d) {
-            setSelected(d.slice);
+            bubbles.style('fill', function (d) {
+              if (event.target.__data__ === d) {
+                return d3.interpolateGreys(0.5);
+              }
+              if (overperforming)
+                return d3.interpolateBlues(
+                  Math.abs((d.metric - model) / model)
+                );
+              return d3.interpolateReds(Math.abs((d.metric - model) / model));
+            });
             setDetails({
               slice: d.slice,
               size: d.size,
