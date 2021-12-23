@@ -33,6 +33,9 @@ function App() {
     'Country',
   ]);
   const [details, setDetails] = React.useState(null);
+  const setDetailsCallback = React.useCallback((details) => {
+    setDetails(details);
+  }, []);
   const [showConvexHull, setShowConvexHull] = React.useState(false);
 
   return (
@@ -86,7 +89,7 @@ function App() {
         radius={radius}
         edgeFiltering={edgeFiltering}
         edgeForce={edgeForce}
-        setDetails={setDetails}
+        setDetails={setDetailsCallback}
         cursorMode={cursorMode}
         algorithm={algorithm}
         showConvexHull={showConvexHull}

@@ -1,5 +1,5 @@
 import { useD3 } from '../../hooks/useD3';
-import React from 'react';
+import React, { memo } from 'react';
 import * as d3 from 'd3';
 import './ForceLayout.css';
 
@@ -323,4 +323,4 @@ function ForceLayout({
   );
 }
 
-export default ForceLayout;
+export default memo(ForceLayout);

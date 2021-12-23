@@ -1,5 +1,5 @@
 import { useD3 } from '../../hooks/useD3';
-import React from 'react';
+import React, { memo } from 'react';
 import * as d3 from 'd3';
 
 function SliceBarChart({
@@ -11,6 +11,10 @@ function SliceBarChart({
   setDetails,
 }) {
   const [selected, setSelected] = React.useState(null);
+  const [doneAnimating, setDoneAnimating] = React.useState(false);
+  React.useEffect(() => {
+    setDoneAnimating(false);
+  }, [data]);
 
   const ref = useD3(
     (svg) => {
@@ -126,19 +130,31 @@ function SliceBarChart({
         .attr('height', (d) => height - y1(0));
 
       // Animation
-      svg
-        .selectAll('rect')
-        .transition()
-        .duration(800)
-        .attr('y', function (d) {
-          return y1(d.metric) - margin.bottom;
-        })
-        .attr('height', function (d) {
-          return height - y1(d.metric);
-        })
-        .delay(function (d, i) {
-          return i * 100;
-        });
+      if (!doneAnimating) {
+        svg
+          .selectAll('rect')
+          .transition()
+          .duration(800)
+          .attr('y', function (d) {
+            return y1(d.metric) - margin.bottom;
+          })
+          .attr('height', function (d) {
+            return height - y1(d.metric);
+          })
+          .delay(function (d, i) {
+            return i * 100;
+          });
+        setDoneAnimating(true);
+      } else {
+        svg
+          .selectAll('rect')
+          .attr('y', function (d) {
+            return y1(d.metric) - margin.bottom;
+          })
+          .attr('height', function (d) {
+            return height - y1(d.metric);
+          });
+      }
 
       svg.selectAll('.line').remove();
       svg.selectAll('.label').remove();
@@ -166,7 +182,7 @@ function SliceBarChart({
         .attr('y', y1(model) + 25)
         .style('fill', 'gray');
     },
-    [data, metric]
+    [data, metric, selected]
   );
 
   return (
@@ -193,4 +209,4 @@ function SliceBarChart({
   );
 }
 
-export default SliceBarChart;
+export default memo(SliceBarChart);

@@ -1,5 +1,5 @@
 import { useD3 } from '../../hooks/useD3';
-import React from 'react';
+import React, { memo } from 'react';
 import * as d3 from 'd3';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
@@ -513,4 +513,4 @@ function GraphLayout({
   );
 }
 
-export default GraphLayout;
+export default memo(GraphLayout);

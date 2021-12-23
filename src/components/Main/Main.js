@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import SliceBarChart from './SliceBarChart';
 import './Main.css';
 import ForceLayout from './ForceLayout';
@@ -177,7 +177,6 @@ const Main = ({
         return a.metric - b.metric;
       }
     });
-  console.log(filteredData);
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
   } else {
@@ -227,4 +226,4 @@ const Main = ({
   );
 };
 
-export default Main;
+export default memo(Main);
