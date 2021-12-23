@@ -367,6 +367,7 @@ function GraphLayout({
             size: d.size,
             metric: d.metric,
             similarSlices: links
+              .sort((a, b) => b.count - a.count)
               .map((link) => {
                 if (
                   link.count > edgeFiltering &&
@@ -381,7 +382,8 @@ function GraphLayout({
                 }
                 return undefined;
               })
-              .filter((link) => link !== undefined),
+              .filter((link) => link !== undefined)
+              .slice(0, 10),
           });
         } else {
           delete d.fx;
@@ -399,6 +401,26 @@ function GraphLayout({
       function dragstart(event, d) {
         d3.select(this).classed('fixed', true);
         d3.select(this).style('fill', 'lightgray');
+        setDetails({
+          slice: d.slice,
+          size: d.size,
+          metric: d.metric,
+          similarSlices: links
+            .sort((a, b) => b.count - a.count)
+            .map((link) => {
+              if (link.count > edgeFiltering && link.sliceSource === d.slice) {
+                return link.sliceTarget;
+              } else if (
+                link.count > edgeFiltering &&
+                link.sliceTarget === d.slice
+              ) {
+                return link.sliceSource;
+              }
+              return undefined;
+            })
+            .filter((link) => link !== undefined)
+            .slice(0, 10),
+        });
       }
 
       function dragged(event, d) {

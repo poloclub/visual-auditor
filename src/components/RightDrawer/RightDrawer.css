@@ -17,6 +17,17 @@ p {
   padding: 0 1rem;
 }
 
+ul {
+  font-size: 1rem;
+  color: rgb(95, 95, 95);
+  font-weight: 300;
+  text-align: left;
+}
+
+li {
+  padding: 0.25rem 0;
+}
+
 .thin {
   font-weight: 300;
 }

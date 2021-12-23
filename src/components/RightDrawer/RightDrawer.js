@@ -110,10 +110,18 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
             </p>
             <p>{details?.metric?.toFixed(3)}</p>
           </div>
-          {/* {details?.similarSlices?.length > 0 ? <h2>Similar Slices:</h2> : null}
-          {details?.similarSlices.map((slice) => (
-            <p>{slice}</p>
-          ))} */}
+          {details?.similarSlices?.length > 0 ? (
+            <div style={{ paddingTop: '0.25rem', lineHeight: '1.25rem' }}>
+              <p>
+                <strong>Similar Slices:</strong>
+              </p>
+              <ul>
+                {details?.similarSlices.map((slice) => (
+                  <li>{slice}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
       )}
     </Drawer>
