@@ -1,8 +1,32 @@
-# Visual Auditor
+# Interactive Scalable Auditing of Model Biases and Vulnerabilities with Interpretable Mitigation.
 
-Interactive Scalable Auditing of Model Biases and Vulnerabilities with Interpretable Mitigation.
+By [David Munechika](https://github.com/davidmunechika),
+[Anish Upadhayay](https://github.com/aupadhayay3),
+[Jay Wang](https://github.com/xiaohk), and
+[Polo Chau](https://www.cc.gatech.edu/~dchau/)
 
-Live Demo: https://visual-auditor.surge.sh/
+## Working Demo
+
+Click the following link:
+https://visual-auditor.surge.sh/
+
+It runs on most modern web browsers. We suggest you use Google Chrome.
+
+## Development
+
+This section describes how you set up the visual auditor for development.
+
+### Install Dependencies
+
+Run the following commands:
+
+```bash
+$ git clone https://github.com/poloclub/visual-auditor.git
+$ cd visual-auditor
+$ npm install
+```
+
+It's unlikely, but you may need to install some basic JavaScript-related dependencies (e.g., npm).
 
 ## Available Scripts
 
@@ -40,33 +64,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
