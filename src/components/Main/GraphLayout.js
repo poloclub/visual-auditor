@@ -26,7 +26,6 @@ function GraphLayout({
   showConvexHull,
 }) {
   const margin = { top: 30, right: 30, bottom: 60, left: 85 };
-  const [selected, setSelected] = React.useState(null);
   const [value, setValue] = React.useState(0);
   const hulls = Array.from(Array(100).keys());
   function useForceUpdate() {
@@ -229,9 +228,6 @@ function GraphLayout({
           return d.radius;
         })
         .style('fill', function (d) {
-          if (d.slice === selected) {
-            return d3.interpolateGreys(0.5);
-          }
           if (overperforming)
             return d3.interpolateBlues(Math.abs((d.metric - model) / model));
           return d3.interpolateReds(Math.abs((d.metric - model) / model));
@@ -387,7 +383,6 @@ function GraphLayout({
               })
               .filter((link) => link !== undefined),
           });
-          simulation.alpha(1).restart();
         } else {
           delete d.fx;
           delete d.fy;
