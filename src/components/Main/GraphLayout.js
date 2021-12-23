@@ -358,7 +358,14 @@ function GraphLayout({
 
       function click(event, d) {
         if (cursorMode === 'select') {
-          setSelected(d.slice);
+          node.style('fill', function (d) {
+            if (event.target.__data__ === d) {
+              return d3.interpolateGreys(0.5);
+            }
+            if (overperforming)
+              return d3.interpolateBlues(Math.abs((d.metric - model) / model));
+            return d3.interpolateReds(Math.abs((d.metric - model) / model));
+          });
           setDetails({
             slice: d.slice,
             size: d.size,
