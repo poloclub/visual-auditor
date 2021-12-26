@@ -9,6 +9,9 @@
 # production
 /build
 
+# scripts
+/scripts/__pycache__
+
 # misc
 .DS_Store
 .env.local
