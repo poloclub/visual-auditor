@@ -12,11 +12,12 @@ function ForceLayout({
   overperforming,
   setDetails,
   radius,
-  showConvexHull,
+  setShowConvexHull,
 }) {
   const margin = { top: 20, right: 30, bottom: 70, left: 85 };
   const width = 800;
   const height = 800;
+  const hulls = Array.from(Array(100).keys());
 
   const features = [];
   const groupings = {};
@@ -96,6 +97,8 @@ function ForceLayout({
 
   const ref = useD3(
     (svg) => {
+      let convexHullShowing = false;
+      d3.select('.hull').remove();
       let div = d3
         .select('.tooltip')
         .style('opacity', 0)
@@ -250,7 +253,7 @@ function ForceLayout({
                 nodes[j].yFeature === topGroupings[i][0].split(', ')[1])
             ) {
               if (degree < 2) {
-                vertices.push([nodes[j].x, height / 2]);
+                vertices.push([nodes[j].x + 50, height / 2]);
               } else {
                 vertices.push([nodes[j].x + 50, nodes[j].y + 200]);
               }
@@ -258,7 +261,7 @@ function ForceLayout({
           }
           const hull = d3.polygonHull(vertices);
           const line = d3.line().curve(d3.curveLinearClosed);
-          if (!hull || !showConvexHull) return;
+          if (!hull) return;
           g.append('path')
             .attr('class', `path${degree}`)
             .attr('d', line(hull))
@@ -276,21 +279,21 @@ function ForceLayout({
       } else {
         d3.select('.y-axis').style('opacity', '0');
       }
-      if (showConvexHull) {
-        setTimeout(() => {
-          d3.select(`.hull${Math.min(degree, 2)}`)
-            .call(convexHull, 0.25)
+      d3.select('.switch').on('click', (event, d) => {
+        setShowConvexHull(event.target.checked);
+        convexHullShowing = event.target.checked;
+        if (convexHullShowing)
+          d3.select(`.hull`)
             .style('opacity', '0')
+            .call(convexHull, 0.25)
             .transition()
             .duration(500)
             .style('opacity', '1');
-        }, 1000);
-      } else {
-        d3.selectAll(`.hull${Math.min(degree, 2)}`)
-          .transition()
-          .duration(0)
-          .style('opacity', '0');
-      }
+        else {
+          d3.select(`.hull`).remove();
+          d3.selectAll(`.hull`).transition().duration(0).style('opacity', '0');
+        }
+      });
     },
     [data, view]
   );
@@ -309,8 +312,11 @@ function ForceLayout({
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        <g className='hull1' />
-        <g className='hull2' />
+        {/* <g className='hull1' />
+        <g className='hull2' /> */}
+        {hulls.map((hull) => (
+          <g className={'hull'} key={hull} />
+        ))}
       </svg>
     </div>
   );

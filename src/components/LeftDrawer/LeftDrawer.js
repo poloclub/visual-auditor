@@ -235,6 +235,7 @@ const LeftDrawer = ({
                 setShowConvexHull(event.target.checked);
               }}
               label='Show Convex Hull'
+              className='switch'
               disabled={switchDisabled}
             />
           </>

@@ -1,6 +1,7 @@
 import { useD3 } from '../../hooks/useD3';
 import React, { memo } from 'react';
 import * as d3 from 'd3';
+import Switch from '@mui/material/Switch';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import logLossSamples from '../../data/loglosssamples.json';
@@ -23,7 +24,7 @@ function GraphLayout({
   setDetails,
   cursorMode,
   algorithm,
-  showConvexHull,
+  setShowConvexHull,
 }) {
   const margin = { top: 30, right: 30, bottom: 60, left: 85 };
   const [value, setValue] = React.useState(0);
@@ -213,6 +214,8 @@ function GraphLayout({
 
   const ref = useD3(
     (svg) => {
+      let convexHullShowing = false;
+      d3.select('.hull').remove();
       svg = d3.select('.svg').style('width', '60%').style('height', '60%');
       let link = svg
         .selectAll('.link')
@@ -293,8 +296,6 @@ function GraphLayout({
         .force(
           'x',
           d3.forceX().x(function (d) {
-            console.log(features);
-            console.log(xCenter);
             return xCenter[features.indexOf(d.xFeature)];
           })
         )
@@ -469,7 +470,7 @@ function GraphLayout({
           }
           const hull = d3.polygonHull(vertices);
           const line = d3.line().curve(d3.curveLinearClosed);
-          if (!hull || !showConvexHull) return;
+          if (!hull) return;
           g.append('path')
             .attr('class', `path${degree}`)
             .attr('d', line(hull))
@@ -487,19 +488,21 @@ function GraphLayout({
       } else {
         svg.select('.y-axis').style('opacity', '0');
       }
-      if (showConvexHull) {
-        setTimeout(() => {
+      d3.select('.switch').on('click', (event, d) => {
+        setShowConvexHull(event.target.checked);
+        convexHullShowing = event.target.checked;
+        if (convexHullShowing)
           d3.select(`.hull`)
             .style('opacity', '0')
             .call(convexHull, 0.25)
             .transition()
             .duration(500)
             .style('opacity', '1');
-        }, 4000);
-      } else {
-        d3.select(`.hull`).remove();
-        d3.selectAll(`.hull`).transition().duration(0).style('opacity', '0');
-      }
+        else {
+          d3.select('.hull').remove();
+          d3.selectAll('.hull').transition().duration(0).style('opacity', '0');
+        }
+      });
     },
     [data, value]
   );

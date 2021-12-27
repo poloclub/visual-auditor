@@ -96,7 +96,7 @@ function App() {
         setDetails={setDetailsCallback}
         cursorMode={cursorMode}
         algorithm={algorithm}
-        showConvexHull={showConvexHull}
+        setShowConvexHull={setShowConvexHull}
       />
     </div>
   );

@@ -30,7 +30,7 @@ const Main = ({
   setDetails,
   cursorMode,
   algorithm,
-  showConvexHull,
+  setShowConvexHull,
 }) => {
   let data;
   let reversedata;
@@ -204,7 +204,7 @@ const Main = ({
           overperforming={overperforming}
           setDetails={setDetails}
           radius={radius}
-          showConvexHull={showConvexHull}
+          setShowConvexHull={setShowConvexHull}
         />
       ) : (
         <GraphLayout
@@ -219,7 +219,7 @@ const Main = ({
           setDetails={setDetails}
           cursorMode={cursorMode}
           algorithm={algorithm}
-          showConvexHull={showConvexHull}
+          setShowConvexHull={setShowConvexHull}
         />
       )}
     </div>
