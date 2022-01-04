@@ -17,14 +17,14 @@ p {
   padding: 0 1rem;
 }
 
-ul {
+.similar-slices-list {
   font-size: 1rem;
   color: rgb(95, 95, 95);
   font-weight: 300;
   text-align: left;
 }
 
-li {
+.similar-slice {
   padding: 0.25rem 0;
 }
 

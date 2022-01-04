@@ -115,9 +115,9 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
               <p>
                 <strong>Similar Slices:</strong>
               </p>
-              <ul>
+              <ul className='similar-slices-list'>
                 {details?.similarSlices.map((slice) => (
-                  <li>{slice}</li>
+                  <li className='similar-slice'>{slice}</li>
                 ))}
               </ul>
             </div>
