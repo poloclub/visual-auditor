@@ -401,7 +401,7 @@ function GraphLayout({
 
       function dragstart(event, d) {
         d3.select(this).classed('fixed', true);
-        d3.select(this).style('fill', 'lightgray');
+        d3.select(this).style('fill', '#FFD600');
         setDetails({
           slice: d.slice,
           size: d.size,

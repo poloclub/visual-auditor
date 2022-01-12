@@ -74,10 +74,15 @@ function SliceBarChart({
         .data(data)
         .join('rect')
         .attr('class', 'bar')
-        .style('fill', (d) => {
+        .attr("style", (d) => {
           if (d.slice === selected) {
-            return d3.interpolateGreys(0.5);
+            return "outline: thick solid #FFD600;"
           }
+        })
+        .style('fill', (d) => {
+          // if (d.slice === selected) {
+          //   return d3.interpolateGreys(0.5);
+          // }
           if (overperforming)
             return d3.interpolateBlues(Math.abs((d.metric - model) / model));
           return d3.interpolateReds(Math.abs((d.metric - model) / model));

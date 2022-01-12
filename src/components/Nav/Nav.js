@@ -20,7 +20,7 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
       <FormControl sx={{ s: 1, minWidth: 175, paddingRight: 1 }}>
         <InputLabel>View:</InputLabel>
         <Select value={view} label='View' onChange={handleViewChange}>
-          <MenuItem value={'bar'}>Bar Graph</MenuItem>
+          <MenuItem value={'bar'}>Bar Chart Layout</MenuItem>
           <MenuItem value={'force'}>Force Layout</MenuItem>
           <MenuItem value={'graph'}>Graph Layout</MenuItem>
         </Select>
