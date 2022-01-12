@@ -223,7 +223,7 @@ function ForceLayout({
           .on('click', function (event, d) {
             bubbles.style('fill', function (d) {
               if (event.target.__data__ === d) {
-                return d3.interpolateGreys(0.5);
+                return "#FFD600"
               }
               if (overperforming)
                 return d3.interpolateBlues(
