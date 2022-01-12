@@ -49,7 +49,7 @@ const ModalNav = ({
 
   return (
     <div className='nav-container'>
-      <h1>Adults Dataset</h1>
+      <h1>UCI Adults Dataset</h1>
       <FormControl sx={{ s: 1, minWidth: 175 }}>
         <InputLabel>View:</InputLabel>
         <Select value={view} label='View' onChange={handleViewChange}>
