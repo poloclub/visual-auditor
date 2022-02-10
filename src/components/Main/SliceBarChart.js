@@ -76,7 +76,7 @@ function SliceBarChart({
         .attr('class', 'bar')
         .attr("style", (d) => {
           if (d.slice === selected) {
-            return "outline: thick solid #FFD600;"
+            return "outline: 3px solid #FFD600;"
           }
         })
         .style('fill', (d) => {
