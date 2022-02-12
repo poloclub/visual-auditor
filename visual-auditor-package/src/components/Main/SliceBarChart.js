@@ -26,7 +26,7 @@ function SliceBarChart({
         .select('.tooltip')
         .style('opacity', 0)
         .style('width', '200px')
-        .style('height', '150px')
+        .style('height', '170px')
         .style('padding', '1rem 0.5rem 0 0.5rem')
         .style('border-radius', '20px');
 
@@ -93,7 +93,7 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width + 'px')
+            .style('left', '60%')
             .style('top', height / 4 + 'px');
           div.html(
             '<strong>Slice Description: </strong>' +
@@ -117,7 +117,7 @@ function SliceBarChart({
           div
             .transition()
             .style('opacity', 0)
-            .style('left', width + 'px')
+            .style('left', '60%')
             .style('top', 0 + 'px');
         })
         .on('click', function (event, d) {
