@@ -1,0 +1,38 @@
+h1 {
+  color: rgb(95, 95, 95);
+}
+
+h2 {
+  color: rgb(95, 95, 95);
+  font-weight: 300;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+}
+
+p {
+  color: rgb(95, 95, 95);
+  text-align: left;
+  font-weight: 300;
+  font-size: 1.1rem;
+  padding: 0 1rem;
+}
+
+.similar-slices-list {
+  font-size: 1rem;
+  color: rgb(95, 95, 95);
+  font-weight: 300;
+  text-align: left;
+}
+
+.similar-slice {
+  padding: 0.25rem 0;
+}
+
+.thin {
+  font-weight: 300;
+}
+
+.right-container {
+  text-align: center;
+  padding: 0.5rem;
+}
