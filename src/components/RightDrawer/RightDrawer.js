@@ -5,7 +5,18 @@ import RedGradient from './RedGradient.png';
 import BlueGradient from './BlueGradient.png';
 
 const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   return (
+    open ? (
     <Drawer
       sx={{
         width: '15rem',
@@ -15,13 +26,14 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
           boxSizing: 'border-box',
         },
       }}
-      variant='permanent'
+      variant='persistent'
       anchor='right'
+      open={open}
     >
       {' '}
       {view === 'bar' ? (
         <div className='right-container'>
-          <h1>Legend</h1>
+          <div><h1>Legend</h1><button onClick={handleDrawerClose}>Close</button></div>
           <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
             <p>
               <strong>Bar Color:</strong>
@@ -124,7 +136,8 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
           ) : null}
         </div>
       )}
-    </Drawer>
+      </Drawer>) :
+      <button onClick={handleDrawerOpen}>Open</button>
   );
 };
 

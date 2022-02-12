@@ -3,6 +3,7 @@ from IPython.display import display_html
 import html
 import random
 import pkgutil
+import codecs
 
 def _make_html():
     """
@@ -33,7 +34,11 @@ def visualize():
     Args:
         
     """
-    html_str = _make_html()
+    # html_str = _make_html()   
+    html_file = codecs.open("bundle.html", 'r')
+    html_str = html_file.read()
+    print(html_str)
+    html_str = html.escape(html_str)
 
     # Randomly generate an ID for the iframe to avoid collision
     iframe_id = 'visual-auditor-iframe-' + str(int(random.random() * 1e8))
@@ -43,7 +48,7 @@ def visualize():
             srcdoc="{}"
             frameBorder="0"
             width="100%"
-            height="645px"
+            height="675px"
             id="{}">
         </iframe>
     '''.format(html_str, iframe_id)

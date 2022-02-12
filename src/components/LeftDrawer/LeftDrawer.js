@@ -84,17 +84,29 @@ const LeftDrawer = ({
     setShowConvexHull(false);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   return (
+    open ? (
     <Drawer
-      variant='permanent'
+      variant="persistent"
+      anchor="left"
+      open={open}
       sx={{
         display: { xs: 'none', sm: 'block' },
         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '15rem' },
       }}
-      open
     >
       <div className='left-container'>
-        <h1>Slice Filters</h1>
+        <div><h1>Slice Filters</h1><button onClick={handleDrawerClose}>Close</button></div>
         <h2>Number of Features:</h2>
         <Slider
           aria-label='Number of Features'
@@ -323,7 +335,8 @@ const LeftDrawer = ({
           Reset
         </Button>
       </div>
-    </Drawer>
+      </Drawer>)
+      : <button onClick={handleDrawerOpen}>Open</button>
   );
 };
 
