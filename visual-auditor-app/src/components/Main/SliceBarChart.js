@@ -20,7 +20,7 @@ function SliceBarChart({
     (svg) => {
       const height = 600;
       const width = 875;
-      const margin = { top: 20, right: 30, bottom: 50, left: 90 };
+      const margin = { top: 60, right: 30, bottom: 50, left: 90 };
 
       let div = d3
         .select('.tooltip')
@@ -191,7 +191,7 @@ function SliceBarChart({
   );
 
   return (
-    <div>
+    <div style={{width: '100%'}}>
       <div
         className='tooltip'
         style={{ position: 'absolute', background: 'lightgray' }}
@@ -200,8 +200,9 @@ function SliceBarChart({
         ref={ref}
         style={{
           height: 700,
-          width: '60%',
-          margin: 'auto',
+          width: 875,
+          marginLeft: 'auto',
+          marginRight: 'auto',
           display: 'block',
         }}
       >
