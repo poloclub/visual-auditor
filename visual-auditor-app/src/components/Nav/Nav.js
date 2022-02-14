@@ -25,7 +25,7 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
           <MenuItem value={'graph'}>Graph Layout</MenuItem>
         </Select>
       </FormControl>
-      <FormControl sx={{ s: 2, minWidth: 175, paddingRight: 1 }}>
+      {/* <FormControl sx={{ s: 2, minWidth: 175, paddingRight: 1 }}>
         <InputLabel>Algorithm:</InputLabel>
         <Select
           value={algorithm}
@@ -35,7 +35,7 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
           <MenuItem value={'slicefinder'}>Slice Finder</MenuItem>
           <MenuItem value={'sliceline'}>Slice Line</MenuItem>
         </Select>
-      </FormControl>
+      </FormControl> */}
     </div>
   );
 };

@@ -40,7 +40,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
             </p>
             <p>Performance</p>
           </div>
-          <img
+          {/* <img
             src={overperforming ? BlueGradient : RedGradient}
             alt='Gradient'
             style={{
@@ -49,7 +49,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
               margin: '0',
               paddingLeft: '0.9rem',
             }}
-          />
+          /> */}
         </div>
       ) : (
         <div className='right-container'>

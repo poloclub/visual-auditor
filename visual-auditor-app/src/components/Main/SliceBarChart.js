@@ -27,7 +27,7 @@ function SliceBarChart({
         .style('opacity', 0)
         .style('width', '200px')
         .style('height', '150px')
-        .style('padding', '1rem 0.5rem 0 0.5rem')
+        .style('padding', '1rem 0.75rem')
         .style('border-radius', '20px');
 
       const x = d3

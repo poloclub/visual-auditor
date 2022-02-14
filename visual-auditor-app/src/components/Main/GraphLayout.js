@@ -357,7 +357,7 @@ function GraphLayout({
         if (cursorMode === 'select') {
           node.style('fill', function (d) {
             if (event.target.__data__ === d) {
-              return d3.interpolateGreys(0.5);
+              return '#FFD600';
             }
             if (overperforming)
               return d3.interpolateBlues(Math.abs((d.metric - model) / model));
