@@ -1,5 +1,7 @@
 # dependencies
 /node_modules
+visual-auditor-app/node_modules
+visual-auditor-package/node_modules
 /.pnp
 .pnp.js
 
