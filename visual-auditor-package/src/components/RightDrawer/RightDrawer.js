@@ -7,7 +7,7 @@ import RedGradient from './RedGradient.png';
 import BlueGradient from './BlueGradient.png';
 
 const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
