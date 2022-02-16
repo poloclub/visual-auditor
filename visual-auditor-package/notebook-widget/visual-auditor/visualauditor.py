@@ -48,7 +48,7 @@ def visualize():
             srcdoc="{}"
             frameBorder="0"
             width="100%"
-            height="675px"
+            height="800px"
             id="{}">
         </iframe>
     '''.format(html_str, iframe_id)
