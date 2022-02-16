@@ -336,7 +336,7 @@ const LeftDrawer = ({
         </Button>
       </div>
       </Drawer>)
-      : <button onClick={handleDrawerOpen}>Open</button>
+      : <button onClick={handleDrawerOpen} style={{position: 'absolute', left: '2rem', top: '2rem'}}>Open</button>
   );
 };
 

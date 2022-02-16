@@ -183,7 +183,7 @@ const Main = ({
     filteredData = filteredData.slice(0, 100);
   }
   return (
-    <div className='main-container' style={{ display: 'block' }}>
+    <div className='main-container' style={{ display: 'block', margin: 'auto', width: '75%' }}>
       {view === 'bar' ? (
         <SliceBarChart
           data={filteredData}

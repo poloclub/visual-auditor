@@ -1,7 +1,6 @@
 import { useD3 } from '../../hooks/useD3';
 import React, { memo } from 'react';
 import * as d3 from 'd3';
-import Switch from '@mui/material/Switch';
 import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import logLossSamples from '../../data/loglosssamples.json';
@@ -216,7 +215,7 @@ function GraphLayout({
     (svg) => {
       let convexHullShowing = false;
       d3.select('.hull').remove();
-      svg = d3.select('.svg').style('width', '60%').style('height', '60%');
+      svg = d3.select('.svg')
       let link = svg
         .selectAll('.link')
         .attr('class', 'link')
@@ -357,7 +356,7 @@ function GraphLayout({
         if (cursorMode === 'select') {
           node.style('fill', function (d) {
             if (event.target.__data__ === d) {
-              return d3.interpolateGreys(0.5);
+              return '#FFD600';
             }
             if (overperforming)
               return d3.interpolateBlues(Math.abs((d.metric - model) / model));
@@ -508,7 +507,7 @@ function GraphLayout({
   );
 
   return (
-    <div className='container' style={{ overflow: 'scroll' }}>
+    <div className='graph' style={{ overflow: 'scroll'}}>
       <div
         className='tooltip'
         style={{
@@ -518,8 +517,8 @@ function GraphLayout({
           padding: '0.5rem',
         }}
       ></div>
-      <svg className='svg' width={width} height={height}>
-        <g transform='translate(50, 200)'></g>
+      <svg id='graph-svg' className='svg' width={width} height={height}>
+        <g id='graph-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
         <g className='x-axis-grid' />
@@ -529,13 +528,13 @@ function GraphLayout({
         ))}
       </svg>
       <br />
-      <Button
+      {/* <Button
         variant='outlined'
         onClick={forceUpdate}
         style={{ margin: '1rem' }}
       >
         Recenter
-      </Button>
+      </Button> */}
     </div>
   );
 }

@@ -137,7 +137,7 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
         </div>
       )}
       </Drawer>) :
-      <button onClick={handleDrawerOpen}>Open</button>
+      <button onClick={handleDrawerOpen} style={{position: 'absolute', right: '2rem', top: '2rem'}}>Open</button>
   );
 };
 

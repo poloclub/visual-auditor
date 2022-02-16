@@ -20,14 +20,14 @@ function SliceBarChart({
     (svg) => {
       const height = 600;
       const width = 875;
-      const margin = { top: 20, right: 30, bottom: 50, left: 90 };
+      const margin = { top: 60, right: 30, bottom: 50, left: 90 };
 
       let div = d3
         .select('.tooltip')
         .style('opacity', 0)
         .style('width', '200px')
-        .style('height', '170px')
-        .style('padding', '1rem 0.5rem 0 0.5rem')
+        .style('height', '150px')
+        .style('padding', '1rem 0.75rem')
         .style('border-radius', '20px');
 
       const x = d3
@@ -93,7 +93,7 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', '60%')
+            .style('left', width + 'px')
             .style('top', height / 4 + 'px');
           div.html(
             '<strong>Slice Description: </strong>' +
@@ -117,7 +117,7 @@ function SliceBarChart({
           div
             .transition()
             .style('opacity', 0)
-            .style('left', '60%')
+            .style('left', width + 'px')
             .style('top', 0 + 'px');
         })
         .on('click', function (event, d) {
@@ -191,7 +191,7 @@ function SliceBarChart({
   );
 
   return (
-    <div>
+    <div style={{width: '100%'}}>
       <div
         className='tooltip'
         style={{ position: 'absolute', background: 'lightgray' }}
@@ -200,8 +200,9 @@ function SliceBarChart({
         ref={ref}
         style={{
           height: 700,
-          width: '60%',
-          margin: 'auto',
+          width: 875,
+          marginLeft: 'auto',
+          marginRight: 'auto',
           display: 'block',
         }}
       >
