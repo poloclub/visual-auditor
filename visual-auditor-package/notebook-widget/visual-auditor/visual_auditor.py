@@ -101,13 +101,57 @@ class SliceFinder:
 
         print('sorting')
         slices = sorted(slices, key=lambda s: s.size, reverse=True)
-        with open('slices.p', 'wb') as handle:
-            pickle.dump(slices, handle)
-        uninteresting = sorted(
-            uninteresting, key=lambda s: s.size, reverse=True)
-        with open('uninteresting.p', 'wb') as handle:
-            pickle.dump(uninteresting, handle)
-        return slices[:k]
+        recommendations = slices[:k]
+
+        self.save_slices_to_file(recommendations, 'slices.json')
+        self.compute_overlapping_samples(recommendations, 'slices.json')
+            
+        return recommendations
+
+    def save_slices_to_file(self, recommendations, filename):
+        slices = []
+        for s in recommendations:
+            slice = {}
+            description = ''
+            for i in range(len(s.get_filter().keys())):
+                if (i > 0):
+                    description += ', '
+                description += str(list(s.get_filter().keys())[i]) + ': ' + str(list(s.get_filter().values())[i][0][0])
+                print(description)
+            slice[description] = {
+                "slice": description,
+                "effect_size": s.effect_size,
+                "metric": s.metric,
+                "size": s.size,
+                "degree": len(s.get_filter().keys())
+            }
+            slices.append(slice)
+        data = {}
+        data["data"] = slices
+        with open(filename, 'w') as f:
+            json.dump(data, f)
+
+    def compute_overlapping_samples(self, recommendations, filename):
+        sampleDict = {}
+        for s in recommendations:
+            sliceSet = set()
+            description = ''
+            keyList = list(s.get_filter().keys())
+            valueList = list(s.get_filter().values())
+            for i in range(len(s.get_filter().keys())):
+                if (i > 0):
+                    description += ', '
+                description += str(keyList[i]) + ': ' + str(valueList[i][0][0])
+            for i in range(len(s.get_filter().keys())):
+                for index, row in adult_data.iterrows():
+                    for key in keyList:
+                        if row[key] == valueList[i][0][0]:
+                            sliceSet.add(index)
+            sampleDict[description] = sliceSet
+        for key in sampleDict.keys():
+            sampleDict[key] = list(sampleDict[key])
+        with open(filename, "w") as outfile:
+            json.dump(sampleDict, outfile)
 
     def slicing(self):
         ''' Generate base slices '''
