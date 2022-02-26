@@ -1,4 +1,3 @@
-# from slice_finder import SliceFinder
 from IPython.display import display_html
 import html
 import random

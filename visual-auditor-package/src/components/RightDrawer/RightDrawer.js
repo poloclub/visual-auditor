@@ -55,7 +55,8 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
             /> */}
           </div>
         ) : (
-          <div className='right-container'>
+            <div className='right-container'>
+            <ArrowForwardIosIcon onClick={handleDrawerClose} style={{position: 'relative', left: '-5rem', top: '1rem', opacity: '0.75', cursor: 'pointer'}}/>
             <h1>Legend</h1>
             <div style={{ paddingTop: '0.25rem', lineHeight: '0.5rem' }}>
               <p>
