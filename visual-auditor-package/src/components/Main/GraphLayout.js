@@ -5,10 +5,7 @@ import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import logLossSamples from '../../data/loglosssamples.json';
 import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
-import accuracySamples from '../../data/accuracysamples.json';
-import precisionSamples from '../../data/precisionsamples.json';
 import commonSamples from '../../data/commonSamples.json';
-import commonSamplesSliceline from '../../data/commonSamplesSliceline.json';
 import reverseCommonSamples from '../../data/reverseCommonSamples.json';
 
 function GraphLayout({
@@ -48,21 +45,9 @@ function GraphLayout({
         samples = reverseLogLossSamples;
         matches = reverseCommonSamples;
       } else {
-        if (algorithm === 'sliceline') {
-          matches = commonSamplesSliceline;
-        } else {
-          matches = commonSamples;
-        }
+        matches = commonSamples;
         samples = logLossSamples;
       }
-      break;
-    case 'Accuracy':
-      if (overperforming) samples = accuracySamples;
-      else samples = accuracySamples;
-      break;
-    case 'Precision':
-      if (overperforming) samples = precisionSamples;
-      else samples = precisionSamples;
       break;
     default:
       if (overperforming) samples = reverseLogLossSamples;

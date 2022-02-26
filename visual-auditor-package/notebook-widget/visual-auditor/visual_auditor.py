@@ -4,7 +4,7 @@ import html
 import random
 import pkgutil
 import codecs
-import pickle
+import json
 import numpy as np
 import pandas as pd
 import functools
@@ -104,7 +104,7 @@ class SliceFinder:
         recommendations = slices[:k]
 
         self.save_slices_to_file(recommendations, 'slices.json')
-        self.compute_overlapping_samples(recommendations, 'slices.json')
+        self.compute_overlapping_samples(recommendations, 'overlapping_samples.json')
             
         return recommendations
 
@@ -143,7 +143,7 @@ class SliceFinder:
                     description += ', '
                 description += str(keyList[i]) + ': ' + str(valueList[i][0][0])
             for i in range(len(s.get_filter().keys())):
-                for index, row in adult_data.iterrows():
+                for index, row in self.data[0].iterrows():
                     for key in keyList:
                         if row[key] == valueList[i][0][0]:
                             sliceSet.add(index)
