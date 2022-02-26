@@ -93,7 +93,7 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width + 'px')
+            .style('left', width / 2 + 'px')
             .style('top', height / 4 + 'px');
           div.html(
             '<strong>Slice Description: </strong>' +
@@ -118,7 +118,7 @@ function SliceBarChart({
             .transition()
             .style('opacity', 0)
             .style('left', width + 'px')
-            .style('top', 0 + 'px');
+            .style('top', height + 'px');
         })
         .on('click', function (event, d) {
           setSelected(d.slice);

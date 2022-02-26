@@ -268,7 +268,7 @@ function GraphLayout({
             .transition()
             .style('opacity', 0)
             .style('left', width + 'px')
-            .style('top', 0 + 'px');
+            .style('top', height + 'px');
         })
         .on('click', click);
 

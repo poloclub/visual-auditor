@@ -187,7 +187,7 @@ function ForceLayout({
               .style('opacity', 0.9)
               .style(
                 'left',
-                (d.x < 0.75 * width ? width / 2 + d.x : d.x + width / 4) + 'px'
+                (d.x + width / 10) + 'px'
               )
               .style('top', height / 5 + d.y + 'px');
             div.html(
@@ -217,8 +217,8 @@ function ForceLayout({
             div
               .transition()
               .style('opacity', 0)
-              .style('left', width + 'px')
-              .style('top', 0 + 'px');
+              .style('left', Math.min(Math.max(200, d.x), width - 200) + 100 + 'px')
+              .style('top', Math.min(height - 200, Math.max(0, d.y)) + 'px');
           })
           .on('click', function (event, d) {
             bubbles.style('fill', function (d) {
