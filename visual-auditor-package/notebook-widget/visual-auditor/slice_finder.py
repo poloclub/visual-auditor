@@ -45,7 +45,6 @@ class Slice:
         self.effect_size = effect_size
 
     def union(self, s):
-        ''' union with Slice s '''
         if set(self.filters.keys()) == set(s.filters.keys()):
             for k in self.filters.keys():
                 self.filters[k] = self.filters[k] + s.filters[k]
@@ -59,7 +58,6 @@ class Slice:
         return True
 
     def intersect(self, s):
-        ''' intersect with Slice s '''
         for k, v in list(s.filters.items()):
             if k not in self.filters:
                 self.filters[k] = v
@@ -106,12 +104,9 @@ class SliceFinder:
             else:
                 candidates = self.crossing(uninteresting, i)
             print('effect size filtering')
-            interesting, uninteresting_ = self.filter_by_effect_size(candidates, reference, epsilon,
-                                                                     max_workers=max_workers,
-                                                                     risk_control=risk_control)
+            interesting, uninteresting_ = self.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
             uninteresting += uninteresting_
             slices += interesting
-            # slices = self.merge_slices(slices, reference, epsilon)
             if len(slices) >= k:
                 break
 
@@ -134,10 +129,8 @@ class SliceFinder:
         for col in X.columns:
             uniques, counts = np.unique(X[col], return_counts=True)
             if len(uniques) == n:
-                # Skip ID like col
                 continue
             if len(uniques) > n/2.:
-                # Bin high cardinality col
                 bin_edges = self.binning(X[col], n_bin=10)
                 for i in range(len(bin_edges)-1):
                     data_idx = X[np.logical_and(
@@ -184,26 +177,6 @@ class SliceFinder:
                     log_loss, labels=self.model.classes_), y, y_p)
                 return list(map(lambda x: -1 * x, l))
             return list(map(functools.partial(metric, labels=self.model.classes_), y, y_p))
-        # elif metric == accuracy_score:
-        #     if (reverse):
-        #         return list(map(metric, y, y_pred))
-        #     l = map(metric, y, y_pred)
-        #     return list(map(lambda x: -1 * x, l))
-        # elif metric == precision_score:
-        #     if (reverse):
-        #         return list(map(metric, y, y_pred))
-        #     l = map(metric, y, y_pred)
-        #     return list(map(lambda x: -1 * x, l))
-        # elif metric == recall_score:
-        #     if (reverse):
-        #         return list(map(metric, y, y_pred))
-        #     l = map(metric, y, y_pred)
-        #     return list(map(lambda x: -1 * x, l))
-        # elif metric == f1_score:
-        #     if (reverse):
-        #         return list(map(metric, y, y_pred))
-        #     l = map(metric, y, y_pred)
-        #     return list(map(lambda x: -1 * x, l))
 
     def filter_by_effect_size(self, slices, reference, epsilon=0.5, max_workers=1, alpha=0.05, risk_control=True):
         ''' Filter slices by the minimum effect size '''
@@ -223,7 +196,6 @@ class SliceFinder:
                 elif job.done():
                     s = job.result()
                     if s.effect_size >= epsilon:
-                        # if risk_control is False or test_result:
                         filtered_slices.append(s)
                     else:
                         rejected.append(s)
@@ -233,11 +205,10 @@ class SliceFinder:
         data = (self.data[0].loc[s.data_idx], self.data[1].loc[s.data_idx])
         m_slice = self.evaluate_model(data)
         eff_size = effect_size(m_slice, reference)
-        # test_result = t_testing(m_slice, reference, alpha)
 
         s.set_metric(np.mean(m_slice))
         s.set_effect_size(eff_size)
-        return s  # , test_result
+        return s 
 
     def merge_slices(self, slices, reference, epsilon):
         ''' Merge slices with the same filter attributes
