@@ -364,11 +364,17 @@ def visualize():
 
     slices = codecs.open("slices.json", 'r')
     slices_str = html_file.read()
+    print(slices_str)
     html_str = html_str.replace('{"model":"insert log loss slices","data":"insert log loss slices"}', slices_str)
 
-    samples = codecs.open("samples.json", 'r')
+    samples = codecs.open("overlapping_samples.json", 'r')
     samples_str = html_file.read()
+    print(samples_str)
     html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+    
+    file = codecs.open("new_bundle.html", "w", "utf-8")
+    file.write(html_str)
+    file.close()
 
     html_str = html.escape(html_str)
 
