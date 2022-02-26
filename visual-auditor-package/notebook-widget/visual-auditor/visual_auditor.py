@@ -72,6 +72,8 @@ class SliceFinder:
     def __init__(self, model, data):
         self.model = model
         self.data = data
+        self.slices = []
+        self.samples = {}
 
     def find_slice(self, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1):
         ''' Find interesting slices '''
@@ -105,6 +107,7 @@ class SliceFinder:
 
         self.save_slices_to_file(recommendations, reference[0], 'slices.json')
         self.compute_overlapping_samples(recommendations, 'overlapping_samples.json')
+        self.count_common_samples('common_samples.json')
             
         return recommendations
 
@@ -127,6 +130,7 @@ class SliceFinder:
             }
             slices.append(slice)
         data = {}
+        self.slices = slices
         data["data"] = slices
         data["model"] = model_average
         with open(filename, 'w') as f:
@@ -151,8 +155,28 @@ class SliceFinder:
             sampleDict[description] = sliceSet
         for key in sampleDict.keys():
             sampleDict[key] = list(sampleDict[key])
+        self.samples=sampleDict
         with open(filename, "w") as outfile:
             json.dump(sampleDict, outfile)
+    
+    def count_common_samples(self, filename):
+        commonSamples = {}
+        for s1 in range(0, len(self.slices) - 1):
+            for s2 in range(1, len(self.slices)):
+                slice1 = list(self.slices[s1].keys())[0]
+                slice2 = list(self.slices[s2].keys())[0]
+                arr1 = self.samples[slice1]
+                arr2 = self.samples[slice2]
+                if (arr1 is None or arr2 is None):
+                    return 0
+                random.shuffle(arr1)
+                arr1 = arr1[0:2000]
+                count = len([value for value in arr1 if value in arr2])
+                commonSamples[slice1 + '-' + slice2] = count
+                commonSamples[slice2 + '-' + slice1] = count
+
+        with open(filename, "w") as outfile:
+            json.dump(commonSamples, outfile)
 
     def slicing(self):
         ''' Generate base slices '''
@@ -369,6 +393,10 @@ def visualize():
     samples_file = codecs.open("overlapping_samples.json", 'r')
     samples_str = samples_file.read()
     html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+
+    common_samples_file = codecs.open("common_samples.json", 'r')
+    common_samples_str = common_samples_file.read()
+    html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
     
     file = codecs.open("new_bundle.html", "w", "utf-8")
     file.write(html_str)
