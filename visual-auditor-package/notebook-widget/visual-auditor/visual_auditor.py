@@ -397,10 +397,6 @@ def visualize():
     common_samples_file = codecs.open("common_samples.json", 'r')
     common_samples_str = common_samples_file.read()
     html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
-    
-    file = codecs.open("new_bundle.html", "w", "utf-8")
-    file.write(html_str)
-    file.close()
 
     html_str = html.escape(html_str)
 
