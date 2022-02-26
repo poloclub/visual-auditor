@@ -103,12 +103,12 @@ class SliceFinder:
         slices = sorted(slices, key=lambda s: s.size, reverse=True)
         recommendations = slices[:k]
 
-        self.save_slices_to_file(recommendations, 'slices.json')
+        self.save_slices_to_file(recommendations, reference[0], 'slices.json')
         self.compute_overlapping_samples(recommendations, 'overlapping_samples.json')
             
         return recommendations
 
-    def save_slices_to_file(self, recommendations, filename):
+    def save_slices_to_file(self, recommendations, model_average, filename):
         slices = []
         for s in recommendations:
             slice = {}
@@ -128,6 +128,7 @@ class SliceFinder:
             slices.append(slice)
         data = {}
         data["data"] = slices
+        data["model"] = model_average
         with open(filename, 'w') as f:
             json.dump(data, f)
 
@@ -356,13 +357,19 @@ def _make_html():
 def visualize():
     """
     Render Visual Auditor in the output cell.
-    Args:
-        
     """
     # html_str = _make_html()   
     html_file = codecs.open("bundle.html", 'r')
     html_str = html_file.read()
-    print(html_str)
+
+    slices = codecs.open("slices.json", 'r')
+    slices_str = html_file.read()
+    html_str = html_str.replace('{"model":"insert log loss slices","data":"insert log loss slices"}', slices_str)
+
+    samples = codecs.open("samples.json", 'r')
+    samples_str = html_file.read()
+    html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+
     html_str = html.escape(html_str)
 
     # Randomly generate an ID for the iframe to avoid collision
