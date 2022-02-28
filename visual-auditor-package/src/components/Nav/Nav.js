@@ -10,14 +10,9 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
     setView(event.target.value);
   };
 
-  const handleAlgorithmChange = (event) => {
-    setAlgorithm(event.target.value);
-  };
-
   return (
     <div className='nav-container'>
-      <h1>UCI Adults Dataset</h1>
-      <FormControl sx={{ s: 1, minWidth: 175, paddingRight: 1 }}>
+      <FormControl sx={{ s: 1, minWidth: 175, paddingRight: 1}} style={{marginTop: '1rem'}}>
         <InputLabel>View:</InputLabel>
         <Select value={view} label='View' onChange={handleViewChange}>
           <MenuItem value={'bar'}>Bar Chart Layout</MenuItem>
@@ -25,17 +20,6 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
           <MenuItem value={'graph'}>Graph Layout</MenuItem>
         </Select>
       </FormControl>
-      {/* <FormControl sx={{ s: 2, minWidth: 175, paddingRight: 1 }}>
-        <InputLabel>Algorithm:</InputLabel>
-        <Select
-          value={algorithm}
-          label='Algorithm'
-          onChange={handleAlgorithmChange}
-        >
-          <MenuItem value={'slicefinder'}>Slice Finder</MenuItem>
-          <MenuItem value={'sliceline'}>Slice Line</MenuItem>
-        </Select>
-      </FormControl> */}
     </div>
   );
 };
