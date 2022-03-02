@@ -132,7 +132,7 @@ function SliceBarChart({
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
         .attr('y', (d) => y1(0) - margin.bottom)
-        .attr('height', (d) => height - y1(0));
+        .attr('height', (d) => height - y1(0))
 
       // Animation
       if (!doneAnimating) {
@@ -186,6 +186,8 @@ function SliceBarChart({
         .attr('x', 0)
         .attr('y', y1(model) + 25)
         .style('fill', 'gray');
+
+      svg.append('viewBox', '0 0 700 875')
     },
     [data, metric, selected]
   );
