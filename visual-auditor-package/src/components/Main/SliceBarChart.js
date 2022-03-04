@@ -198,9 +198,8 @@ function SliceBarChart({
       ></div>
       <svg
         ref={ref}
+        viewBox="0 0 875 875" width="80%" height="80%"
         style={{
-          height: 700,
-          width: 875,
           marginLeft: 'auto',
           marginRight: 'auto',
           display: 'block',

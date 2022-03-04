@@ -306,7 +306,7 @@ function ForceLayout({
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6' }}
       ></div>
-      <svg width={width} height={height} id='force-svg' className='svg'>
+      <svg viewBox="0 0 875 875" width="80%" height="80%" id='force-svg' className='svg'>
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
