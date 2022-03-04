@@ -132,6 +132,10 @@ class SliceFinder:
         self.slices = slices
         data["data"] = slices
         data["model"] = model_average
+        
+        if (filename == None):
+            return json.dumps(data)
+
         with open(filename, 'w') as f:
             json.dump(data, f)
 
@@ -155,6 +159,10 @@ class SliceFinder:
         for key in sampleDict.keys():
             sampleDict[key] = list(sampleDict[key])
         self.samples=sampleDict
+
+        if (filename == None):
+            return json.dumps(sampleDict)
+
         with open(filename, "w") as outfile:
             json.dump(sampleDict, outfile)
     
@@ -173,6 +181,9 @@ class SliceFinder:
                 count = len([value for value in arr1 if value in arr2])
                 commonSamples[slice1 + '-' + slice2] = count
                 commonSamples[slice2 + '-' + slice1] = count
+
+        if (filename == None):
+            return json.dumps(commonSamples)
 
         with open(filename, "w") as outfile:
             json.dump(commonSamples, outfile)
@@ -353,6 +364,62 @@ class SliceFinder:
         bin_edges = stats.mstats.mquantiles(
             col, np.arange(0., 1.+1./n_bin, 1./n_bin))
         return bin_edges
+    
+    def find_slices_and_visualize(self, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1):
+        ''' Find interesting slices and generate visual auditor '''
+        assert k > 0
+
+        metrics_all = self.evaluate_model(self.data)
+        reference = (np.mean(metrics_all), np.std(
+            metrics_all), len(metrics_all))
+
+        slices = []
+        uninteresting = []
+        for i in range(1, degree+1):
+            print('degree %s' % i)
+            print('crossing')
+            if i == 1:
+                candidates = self.slicing()
+            else:
+                candidates = self.crossing(uninteresting, i)
+            print('effect size filtering')
+            interesting, uninteresting_ = self.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
+            uninteresting += uninteresting_
+            slices += interesting
+            if len(slices) >= k:
+                break
+
+        print('sorting')
+        slices = sorted(slices, key=lambda s: s.size, reverse=True)
+        recommendations = slices[:k]
+
+        slices_str = self.save_slices_to_file(recommendations, reference[0], None)
+        samples_str = self.compute_overlapping_samples(recommendations, None)
+        common_samples_str = self.count_common_samples(None)
+
+        html_file = codecs.open("bundle.html", 'r')
+        html_str = html_file.read()
+
+        html_str = html_str.replace('{"model":"insert log loss slices","data":"insert log loss slices"}', slices_str)
+        html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+        html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
+
+        html_str = html.escape(html_str)
+
+        iframe_id = 'visual-auditor-iframe-' + str(int(random.random() * 1e8))
+
+        iframe = '''
+            <iframe
+                srcdoc="{}"
+                frameBorder="0"
+                width="100%"
+                height="800px"
+                id="{}">
+            </iframe>
+        '''.format(html_str, iframe_id)
+
+        display_html(iframe, raw=True)
+
 
 def _make_html():
     """
@@ -413,4 +480,61 @@ def visualize():
     '''.format(html_str, iframe_id)
 
     # Display the iframe
+    display_html(iframe, raw=True)
+
+
+def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1):
+    ''' Find interesting slices and generate visual auditor '''
+    sf = SliceFinder(model, data)
+    assert k > 0
+
+    metrics_all = sf.evaluate_model(sf.data)
+    reference = (np.mean(metrics_all), np.std(
+        metrics_all), len(metrics_all))
+
+    slices = []
+    uninteresting = []
+    for i in range(1, degree+1):
+        print('degree %s' % i)
+        print('crossing')
+        if i == 1:
+            candidates = sf.slicing()
+        else:
+            candidates = sf.crossing(uninteresting, i)
+        print('effect size filtering')
+        interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
+        uninteresting += uninteresting_
+        slices += interesting
+        if len(slices) >= k:
+            break
+
+    print('sorting')
+    slices = sorted(slices, key=lambda s: s.size, reverse=True)
+    recommendations = slices[:k]
+
+    slices_str = sf.save_slices_to_file(recommendations, reference[0], None)
+    samples_str = sf.compute_overlapping_samples(recommendations, None)
+    common_samples_str = sf.count_common_samples(None)
+
+    html_file = codecs.open("bundle.html", 'r')
+    html_str = html_file.read()
+
+    html_str = html_str.replace('{"model":"insert log loss slices","data":"insert log loss slices"}', slices_str)
+    html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+    html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
+
+    html_str = html.escape(html_str)
+
+    iframe_id = 'visual-auditor-iframe-' + str(int(random.random() * 1e8))
+
+    iframe = '''
+        <iframe
+            srcdoc="{}"
+            frameBorder="0"
+            width="100%"
+            height="800px"
+            id="{}">
+        </iframe>
+    '''.format(html_str, iframe_id)
+
     display_html(iframe, raw=True)
