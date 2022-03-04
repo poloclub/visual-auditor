@@ -8,12 +8,8 @@ const RightDrawer = ({ details, metric, overperforming, view, convexHull }) => {
   return (
     <Drawer
       sx={{
-        width: '15rem',
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: '15rem',
-          boxSizing: 'border-box',
-        },
+        display: { xs: 'none', sm: 'block' },
+        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '15rem' },
       }}
       variant='permanent'
       anchor='right'

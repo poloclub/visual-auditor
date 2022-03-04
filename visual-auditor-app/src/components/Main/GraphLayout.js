@@ -517,7 +517,7 @@ function GraphLayout({
           padding: '0.5rem',
         }}
       ></div>
-      <svg id='graph-svg' className='svg' width={width} height={height}>
+      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%">
         <g id='graph-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
