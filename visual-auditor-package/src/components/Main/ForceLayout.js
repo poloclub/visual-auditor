@@ -185,11 +185,8 @@ function ForceLayout({
               .transition()
               .duration(200)
               .style('opacity', 0.9)
-              .style(
-                'left',
-                (d.x + width / 10) + 'px'
-              )
-              .style('top', height / 5 + d.y + 'px');
+              .style('right', 100 + 'px')
+              .style('top', 100 + 'px');
             div.html(
               '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
@@ -217,8 +214,6 @@ function ForceLayout({
             div
               .transition()
               .style('opacity', 0)
-              .style('left', Math.min(Math.max(200, d.x), width - 200) + 100 + 'px')
-              .style('top', Math.min(height - 200, Math.max(0, d.y)) + 'px');
           })
           .on('click', function (event, d) {
             bubbles.style('fill', function (d) {
@@ -304,7 +299,7 @@ function ForceLayout({
     <div className='force'>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: '#e6e6e6' }}
+        style={{ position: 'absolute', background: '#e6e6e6', right: '100px', top: '100px', }}
       ></div>
       <svg viewBox="0 0 875 875" width="80%" height="80%" id='force-svg' className='svg'>
         <g id='force-g' className='g' transform='translate(50, 200)'></g>

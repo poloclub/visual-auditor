@@ -93,8 +93,8 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width / 2 + 'px')
-            .style('top', height / 4 + 'px');
+            .style('right', 100 + 'px')
+            .style('top', 100 + 'px');
           div.html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -117,8 +117,6 @@ function SliceBarChart({
           div
             .transition()
             .style('opacity', 0)
-            .style('left', width + 'px')
-            .style('top', height + 'px');
         })
         .on('click', function (event, d) {
           setSelected(d.slice);
@@ -194,7 +192,7 @@ function SliceBarChart({
     <div style={{width: '100%'}}>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: 'lightgray' }}
+        style={{ position: 'absolute', background: 'lightgray', right: '100px', top: '100px' }}
       ></div>
       <svg
         ref={ref}
