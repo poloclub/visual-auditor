@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
 import './LeftDrawer.css';
 
 const LeftDrawer = ({
@@ -123,9 +124,20 @@ const LeftDrawer = ({
         {view === 'graph' && (
           <>
             <h2>Edge Filtering:</h2>
+            <TextField
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              label="Edge Filtering"
+              variant="outlined"
+              value={edgeFiltering}
+              valueLabelDisplay='auto'
+              defaultValue={300}
+              onChange={(event) => {
+                setEdgeFiltering(event.target.value);
+                setShowConvexHull(false);
+              }}
+            />
             <Slider
               aria-label='Edge Filtering'
-              defaultValue={300}
               value={edgeFiltering}
               valueLabelDisplay='auto'
               step={10}

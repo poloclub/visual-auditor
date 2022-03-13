@@ -119,7 +119,6 @@ class SliceFinder:
                 if (i > 0):
                     description += ', '
                 description += str(list(s.get_filter().keys())[i]) + ': ' + str(list(s.get_filter().values())[i][0][0])
-                print(description)
             slice[description] = {
                 "slice": description,
                 "effect_size": s.effect_size,
@@ -524,7 +523,7 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
         interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
         uninteresting += uninteresting_
         slices += interesting
-        if len(reverse_slices) >= k:
+        if len(slices) >= k:
             break
 
     slices = sorted(slices, key=lambda s: s.size, reverse=True)
@@ -543,6 +542,13 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
     html_str = html_str.replace('{"model":"insert reverse log loss slices","data":"insert reverse log loss slices"}', reverse_slices_str)
     html_str = html_str.replace('{"data":"insert reverse log loss samples"}', reverse_samples_str)
     html_str = html_str.replace('{"data":"insert reverse common samples"}', reverse_common_samples_str)
+
+    features_str = ''
+
+    for i in range(len(data[0].columns) - 1):
+        features_str += 'Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"' + data[0].columns[i] + '",onChange:function(e){return K(e,"' + data[0].columns[i] + '")}}),'
+    features_str += 'Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"' + data[0].columns[len(data[0].columns) - 1] + '",onChange:function(e){return P(e,"' + data[0].columns[len(data[0].columns) - 1] + '")}})'
+    html_str = html_str.replace('Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"Insert Features",onChange:function(e){return K(e,"Insert Features")}}),Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"Insert Features",onChange:function(e){return K(e,"Insert Features")}})', features_str)
 
     html_str = html.escape(html_str)
 

@@ -13,6 +13,7 @@ import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import TextField from '@mui/material/TextField';
 import './LeftDrawer.css';
 
 const LeftDrawer = ({
@@ -138,15 +139,13 @@ const LeftDrawer = ({
           {view === 'graph' && (
             <>
               <h2>Edge Filtering:</h2>
-              <Slider
-                aria-label='Edge Filtering'
-                defaultValue={300}
+              <TextField
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                label="Edge Filtering"
+                variant="outlined"
                 value={edgeFiltering}
                 valueLabelDisplay='auto'
-                step={10}
-                min={0}
-                max={1000}
-                size='small'
+                defaultValue={300}
                 onChange={(event) => {
                   setEdgeFiltering(event.target.value);
                   setShowConvexHull(false);
@@ -265,68 +264,13 @@ const LeftDrawer = ({
           <FormGroup style={{ marginLeft: '1rem' }}>
             <FormControlLabel
               control={<Checkbox defaultChecked />}
-              label='Age'
-              onChange={(event) => handleCheckboxChange(event, 'Age')}
+              label='Insert Features'
+              onChange={(event) => handleCheckboxChange(event, 'Insert Features')}
             />
             <FormControlLabel
               control={<Checkbox defaultChecked />}
-              label='Workclass'
-              onChange={(event) => handleCheckboxChange(event, 'Workclass')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Education'
-              onChange={(event) => handleCheckboxChange(event, 'Education')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Education-Num'
-              onChange={(event) => handleCheckboxChange(event, 'Education-Num')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Marital Status'
-              onChange={(event) => handleCheckboxChange(event, 'Marital Status')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Occupation'
-              onChange={(event) => handleCheckboxChange(event, 'Occupation')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Relationship'
-              onChange={(event) => handleCheckboxChange(event, 'Relationship')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Race'
-              onChange={(event) => handleCheckboxChange(event, 'Race')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Sex'
-              onChange={(event) => handleCheckboxChange(event, 'Sex')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Capital Gain'
-              onChange={(event) => handleCheckboxChange(event, 'Capital Gain')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Capital Loss'
-              onChange={(event) => handleCheckboxChange(event, 'Capital Loss')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Hours Per Week'
-              onChange={(event) => handleCheckboxChange(event, 'Hours Per Week')}
-            />
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label='Country'
-              onChange={(event) => handleCheckboxChange(event, 'Country')}
+              label='Insert Features'
+              onChange={(event) => handleCheckboxChange(event, 'Insert Features')}
             />
           </FormGroup>
           <Divider style={{ padding: '1rem' }} />
