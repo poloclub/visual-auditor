@@ -488,27 +488,22 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
     sf = SliceFinder(model, data)
     assert k > 0
 
-    metrics_all = sf.evaluate_model(sf.data)
-    reference = (np.mean(metrics_all), np.std(
-        metrics_all), len(metrics_all))
+    metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=False)
+    reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
 
     slices = []
     uninteresting = []
     for i in range(1, degree+1):
-        print('degree %s' % i)
-        print('crossing')
         if i == 1:
             candidates = sf.slicing()
         else:
             candidates = sf.crossing(uninteresting, i)
-        print('effect size filtering')
         interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
         uninteresting += uninteresting_
         slices += interesting
         if len(slices) >= k:
             break
 
-    print('sorting')
     slices = sorted(slices, key=lambda s: s.size, reverse=True)
     recommendations = slices[:k]
 
@@ -516,12 +511,38 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
     samples_str = sf.compute_overlapping_samples(recommendations, None)
     common_samples_str = sf.count_common_samples(None)
 
+    metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=True)
+    reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
+
+    slices = []
+    uninteresting = []
+    for i in range(1, degree+1):
+        if i == 1:
+            candidates = sf.slicing()
+        else:
+            candidates = sf.crossing(uninteresting, i)
+        interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
+        uninteresting += uninteresting_
+        slices += interesting
+        if len(reverse_slices) >= k:
+            break
+
+    slices = sorted(slices, key=lambda s: s.size, reverse=True)
+    reverse_recommendations = slices[:k]
+
+    reverse_slices_str = sf.save_slices_to_file(reverse_recommendations, reference[0], None)
+    reverse_samples_str = sf.compute_overlapping_samples(reverse_recommendations, None)
+    reverse_common_samples_str = sf.count_common_samples(None)
+
     html_file = codecs.open("bundle.html", 'r')
     html_str = html_file.read()
 
     html_str = html_str.replace('{"model":"insert log loss slices","data":"insert log loss slices"}', slices_str)
-    html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+    html_str = html_str.replace('{"data":"insert log loss samples"}', samples_str)
     html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
+    html_str = html_str.replace('{"model":"insert reverse log loss slices","data":"insert reverse log loss slices"}', reverse_slices_str)
+    html_str = html_str.replace('{"data":"insert reverse log loss samples"}', reverse_samples_str)
+    html_str = html_str.replace('{"data":"insert reverse common samples"}', reverse_common_samples_str)
 
     html_str = html.escape(html_str)
 
