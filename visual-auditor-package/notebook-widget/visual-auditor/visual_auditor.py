@@ -137,6 +137,8 @@ class SliceFinder:
 
         with open(filename, 'w') as f:
             json.dump(data, f)
+        
+        return json.dumps(data)
 
     def compute_overlapping_samples(self, recommendations, filename):
         sampleDict = {}
@@ -164,6 +166,8 @@ class SliceFinder:
 
         with open(filename, "w") as outfile:
             json.dump(sampleDict, outfile)
+
+        return json.dumps(sampleDict)
     
     def count_common_samples(self, filename):
         commonSamples = {}
@@ -186,6 +190,8 @@ class SliceFinder:
 
         with open(filename, "w") as outfile:
             json.dump(commonSamples, outfile)
+        
+        return json.dumps(commonSamples)
 
     def slicing(self):
         ''' Generate base slices '''
@@ -493,10 +499,16 @@ def visualize():
     display_html(iframe, raw=True)
 
 
-def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1, precompute=True):
+def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1, precompute=True, prefix=''):
     ''' Find interesting slices and generate visual auditor '''
+    slices_str = 'test'
+    samples_str = ''
+    common_samples_str = ''
+    reverse_slices_str = ''
+    reverse_samples_str = ''
+    reverse_common_samples_str = ''
 
-    if (precompute == False) {
+    if (precompute == False):
         sf = SliceFinder(model, data)
         assert k > 0
 
@@ -519,9 +531,9 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
         slices = sorted(slices, key=lambda s: s.size, reverse=True)
         recommendations = slices[:k]
 
-        slices_str = sf.save_slices_to_file(recommendations, reference[0], 'slices.json')
-        samples_str = sf.compute_overlapping_samples(recommendations, 'overlapping_samples.json')
-        common_samples_str = sf.count_common_samples('common_samples.json')
+        slices_str = sf.save_slices_to_file(recommendations, reference[0], prefix + 'slices.json')
+        samples_str = sf.compute_overlapping_samples(recommendations, prefix + 'overlapping_samples.json')
+        common_samples_str = sf.count_common_samples(prefix + 'common_samples.json')
 
         metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=True)
         reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
@@ -542,28 +554,27 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
         slices = sorted(slices, key=lambda s: s.size, reverse=True)
         reverse_recommendations = slices[:k]
 
-        reverse_slices_str = sf.save_slices_to_file(reverse_recommendations, reference[0], 'reverse_slices.json')
-        reverse_samples_str = sf.compute_overlapping_samples(reverse_recommendations, 'reverse_overlapping_samples.json')
-        reverse_common_samples_str = sf.count_common_samples('reverse_common_samples.json')
-    } else {
-        slices_file = codecs.open("slices.json", 'r')
+        reverse_slices_str = sf.save_slices_to_file(reverse_recommendations, reference[0], prefix + 'reverse_slices.json')
+        reverse_samples_str = sf.compute_overlapping_samples(reverse_recommendations, prefix + 'reverse_overlapping_samples.json')
+        reverse_common_samples_str = sf.count_common_samples(prefix + 'reverse_common_samples.json')
+    else:
+        slices_file = codecs.open(prefix + "slices.json", 'r')
         slices_str = slices_file.read()
 
-        samples_file = codecs.open("overlapping_samples.json", 'r')
+        samples_file = codecs.open(prefix + "overlapping_samples.json", 'r')
         samples_str = samples_file.read()
 
-        common_samples_file = codecs.open("common_samples.json", 'r')
+        common_samples_file = codecs.open(prefix + "common_samples.json", 'r')
         common_samples_str = common_samples_file.read()
 
-        reverse_slices_file = codecs.open("reverse_slices.json", 'r')
+        reverse_slices_file = codecs.open(prefix + "reverse_slices.json", 'r')
         reverse_slices_str = reverse_slices_file.read()
 
-        reverse_samples_file = codecs.open("reverse_overlapping_samples.json", 'r')
+        reverse_samples_file = codecs.open(prefix + "reverse_overlapping_samples.json", 'r')
         reverse_samples_str = reverse_samples_file.read()
 
-        reverse_common_samples_file = codecs.open("reverse_common_samples.json", 'r')
+        reverse_common_samples_file = codecs.open(prefix + "reverse_common_samples.json", 'r')
         reverse_common_samples_str = reverse_common_samples_file.read()
-    }
 
     html_file = codecs.open("bundle.html", 'r')
     html_str = html_file.read()
