@@ -446,8 +446,7 @@ def _make_html():
 def visualize():
     """
     Render Visual Auditor in the output cell.
-    """
-    # html_str = _make_html()   
+    """  
     html_file = codecs.open("bundle.html", 'r')
     html_str = html_file.read()
 
@@ -457,11 +456,23 @@ def visualize():
 
     samples_file = codecs.open("overlapping_samples.json", 'r')
     samples_str = samples_file.read()
-    html_str = html_str.replace('{"model":"insert log loss samples","data":"insert log loss samples"}', samples_str)
+    html_str = html_str.replace('{"data":"insert log loss samples"}', samples_str)
 
     common_samples_file = codecs.open("common_samples.json", 'r')
     common_samples_str = common_samples_file.read()
     html_str = html_str.replace('{"data":"insert common samples"}', common_samples_str)
+
+    reverse_slices_file = codecs.open("reverse_slices.json", 'r')
+    reverse_slices_str = reverse_slices_file.read()
+    html_str = html_str.replace('{"model":"insert reverse log loss slices","data":"insert reverse log loss slices"}', reverse_slices_str)
+
+    reverse_samples_file = codecs.open("reverse_overlapping_samples.json", 'r')
+    reverse_samples_str = reverse_samples_file.read()
+    html_str = html_str.replace('{"data":"insert reverse log loss samples"}', reverse_samples_str)
+
+    reverse_common_samples_file = codecs.open("reverse_common_samples.json", 'r')
+    reverse_common_samples_str = reverse_common_samples_file.read()
+    html_str = html_str.replace('{"data":"insert reverse common samples"}', reverse_common_samples_str)
 
     html_str = html.escape(html_str)
 
@@ -482,56 +493,77 @@ def visualize():
     display_html(iframe, raw=True)
 
 
-def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1):
+def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree=3, risk_control=True, max_workers=1, precompute=True):
     ''' Find interesting slices and generate visual auditor '''
-    sf = SliceFinder(model, data)
-    assert k > 0
 
-    metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=False)
-    reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
+    if (precompute == False) {
+        sf = SliceFinder(model, data)
+        assert k > 0
 
-    slices = []
-    uninteresting = []
-    for i in range(1, degree+1):
-        if i == 1:
-            candidates = sf.slicing()
-        else:
-            candidates = sf.crossing(uninteresting, i)
-        interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
-        uninteresting += uninteresting_
-        slices += interesting
-        if len(slices) >= k:
-            break
+        metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=False)
+        reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
 
-    slices = sorted(slices, key=lambda s: s.size, reverse=True)
-    recommendations = slices[:k]
+        slices = []
+        uninteresting = []
+        for i in range(1, degree+1):
+            if i == 1:
+                candidates = sf.slicing()
+            else:
+                candidates = sf.crossing(uninteresting, i)
+            interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
+            uninteresting += uninteresting_
+            slices += interesting
+            if len(slices) >= k:
+                break
 
-    slices_str = sf.save_slices_to_file(recommendations, reference[0], None)
-    samples_str = sf.compute_overlapping_samples(recommendations, None)
-    common_samples_str = sf.count_common_samples(None)
+        slices = sorted(slices, key=lambda s: s.size, reverse=True)
+        recommendations = slices[:k]
 
-    metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=True)
-    reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
+        slices_str = sf.save_slices_to_file(recommendations, reference[0], 'slices.json')
+        samples_str = sf.compute_overlapping_samples(recommendations, 'overlapping_samples.json')
+        common_samples_str = sf.count_common_samples('common_samples.json')
 
-    slices = []
-    uninteresting = []
-    for i in range(1, degree+1):
-        if i == 1:
-            candidates = sf.slicing()
-        else:
-            candidates = sf.crossing(uninteresting, i)
-        interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
-        uninteresting += uninteresting_
-        slices += interesting
-        if len(slices) >= k:
-            break
+        metrics_all = sf.evaluate_model(sf.data, metric=log_loss, reverse=True)
+        reference = (np.mean(metrics_all), np.std(metrics_all), len(metrics_all))
 
-    slices = sorted(slices, key=lambda s: s.size, reverse=True)
-    reverse_recommendations = slices[:k]
+        slices = []
+        uninteresting = []
+        for i in range(1, degree+1):
+            if i == 1:
+                candidates = sf.slicing()
+            else:
+                candidates = sf.crossing(uninteresting, i)
+            interesting, uninteresting_ = sf.filter_by_effect_size(candidates, reference, epsilon, max_workers=max_workers, risk_control=risk_control)
+            uninteresting += uninteresting_
+            slices += interesting
+            if len(slices) >= k:
+                break
 
-    reverse_slices_str = sf.save_slices_to_file(reverse_recommendations, reference[0], None)
-    reverse_samples_str = sf.compute_overlapping_samples(reverse_recommendations, None)
-    reverse_common_samples_str = sf.count_common_samples(None)
+        slices = sorted(slices, key=lambda s: s.size, reverse=True)
+        reverse_recommendations = slices[:k]
+
+        reverse_slices_str = sf.save_slices_to_file(reverse_recommendations, reference[0], 'reverse_slices.json')
+        reverse_samples_str = sf.compute_overlapping_samples(reverse_recommendations, 'reverse_overlapping_samples.json')
+        reverse_common_samples_str = sf.count_common_samples('reverse_common_samples.json')
+    } else {
+        slices_file = codecs.open("slices.json", 'r')
+        slices_str = slices_file.read()
+
+        samples_file = codecs.open("overlapping_samples.json", 'r')
+        samples_str = samples_file.read()
+
+        common_samples_file = codecs.open("common_samples.json", 'r')
+        common_samples_str = common_samples_file.read()
+
+        reverse_slices_file = codecs.open("reverse_slices.json", 'r')
+        reverse_slices_str = reverse_slices_file.read()
+
+        reverse_samples_file = codecs.open("reverse_overlapping_samples.json", 'r')
+        reverse_samples_str = reverse_samples_file.read()
+
+        reverse_common_samples_file = codecs.open("reverse_common_samples.json", 'r')
+        reverse_common_samples_str = reverse_common_samples_file.read()
+    }
 
     html_file = codecs.open("bundle.html", 'r')
     html_str = html_file.read()
