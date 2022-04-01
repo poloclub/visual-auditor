@@ -238,7 +238,8 @@ function GraphLayout({
             .duration(200)
             .style('opacity', 0.9)
             .style('right', 100 + 'px')
-            .style('top', 100 + 'px');
+            .style('top', 100 + 'px')
+            .style('padding', '1rem 1rem 1rem 1rem')
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -255,7 +256,7 @@ function GraphLayout({
               '</strong>' +
               '<br>' +
               d.metric.toFixed(2) +
-              '<br>' +
+              ' ' +
               `(${Math.round(((d.metric - model) / model) * 100)}% difference)`
           );
         })

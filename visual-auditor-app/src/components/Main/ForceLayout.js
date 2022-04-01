@@ -104,7 +104,7 @@ function ForceLayout({
         .style('opacity', 0)
         .style('width', '200px')
         .style('height', '150px')
-        .style('padding', '1rem 0.5rem 0 0.5rem')
+        .style('padding', '1rem 1rem 0 1rem')
         .style('border-radius', '20px');
       const xCenter = [];
       const yCenter = [];
@@ -206,7 +206,7 @@ function ForceLayout({
                 '</strong>' +
                 '<br>' +
                 d.metric.toFixed(2) +
-                '<br>' +
+                ' ' +
                 `(${Math.round(
                   ((d.metric - model) / model) * 100
                 )}% difference)`

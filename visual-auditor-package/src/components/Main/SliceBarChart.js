@@ -27,7 +27,7 @@ function SliceBarChart({
         .style('opacity', 0)
         .style('width', '200px')
         .style('height', '150px')
-        .style('padding', '1rem 0.75rem')
+        .style('padding', '1rem 1rem 0rem 1rem')
         .style('border-radius', '20px');
 
       const x = d3
@@ -108,7 +108,7 @@ function SliceBarChart({
               '<strong>Metric: </strong>' +
               '<br>' +
               d.metric.toFixed(2) +
-              '<br>' +
+              ' ' +
               `(${Math.round(((d.metric - model) / model) * 100)}% difference)`
           );
         })
