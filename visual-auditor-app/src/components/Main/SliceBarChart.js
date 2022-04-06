@@ -93,8 +93,8 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('left', width + 'px')
-            .style('top', height / 4 + 'px');
+            .style('right', '20%')
+            .style('top', '100px');
           div.html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -117,8 +117,6 @@ function SliceBarChart({
           div
             .transition()
             .style('opacity', 0)
-            .style('left', width + 'px')
-            .style('top', 0 + 'px');
         })
         .on('click', function (event, d) {
           setSelected(d.slice);
@@ -132,7 +130,7 @@ function SliceBarChart({
         .attr('x', (d) => x(d.slice))
         .attr('width', x.bandwidth())
         .attr('y', (d) => y1(0) - margin.bottom)
-        .attr('height', (d) => height - y1(0))
+        .attr('height', (d) => height - y1(0));
 
       // Animation
       if (!doneAnimating) {
@@ -186,8 +184,6 @@ function SliceBarChart({
         .attr('x', 0)
         .attr('y', y1(model) + 25)
         .style('fill', 'gray');
-
-      svg.append('viewBox', '0 0 700 875')
     },
     [data, metric, selected]
   );
@@ -196,16 +192,13 @@ function SliceBarChart({
     <div style={{width: '100%'}}>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: 'lightgray' }}
+        style={{ position: 'absolute', background: 'lightgray', right: '20%', top: '100px' }}
       ></div>
       <svg
         ref={ref}
-        viewBox="0 0 875 875"
-        width="80%"
-        height="80%"
+        viewBox="0 0 875 875" width="80%" height="80%"
         style={{
-          marginLeft: 'auto',
-          marginRight: 'auto',
+          margin: 'auto',
           display: 'block',
         }}
       >

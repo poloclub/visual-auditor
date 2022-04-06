@@ -500,7 +500,7 @@ function GraphLayout({
           top: '100px',
         }}
       ></div>
-      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%">
+      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{margin: 'auto', display: 'block'}}>
         <g id='graph-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />

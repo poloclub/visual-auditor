@@ -5,10 +5,7 @@ import './GraphLayout.css';
 import Button from '@mui/material/Button';
 import logLossSamples from '../../data/loglosssamples.json';
 import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
-import accuracySamples from '../../data/accuracysamples.json';
-import precisionSamples from '../../data/precisionsamples.json';
 import commonSamples from '../../data/commonSamples.json';
-import commonSamplesSliceline from '../../data/commonSamplesSliceline.json';
 import reverseCommonSamples from '../../data/reverseCommonSamples.json';
 
 function GraphLayout({
@@ -48,21 +45,9 @@ function GraphLayout({
         samples = reverseLogLossSamples;
         matches = reverseCommonSamples;
       } else {
-        if (algorithm === 'sliceline') {
-          matches = commonSamplesSliceline;
-        } else {
-          matches = commonSamples;
-        }
+        matches = commonSamples;
         samples = logLossSamples;
       }
-      break;
-    case 'Accuracy':
-      if (overperforming) samples = accuracySamples;
-      else samples = accuracySamples;
-      break;
-    case 'Precision':
-      if (overperforming) samples = precisionSamples;
-      else samples = precisionSamples;
       break;
     default:
       if (overperforming) samples = reverseLogLossSamples;
@@ -252,11 +237,8 @@ function GraphLayout({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style(
-              'left',
-              Math.min(Math.max(200, d.x), width - 200) + 100 + 'px'
-            )
-            .style('top', Math.min(height - 200, Math.max(0, d.y)) + 'px')
+            .style('right', '20%')
+            .style('top', '100px')
             .style('padding', '1rem 1rem 1rem 1rem')
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
@@ -283,8 +265,6 @@ function GraphLayout({
           d3.select('.tooltip')
             .transition()
             .style('opacity', 0)
-            .style('left', width + 'px')
-            .style('top', 0 + 'px');
         })
         .on('click', click);
 
@@ -514,11 +494,13 @@ function GraphLayout({
         style={{
           position: 'absolute',
           background: '#e6e6e6',
-          borderRadius: '0.5rem',
-          padding: '0.5rem',
+          borderRadius: '20px',
+          padding: '1rem',
+          right: '100px',
+          top: '100px',
         }}
       ></div>
-      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%">
+      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{margin: 'auto', display: 'block'}}>
         <g id='graph-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />

@@ -198,8 +198,7 @@ function SliceBarChart({
         ref={ref}
         viewBox="0 0 875 875" width="80%" height="80%"
         style={{
-          marginLeft: 'auto',
-          marginRight: 'auto',
+          margin: 'auto',
           display: 'block',
         }}
       >
