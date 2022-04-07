@@ -46,6 +46,7 @@ function SliceBarChart({
           .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(d3.axisBottom(x).tickSizeOuter(0))
           .selectAll('text')
+          .style("font", "14px")
           .attr('transform', 'translate(-10,0)rotate(-45)')
           .style('text-anchor', 'end');
 
