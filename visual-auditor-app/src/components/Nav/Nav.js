@@ -16,7 +16,7 @@ const Nav = ({ view, setView, algorithm, setAlgorithm }) => {
 
   return (
     <div className='nav-container'>
-      <h1>UCI Adults Dataset</h1>
+      {/* <h1>UCI Adults Dataset</h1> */}
       <FormControl sx={{ s: 1, minWidth: 175, paddingRight: 1 }}>
         <InputLabel>View:</InputLabel>
         <Select value={view} label='View' onChange={handleViewChange}>
