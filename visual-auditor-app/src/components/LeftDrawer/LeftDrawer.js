@@ -12,7 +12,8 @@ import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import featuresData from '../../data/features.json';
+import Box from '@mui/material/Box';
+import featuresData from '../../data/features.json'
 import './LeftDrawer.css';
 
 const LeftDrawer = ({
@@ -41,6 +42,7 @@ const LeftDrawer = ({
   setShowConvexHull,
 }) => {
   const [switchDisabled, setSwitchDisabled] = React.useState(false);
+
   const handleFeaturesChange = (event) => {
     setNumFeatures(event.target.value);
     setShowConvexHull(false);
@@ -76,6 +78,7 @@ const LeftDrawer = ({
   };
 
   const handleReset = (event) => {
+    setFeatures(featuresData.features);
     setNumFeatures(2);
     setSampleSize(0);
     setMetric('Log Loss');
@@ -97,31 +100,36 @@ const LeftDrawer = ({
     >
       <div className='left-container'>
         <h1>Slice Filters</h1>
-        <h2>Number of Features:</h2>
-        <Slider
-          aria-label='Number of Features'
-          defaultValue={2}
-          value={numFeatures}
-          valueLabelDisplay='auto'
-          step={1}
-          marks
-          min={1}
-          max={4}
-          size='small'
-          onChange={handleFeaturesChange}
-        />
-        <h2>Minimum Slice Size:</h2>
-        <Slider
-          size='small'
-          defaultValue={100}
-          aria-label='Small'
-          value={sampleSize}
-          valueLabelDisplay='auto'
-          min={0}
-          max={250}
-          step={10}
-          onChange={handleSizeChange}
-        />
+        <p><strong>Number of Features:</strong></p>
+        <Box sx={{width: '10rem', margin: '1rem'}}>
+          <Slider
+            aria-label='Number of Features'
+            defaultValue={2}
+            value={numFeatures}
+            valueLabelDisplay='auto'
+            step={1}
+            marks
+            min={1}
+            max={3}
+            size='small'
+            width='50%'
+            onChange={handleFeaturesChange}
+          />
+        </Box>
+        <p><strong>Minimum Slice Size:</strong></p>
+        <Box sx={{width: '10rem', margin: '1rem'}}>
+          <Slider
+            size='small'
+            defaultValue={100}
+            aria-label='Small'
+            value={sampleSize}
+            valueLabelDisplay='auto'
+            min={0}
+            max={250}
+            step={10}
+            onChange={handleSizeChange}
+          />
+        </Box>
         {view === 'graph' && (
           <>
             <h2>Edge Filtering:</h2>
@@ -201,16 +209,10 @@ const LeftDrawer = ({
         </FormControl> */}
         {view === 'bar' ? (
           <>
-            <h2>Order By:</h2>
-            <FormControl sx={{ m: 1, minWidth: 175 }}>
-              <InputLabel id='demo-simple-select-helper-label'>
-                Order By:
-              </InputLabel>
+            <p><strong>Order By:</strong></p>
+            <FormControl sx={{ m: 0, minWidth: 175 }}>
               <Select
-                labelId='demo-simple-select-helper-label'
-                id='demo-simple-select-helper'
                 value={sortBy}
-                label='Order By'
                 onChange={handleSortByChange}
               >
                 <MenuItem value={'metric'}>{metric}</MenuItem>
@@ -253,17 +255,17 @@ const LeftDrawer = ({
             />
           </>
         )}
-        <h2>Overperforming Slices:</h2>
+        <p><strong>Overperforming Slices:</strong></p>
         <Switch
           checked={overperforming}
           onChange={handleSwitchChange}
           label='Overperforming Slices'
         />
-        <h2>Select Features:</h2>
+        <p><strong>Select Features:</strong></p>
         <FormGroup style={{ marginLeft: '1rem' }}>
           {featuresData.features.sort().map((feature) => {
             return <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={<Checkbox defaultChecked checked={features.includes(feature)} />}
               label={feature}
               key={feature}
               onChange={(event) => handleCheckboxChange(event, feature)}

@@ -3,6 +3,7 @@ import Nav from './components/Nav/Nav';
 import LeftDrawer from './components/LeftDrawer/LeftDrawer';
 import RightDrawer from './components/RightDrawer/RightDrawer';
 import Main from './components/Main/Main';
+import featuresData from './data/features.json'
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -21,21 +22,7 @@ function App() {
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
   const [cursorMode, setCursorMode] = React.useState('drag');
-  const [features, setFeatures] = React.useState([
-    'Age',
-    'Workclass',
-    'Education',
-    'Education-Num',
-    'Marital Status',
-    'Occupation',
-    'Relationship',
-    'Race',
-    'Sex',
-    'Capital Gain',
-    'Capital Loss',
-    'Hours Per Week',
-    'Country',
-  ]);
+  const [features, setFeatures] = React.useState(featuresData.features);
   const [details, setDetails] = React.useState(null);
   const setDetailsCallback = React.useCallback((details) => {
     setDetails(details);
