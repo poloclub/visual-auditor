@@ -33,7 +33,7 @@ function GraphLayout({
   const width = 800;
   const height = 800;
 
-  const features = [];
+  let features = [];
   const groupings = {};
 
   let samples;
@@ -74,6 +74,8 @@ function GraphLayout({
       }
     }
   });
+
+  features = features.sort();
 
   const groupingsArray = Object.keys(groupings)
     .map((key) => [key, groupings[key]])

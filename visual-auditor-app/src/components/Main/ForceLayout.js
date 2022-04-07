@@ -14,12 +14,12 @@ function ForceLayout({
   radius,
   setShowConvexHull,
 }) {
-  const margin = { top: 20, right: 30, bottom: 70, left: 85 };
+  const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const width = 800;
   const height = 800;
   const hulls = Array.from(Array(100).keys());
 
-  const features = [];
+  let features = [];
   const groupings = {};
 
   data.forEach((obj) => {
@@ -41,6 +41,8 @@ function ForceLayout({
       }
     }
   });
+
+  features = features.sort();
 
   const groupingsArray = Object.keys(groupings)
     .map((key) => [key, groupings[key]])
@@ -301,7 +303,7 @@ function ForceLayout({
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6', right: '20%', top: '100px', }}
       ></div>
-      <svg viewBox="0 0 875 875" width="80%" height="80%" id='force-svg' className='svg' style={{margin: 'auto', display: 'block'}}>
+      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block'}}>
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />

@@ -1,0 +1,3 @@
+{
+    "features": ["Age", "Workclass", "Education", "Marital Status", "Occupation", "Relationship", "Race", "Sex", "Capital Gain", "Capital Loss", "Hours Per Week", "Country"]
+}

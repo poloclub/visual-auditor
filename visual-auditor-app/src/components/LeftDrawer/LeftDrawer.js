@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
+import featuresData from '../../data/features.json';
 import './LeftDrawer.css';
 
 const LeftDrawer = ({
@@ -260,71 +261,14 @@ const LeftDrawer = ({
         />
         <h2>Select Features:</h2>
         <FormGroup style={{ marginLeft: '1rem' }}>
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Age'
-            onChange={(event) => handleCheckboxChange(event, 'Age')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Workclass'
-            onChange={(event) => handleCheckboxChange(event, 'Workclass')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Education'
-            onChange={(event) => handleCheckboxChange(event, 'Education')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Education-Num'
-            onChange={(event) => handleCheckboxChange(event, 'Education-Num')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Marital Status'
-            onChange={(event) => handleCheckboxChange(event, 'Marital Status')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Occupation'
-            onChange={(event) => handleCheckboxChange(event, 'Occupation')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Relationship'
-            onChange={(event) => handleCheckboxChange(event, 'Relationship')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Race'
-            onChange={(event) => handleCheckboxChange(event, 'Race')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Sex'
-            onChange={(event) => handleCheckboxChange(event, 'Sex')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Capital Gain'
-            onChange={(event) => handleCheckboxChange(event, 'Capital Gain')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Capital Loss'
-            onChange={(event) => handleCheckboxChange(event, 'Capital Loss')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Hours Per Week'
-            onChange={(event) => handleCheckboxChange(event, 'Hours Per Week')}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Country'
-            onChange={(event) => handleCheckboxChange(event, 'Country')}
-          />
+          {featuresData.features.sort().map((feature) => {
+            return <FormControlLabel
+              control={<Checkbox defaultChecked />}
+              label={feature}
+              key={feature}
+              onChange={(event) => handleCheckboxChange(event, feature)}
+            />
+          })}
         </FormGroup>
         <Divider style={{ padding: '1rem' }} />
         <Button
