@@ -14,12 +14,12 @@ function ForceLayout({
   radius,
   setShowConvexHull,
 }) {
-  const margin = { top: 20, right: 30, bottom: 70, left: 85 };
+  const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const width = 800;
   const height = 800;
   const hulls = Array.from(Array(100).keys());
 
-  const features = [];
+  let features = [];
   const groupings = {};
 
   data.forEach((obj) => {
@@ -42,6 +42,8 @@ function ForceLayout({
     }
   });
 
+  features = features.sort();
+
   const groupingsArray = Object.keys(groupings)
     .map((key) => [key, groupings[key]])
     .sort((a, b) => b[1] - a[1]);
@@ -56,17 +58,19 @@ function ForceLayout({
 
   const xAxis = (g) =>
     g
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .attr('transform', `translate(0,${height - margin.bottom - 670})`)
+      .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
-      .attr('transform', 'translate(-10,0)rotate(-45)')
-      .style('text-anchor', 'end');
+      .style("font", "14px")
+      .attr('transform', 'translate(10,-10)rotate(-45)')
+      .style('text-anchor', 'start');
 
   const yAxis = (g) =>
     g
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
+      .style("font", "14px")
       .style('text-anchor', 'end');
 
   const xAxisGrid = (g) =>
@@ -185,8 +189,8 @@ function ForceLayout({
               .transition()
               .duration(200)
               .style('opacity', 0.9)
-              .style('right', 100 + 'px')
-              .style('top', 100 + 'px');
+              .style('right', '20%')
+              .style('top', '100px');
             div.html(
               '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
@@ -299,16 +303,14 @@ function ForceLayout({
     <div className='force'>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: '#e6e6e6', right: '100px', top: '100px', }}
+        style={{ position: 'absolute', background: '#e6e6e6', right: '20%', top: '100px', }}
       ></div>
-      <svg viewBox="0 0 875 875" width="80%" height="80%" id='force-svg' className='svg'>
+      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block', height: '1000px'}}>
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
-        <g className='x-axis' />
+        <g className='x-axis' style={{ padding: '100px' }}/>
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        {/* <g className='hull1' />
-        <g className='hull2' /> */}
         {hulls.map((hull) => (
           <g className={'hull'} key={hull} />
         ))}

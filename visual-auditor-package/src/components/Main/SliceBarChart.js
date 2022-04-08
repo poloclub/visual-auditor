@@ -46,6 +46,7 @@ function SliceBarChart({
           .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(d3.axisBottom(x).tickSizeOuter(0))
           .selectAll('text')
+          .style("font", "14px")
           .attr('transform', 'translate(-10,0)rotate(-45)')
           .style('text-anchor', 'end');
 
@@ -93,8 +94,8 @@ function SliceBarChart({
             .transition()
             .duration(200)
             .style('opacity', 0.9)
-            .style('right', 100 + 'px')
-            .style('top', 100 + 'px');
+            .style('right', '20%')
+            .style('top', '100px');
           div.html(
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
@@ -192,7 +193,7 @@ function SliceBarChart({
     <div style={{width: '100%'}}>
       <div
         className='tooltip'
-        style={{ position: 'absolute', background: 'lightgray', right: '100px', top: '100px' }}
+        style={{ position: 'absolute', background: 'lightgray', right: '20%', top: '100px' }}
       ></div>
       <svg
         ref={ref}

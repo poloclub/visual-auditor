@@ -1,3 +1,7 @@
+.domain {
+  display: none;
+}
+
 .hull {
   fill: rgba(184, 125, 0, 0.705);
   stroke: rgba(184, 125, 0, 0.705);
