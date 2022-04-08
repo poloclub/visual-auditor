@@ -58,12 +58,12 @@ function ForceLayout({
 
   const xAxis = (g) =>
     g
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .attr('transform', `translate(0,${height - margin.bottom - 670})`)
+      .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font", "14px")
-      .attr('transform', 'translate(-10,0)rotate(-45)')
-      .style('text-anchor', 'end');
+      .attr('transform', 'translate(10,-10)rotate(-45)')
+      .style('text-anchor', 'start');
 
   const yAxis = (g) =>
     g
@@ -305,14 +305,12 @@ function ForceLayout({
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6', right: '20%', top: '100px', }}
       ></div>
-      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block'}}>
+      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block', height: '1000px'}}>
         <g id='force-g' className='g' transform='translate(50, 200)'></g>
-        <g className='x-axis' />
+        <g className='x-axis' style={{ padding: '100px' }}/>
         <g className='y-axis' />
         <g className='x-axis-grid' />
         <g className='y-axis-grid' />
-        {/* <g className='hull1' />
-        <g className='hull2' /> */}
         {hulls.map((hull) => (
           <g className={'hull'} key={hull} />
         ))}

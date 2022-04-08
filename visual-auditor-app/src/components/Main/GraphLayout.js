@@ -2,7 +2,6 @@ import { useD3 } from '../../hooks/useD3';
 import React, { memo } from 'react';
 import * as d3 from 'd3';
 import './GraphLayout.css';
-import Button from '@mui/material/Button';
 import logLossSamples from '../../data/loglosssamples.json';
 import reverseLogLossSamples from '../../data/reverseloglosssamples.json';
 import commonSamples from '../../data/commonSamples.json';
@@ -22,7 +21,7 @@ function GraphLayout({
   algorithm,
   setShowConvexHull,
 }) {
-  const margin = { top: 30, right: 30, bottom: 60, left: 85 };
+  const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const [value, setValue] = React.useState(0);
   const hulls = Array.from(Array(100).keys());
   function useForceUpdate() {
@@ -104,12 +103,12 @@ function GraphLayout({
 
   const xAxis = (g) =>
     g
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .attr('transform', `translate(0,${height - margin.bottom - 670})`)
+      .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font", "14px")
-      .attr('transform', 'translate(-10,0)rotate(-45)')
-      .style('text-anchor', 'end');
+      .attr('transform', 'translate(10,-10)rotate(-45)')
+      .style('text-anchor', 'start');
 
   const yAxis = (g) =>
     g
@@ -504,7 +503,7 @@ function GraphLayout({
           top: '100px',
         }}
       ></div>
-      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{margin: 'auto', display: 'block'}}>
+      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{margin: '0 auto', display: 'block', height: '1000px'}}>
         <g id='graph-g' className='g' transform='translate(50, 200)'></g>
         <g className='x-axis' />
         <g className='y-axis' />
