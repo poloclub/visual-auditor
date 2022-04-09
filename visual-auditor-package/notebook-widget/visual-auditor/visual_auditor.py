@@ -586,12 +586,16 @@ def find_slices_and_visualize(model, data, k=50, epsilon=0.2, alpha=0.05, degree
     html_str = html_str.replace('{"data":"insert reverse log loss samples"}', reverse_samples_str)
     html_str = html_str.replace('{"data":"insert reverse common samples"}', reverse_common_samples_str)
 
-    features_str = ''
+    if (prefix == 'adult_'):
+        features_str = "[\"Age\", \"Workclass\", \"Education\", \"Marital Status\", \"Occupation\", \"Relationship\", \"Race\", \"Sex\", \"Capital Gain\", \"Capital Loss\", \"Hours Per Week\", \"Country\"]"
+    elif (prefix == 'gc_'):
+        features_str = "[\"Checking Account\", \"Duration\", \"Credit History\", \"Purpose\", \"Credit Amount\", \"Savings Account\", \"Employment\", \"Installment Rate\", \"Relationship/Sex\", \"Debtors/Guarantors\", \"Residence Since\", \"Property\", \"Age\", \"Installment Plans\", \"Housing\", \"Existing Credits\", \"Job\", \"Maintenance\", \"Telephone\", \"Foreign\"]"
+    elif (prefix == 'cp_'):
+        features_str = "[\"State\", \"Account Length\", \"Area Code\", \"International\", \"Voicemail Plan\", \"Voicemail Messages\", \"Day Minutes\", \"Day Calls\", \"Day Charge\", \"Eve Minutes\", \"Eve Calls\", \"Eve Charge\", \"Night Minutes\", \"Night Calls\", \"Night Charge\", \"Intl Minutes\", \"Intl Calls\", \"Intl Charge\", \"CustServ Calls\"]"
+    else:
+        features_str = "[]"
 
-    for i in range(len(data[0].columns) - 1):
-        features_str += 'Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"' + data[0].columns[i] + '",onChange:function(e){return K(e,"' + data[0].columns[i] + '")}}),'
-    features_str += 'Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"' + data[0].columns[len(data[0].columns) - 1] + '",onChange:function(e){return P(e,"' + data[0].columns[len(data[0].columns) - 1] + '")}})'
-    html_str = html_str.replace('Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"Insert Features",onChange:function(e){return K(e,"Insert Features")}}),Object(h.jsx)(b.a,{control:Object(h.jsx)(y.a,{defaultChecked:!0}),label:"Insert Features",onChange:function(e){return K(e,"Insert Features")}})', features_str)
+    html_str = html_str.replace('["insert dataset features"]', features_str)
 
     html_str = html.escape(html_str)
 
