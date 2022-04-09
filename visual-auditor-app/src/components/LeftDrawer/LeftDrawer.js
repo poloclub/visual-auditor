@@ -133,18 +133,25 @@ const LeftDrawer = ({
         {view === 'graph' && (
           <>
             <p><strong>Edge Filtering:</strong></p>
-            <TextField
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              variant="outlined"
-              value={edgeFiltering}
-              valueLabelDisplay='auto'
-              onChange={(event) => {
-                setEdgeFiltering(event.target.value);
-                setShowConvexHull(false);
-              }}
-            />
+            <Box sx={{width: '10rem', margin: '1rem'}}>
+              <Slider
+                aria-label='Edge Filtering'
+                value={edgeFiltering}
+                valueLabelDisplay='auto'
+                defaultValue={500}
+                step={100}
+                min={0}
+                max={2000}
+                size='small'
+                onChange={(event) => {
+                  setEdgeFiltering(event.target.value);
+                  setShowConvexHull(false);
+                }}
+                />
+            </Box>
             <p><strong>Edge Force Strength:</strong></p>
-            <Slider
+            <Box sx={{width: '10rem', margin: '1rem'}}>
+`            <Slider
               aria-label='Edge Force Strength'
               defaultValue={1}
               value={edgeForce}
@@ -157,7 +164,8 @@ const LeftDrawer = ({
                 setEdgeForce(event.target.value);
                 setShowConvexHull(false);
               }}
-            />
+              />`
+            </Box>
             <p><strong>Cursor Mode:</strong></p>
             <FormControl sx={{ s: 1, minWidth: 175 }}>
               <Select
