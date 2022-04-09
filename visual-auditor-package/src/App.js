@@ -18,7 +18,7 @@ function App() {
   const [sortBy, setSortBy] = React.useState('metric');
   const [overperforming, setOverperforming] = React.useState(false);
   const [radius, setRadius] = React.useState('log');
-  const [edgeFiltering, setEdgeFiltering] = React.useState(100);
+  const [edgeFiltering, setEdgeFiltering] = React.useState(500);
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
   const [cursorMode, setCursorMode] = React.useState('drag');

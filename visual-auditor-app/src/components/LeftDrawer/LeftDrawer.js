@@ -84,7 +84,7 @@ const LeftDrawer = ({
     setMetric('Log Loss');
     setSortBy('metric');
     setOverperforming(false);
-    setEdgeFiltering(300);
+    setEdgeFiltering(500);
     setEdgeForce(1);
     setShowConvexHull(false);
   };
@@ -132,33 +132,18 @@ const LeftDrawer = ({
         </Box>
         {view === 'graph' && (
           <>
-            <h2>Edge Filtering:</h2>
+            <p><strong>Edge Filtering:</strong></p>
             <TextField
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              label="Edge Filtering"
               variant="outlined"
               value={edgeFiltering}
               valueLabelDisplay='auto'
-              defaultValue={300}
               onChange={(event) => {
                 setEdgeFiltering(event.target.value);
                 setShowConvexHull(false);
               }}
             />
-            <Slider
-              aria-label='Edge Filtering'
-              value={edgeFiltering}
-              valueLabelDisplay='auto'
-              step={10}
-              min={0}
-              max={1000}
-              size='small'
-              onChange={(event) => {
-                setEdgeFiltering(event.target.value);
-                setShowConvexHull(false);
-              }}
-            />
-            <h2>Edge Force Strength:</h2>
+            <p><strong>Edge Force Strength:</strong></p>
             <Slider
               aria-label='Edge Force Strength'
               defaultValue={1}
@@ -173,12 +158,10 @@ const LeftDrawer = ({
                 setShowConvexHull(false);
               }}
             />
-            <h2>Cursor Mode:</h2>
+            <p><strong>Cursor Mode:</strong></p>
             <FormControl sx={{ s: 1, minWidth: 175 }}>
-              <InputLabel>Mode:</InputLabel>
               <Select
                 value={cursorMode}
-                label='Mode'
                 onChange={(event) => {
                   setCursorMode(event.target.value);
                   setShowConvexHull(false);
@@ -222,12 +205,10 @@ const LeftDrawer = ({
           </>
         ) : (
           <>
-            <h2>Radius Function:</h2>
+            <p><strong>Radius Function:</strong></p>
             <FormControl sx={{ s: 1, minWidth: 175 }}>
-              <InputLabel>Radius:</InputLabel>
               <Select
                 value={radius}
-                label='Radius'
                 onChange={(event) => {
                   setRadius(event.target.value);
                   setShowConvexHull(false);
@@ -237,7 +218,7 @@ const LeftDrawer = ({
                 <MenuItem value={'sqrt'}>Square Root</MenuItem>
               </Select>
             </FormControl>
-            <h2>Show Convex Hull:</h2>
+            <p><strong>Show Convex Hull:</strong></p>
             <Switch
               checked={showConvexHull}
               onChange={(event) => {
