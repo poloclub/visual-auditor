@@ -106,7 +106,10 @@ function SliceBarChart({
               d.size +
               ' samples' +
               '<br>' +
-              '<strong>Metric: </strong>' +
+              '<strong>' +
+              metric +
+              ': ' +
+              '</strong>' +
               '<br>' +
               d.metric.toFixed(2) +
               ' ' +

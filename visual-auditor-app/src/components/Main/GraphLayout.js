@@ -106,7 +106,7 @@ function GraphLayout({
       .attr('transform', `translate(0,${height - margin.bottom - 670})`)
       .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
-      .style("font", "14px")
+      .style("font-size", "14px")
       .attr('transform', 'translate(10,-10)rotate(-45)')
       .style('text-anchor', 'start');
 
@@ -115,7 +115,7 @@ function GraphLayout({
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
-      .style("font", "14px")
+      .style("font-size", "14px")
       .style('text-anchor', 'end');
 
   const xAxisGrid = (g) =>
@@ -145,7 +145,7 @@ function GraphLayout({
 
   const nodes = data.map((obj) => {
     return {
-      radius: radiusType === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
+      radius: radiusType === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -314,13 +314,13 @@ function GraphLayout({
       function tick() {
         link
           .attr('x1', (d) =>
-            Math.max(Math.min(d.source.x, width), d.source.radius + 100)
+            Math.max(Math.min(d.source.x, width), d.source.radius + 100) + 50
           )
           .attr('y1', (d) =>
             Math.max(Math.min(d.source.y, height - 75), d.source.radius)
           )
           .attr('x2', (d) =>
-            Math.max(Math.min(d.target.x, width), d.target.radius + 100)
+            Math.max(Math.min(d.target.x, width), d.target.radius + 100) + 50
           )
           .attr('y2', (d) =>
             Math.max(Math.min(d.target.y, height - 75), d.target.radius)
@@ -332,7 +332,7 @@ function GraphLayout({
             )
           );
         node
-          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100))
+          .attr('cx', (d) => Math.max(Math.min(d.x, width), d.radius + 100) + 50)
           .attr('cy', (d) => Math.max(Math.min(d.y, height - 75), d.radius));
       }
 
@@ -503,15 +503,17 @@ function GraphLayout({
           top: '100px',
         }}
       ></div>
-      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{margin: '0 auto', display: 'block', height: '1000px'}}>
-        <g id='graph-g' className='g' transform='translate(50, 200)'></g>
-        <g className='x-axis' />
-        <g className='y-axis' />
-        <g className='x-axis-grid' />
-        <g className='y-axis-grid' />
-        {hulls.map((hull) => (
-          <g className={'hull'} key={hull} />
-        ))}
+      <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{ margin: '0 auto', display: 'block', height: '1000px' }}>
+        <g transform="translate(50, 0)">
+          <g id='graph-g' className='g' transform='translate(50, 200)'></g>
+          <g className='x-axis' />
+          <g className='y-axis' />
+          <g className='x-axis-grid' />
+          <g className='y-axis-grid' />
+          {hulls.map((hull) => (
+            <g className={'hull'} key={hull} />
+          ))}
+        </g>
       </svg>
       <br />
       {/* <Button

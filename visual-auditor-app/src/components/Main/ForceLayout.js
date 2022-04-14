@@ -61,7 +61,7 @@ function ForceLayout({
       .attr('transform', `translate(0,${height - margin.bottom - 670})`)
       .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
-      .style("font", "14px")
+      .style("font-size", "14px")
       .attr('transform', 'translate(10,-10)rotate(-45)')
       .style('text-anchor', 'start');
 
@@ -70,7 +70,7 @@ function ForceLayout({
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
-      .style("font", "14px")
+      .style("font-size", "14px")
       .style('text-anchor', 'end');
 
   const xAxisGrid = (g) =>
@@ -118,7 +118,7 @@ function ForceLayout({
       }
       const nodes = data.map((obj) => {
         return {
-          radius: radius === 'log' ? Math.log(obj.size) : Math.sqrt(obj.size),
+          radius: radius === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -305,15 +305,17 @@ function ForceLayout({
         className='tooltip'
         style={{ position: 'absolute', background: '#e6e6e6', right: '20%', top: '100px', }}
       ></div>
-      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block', height: '1000px'}}>
-        <g id='force-g' className='g' transform='translate(50, 200)'></g>
-        <g className='x-axis' style={{ padding: '100px' }}/>
-        <g className='y-axis' />
-        <g className='x-axis-grid' />
-        <g className='y-axis-grid' />
-        {hulls.map((hull) => (
-          <g className={'hull'} key={hull} />
-        ))}
+      <svg viewBox="0 0 875 875" width="80%" height="100%" id='force-svg' className='svg' style={{ margin: '0 auto', display: 'block', height: '1000px' }}>
+        <g transform="translate(50, 0)">
+          <g id='force-g' className='g' transform='translate(50, 200)'></g>
+          <g className='x-axis' style={{ padding: '100px' }}/>
+          <g className='y-axis' />
+          <g className='x-axis-grid' />
+          <g className='y-axis-grid' />
+          {hulls.map((hull) => (
+            <g className={'hull'} key={hull} />
+          ))}
+        </g>
       </svg>
     </div>
   );

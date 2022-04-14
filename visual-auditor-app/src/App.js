@@ -14,14 +14,16 @@ function App() {
   const [numFeatures, setNumFeatures] = React.useState(2);
   const [sampleSize, setSampleSize] = React.useState(0);
   const [metric, setMetric] = React.useState('Log Loss');
-  const [view, setView] = React.useState('bar');
+  const [view, setView] = React.useState('force');
   const [sortBy, setSortBy] = React.useState('metric');
   const [overperforming, setOverperforming] = React.useState(false);
   const [radius, setRadius] = React.useState('log');
   const [edgeFiltering, setEdgeFiltering] = React.useState(500);
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
-  const [cursorMode, setCursorMode] = React.useState('drag');
+  const [cursorMode, setCursorMode] = React.useState('select');
+  const [show, setShow] = React.useState('ten');
+  const [nodeSize, setNodeSize] = React.useState('size')
   const [features, setFeatures] = React.useState(featuresData.features);
   const [details, setDetails] = React.useState(null);
   const setDetailsCallback = React.useCallback((details) => {
@@ -59,6 +61,10 @@ function App() {
         setEdgeForce={setEdgeForce}
         cursorMode={cursorMode}
         setCursorMode={setCursorMode}
+        show={show}
+        setShow={setShow}
+        nodeSize={nodeSize}
+        setNodeSize={setNodeSize}
         showConvexHull={showConvexHull}
         setShowConvexHull={setShowConvexHull}
       />
@@ -82,8 +88,10 @@ function App() {
         edgeForce={edgeForce}
         setDetails={setDetailsCallback}
         cursorMode={cursorMode}
+        show={show}
         algorithm={algorithm}
         setShowConvexHull={setShowConvexHull}
+        nodeSize={nodeSize}
       />
     </div>
   );

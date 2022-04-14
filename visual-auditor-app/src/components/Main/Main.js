@@ -29,8 +29,10 @@ const Main = ({
   edgeForce,
   setDetails,
   cursorMode,
+  show,
   algorithm,
   setShowConvexHull,
+  nodeSize
 }) => {
   let data;
   let reversedata;
@@ -180,7 +182,7 @@ const Main = ({
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
   } else {
-    filteredData = filteredData.slice(0, 100);
+    filteredData = show === 'ten' ? filteredData.slice(0, 10) : filteredData;
   }
   return (
     <div className='main-container' style={{ display: 'block', margin: 'auto', width: '75%'}}>
