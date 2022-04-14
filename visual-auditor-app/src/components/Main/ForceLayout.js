@@ -187,10 +187,11 @@ function ForceLayout({
               .style('cursor', 'pointer');
             div
               .transition()
-              .duration(200)
+              .duration(0)
+              .style('display', 'block')
               .style('opacity', 0.9)
-              .style('right', '20%')
-              .style('top', '100px');
+              .style('left', (event.clientX + 50) + 'px')
+              .style('top', (event.clientY) + 'px')
             div.html(
               '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
@@ -217,7 +218,9 @@ function ForceLayout({
             d3.select(this).attr('r', d.radius).style('opacity', '1');
             div
               .transition()
+              .duration(50)
               .style('opacity', 0)
+              .style('display', 'none')
           })
           .on('click', function (event, d) {
             bubbles.style('fill', function (d) {

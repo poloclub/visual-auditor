@@ -239,9 +239,11 @@ function GraphLayout({
           d3.select('.tooltip')
             .transition()
             .duration(200)
+            .attr('max-width', '200px')
+            .style('display', 'block')
             .style('opacity', 0.9)
-            .style('right', '20%')
-            .style('top', '100px')
+            .style('left', (event.clientX + 100) + 'px')
+            .style('top', (event.clientY) + 'px')
             .style('padding', '1rem 1rem 1rem 1rem')
           d3.select('.tooltip').html(
             '<strong>Slice Description: </strong>' +
@@ -268,6 +270,7 @@ function GraphLayout({
           d3.select('.tooltip')
             .transition()
             .style('opacity', 0)
+            .style('display', 'none')
         })
         .on('click', click);
 
@@ -499,8 +502,6 @@ function GraphLayout({
           background: '#e6e6e6',
           borderRadius: '20px',
           padding: '1rem',
-          right: '100px',
-          top: '100px',
         }}
       ></div>
       <svg id='graph-svg' className='svg' viewBox="0 0 875 875" width="80%" height="80%" style={{ margin: '0 auto', display: 'block', height: '1000px' }}>
