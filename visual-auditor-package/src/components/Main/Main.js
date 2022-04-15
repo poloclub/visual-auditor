@@ -3,6 +3,7 @@ import SliceBarChart from './SliceBarChart';
 import './Main.css';
 import ForceLayout from './ForceLayout';
 import GraphLayout from './GraphLayout';
+
 import logloss from '../../data/logloss.json';
 import reverselogloss from '../../data/reverselogloss.json';
 
@@ -19,50 +20,29 @@ const Main = ({
   edgeForce,
   setDetails,
   cursorMode,
+  show,
   algorithm,
   setShowConvexHull,
+  nodeSize
 }) => {
   let data;
   let reversedata;
   let modelMetric;
   if (overperforming) {
-    switch (metric) {
-      case 'Log Loss':
-        data = Object.values(reverselogloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        reversedata = Object.values(logloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        modelMetric = reverselogloss['model'];
-        break;
-      default:
-        data = Object.values(reverselogloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        reversedata = Object.values(logloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        modelMetric = reverselogloss['model'];
-    }
+    data = Object.values(reverselogloss['data']).map(
+      (obj) => Object.values(obj)[0]
+    );
+    reversedata = Object.values(logloss['data']).map(
+      (obj) => Object.values(obj)[0]
+    );
+    modelMetric = reverselogloss['model'];
   } else {
-    switch (metric) {
-      case 'Log Loss':
-        data = Object.values(logloss['data']).map((obj) => Object.values(obj)[0]);
-        reversedata = Object.values(reverselogloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        modelMetric = logloss['model']
-        break;
-      default:
-        data = Object.values(logloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        reversedata = Object.values(reverselogloss['data']).map(
-          (obj) => Object.values(obj)[0]
-        );
-        modelMetric = logloss['model'];
-    }
+    data = Object.values(logloss['data']).map(
+      (obj) => Object.values(obj)[0]);
+    reversedata = Object.values(reverselogloss['data']).map(
+      (obj) => Object.values(obj)[0]
+    );
+    modelMetric = logloss['model']
   }
   const metricArray = data.map((obj) => obj.metric);
   const reverseMetricArray = reversedata.map((obj) => obj.metric);
@@ -70,7 +50,7 @@ const Main = ({
   let filteredData = data
     .filter((obj) => {
       let sliceStr = obj.slice;
-      while (typeof sliceStr === "string" && sliceStr.includes(':')) {
+      while (sliceStr.includes(':')) {
         if (features.includes(sliceStr.substring(0, sliceStr.indexOf(':')))) {
           return true;
         }
@@ -93,7 +73,7 @@ const Main = ({
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
   } else {
-    filteredData = filteredData.slice(0, 100);
+    filteredData = show === 'ten' ? filteredData.slice(0, 10) : filteredData;
   }
   return (
     <div className='main-container' style={{ display: 'block', margin: 'auto', width: '75%'}}>

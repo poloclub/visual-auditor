@@ -1,6 +1,7 @@
 .nav-container {
   text-align: center;
   z-index: 2;
+  margin-top: 2rem;
 }
 
 .settings {

@@ -38,6 +38,10 @@ const LeftDrawer = ({
   setEdgeForce,
   cursorMode,
   setCursorMode,
+  nodeSize,
+  setNodeSize,
+  show,
+  setShow,
   showConvexHull,
   setShowConvexHull,
 }) => {
@@ -99,41 +103,14 @@ const LeftDrawer = ({
       }}
     >
       <div className='left-container'>
-        <h1>Slice Filters</h1>
-        <p><strong>Number of Features:</strong></p>
-        <Box sx={{width: '10rem', margin: '1rem'}}>
-          <Slider
-            aria-label='Number of Features'
-            defaultValue={2}
-            value={numFeatures}
-            valueLabelDisplay='auto'
-            step={1}
-            marks
-            min={1}
-            max={3}
-            size='small'
-            width='50%'
-            onChange={handleFeaturesChange}
-          />
-        </Box>
-        <p><strong>Minimum Slice Size:</strong></p>
-        <Box sx={{width: '10rem', margin: '1rem'}}>
-          <Slider
-            size='small'
-            defaultValue={100}
-            aria-label='Small'
-            value={sampleSize}
-            valueLabelDisplay='auto'
-            min={0}
-            max={250}
-            step={10}
-            onChange={handleSizeChange}
-          />
-        </Box>
+        <div style={{margin: '2rem 0', lineHeight: '0.5rem'}}>
+          <h1>Slice Settings</h1>
+          {view !== 'bar' && (<h2>Each slice is a node</h2>)}
+        </div>
         {view === 'graph' && (
-          <>
+          <div style={{lineHeight: '0.5'}}>
             <p><strong>Edge Filtering:</strong></p>
-            <Box sx={{width: '10rem', margin: '1rem'}}>
+            <Box sx={{width: '10rem', margin: '0 1rem'}}>
               <Slider
                 aria-label='Edge Filtering'
                 value={edgeFiltering}
@@ -150,7 +127,7 @@ const LeftDrawer = ({
                 />
             </Box>
             <p><strong>Edge Force Strength:</strong></p>
-            <Box sx={{width: '10rem', margin: '1rem'}}>
+            <Box sx={{width: '10rem', margin: '0 1rem'}}>
 `            <Slider
               aria-label='Edge Force Strength'
               defaultValue={1}
@@ -166,91 +143,98 @@ const LeftDrawer = ({
               }}
               />`
             </Box>
-            <p><strong>Cursor Mode:</strong></p>
-            <FormControl sx={{ s: 1, minWidth: 175 }}>
-              <Select
-                value={cursorMode}
-                onChange={(event) => {
-                  setCursorMode(event.target.value);
-                  setShowConvexHull(false);
-                }}
-              >
-                <MenuItem value={'drag'}>Drag</MenuItem>
-                <MenuItem value={'select'}>Select</MenuItem>
-              </Select>
-            </FormControl>
-          </>
+          </div>
         )}
-        {/* <h2>Fairness Metric:</h2>
-        <FormControl sx={{ m: 1, minWidth: 175 }}>
-          <InputLabel id='demo-simple-select-helper-label'>Metric</InputLabel>
-          <Select
-            labelId='demo-simple-select-helper-label'
-            id='demo-simple-select-helper'
-            value={metric}
-            label='Metric'
-            onChange={handleMetricChange}
-          >
-            <MenuItem value={'Log Loss'}>Log Loss</MenuItem>
-            <MenuItem value={'Accuracy'}>Accuracy</MenuItem>
-            <MenuItem value={'Precision'}>Precision</MenuItem>
-            <MenuItem value={'Recall'}>Recall</MenuItem>
-            <MenuItem value={'F1'}>F1</MenuItem>
-          </Select>
-        </FormControl> */}
         {view === 'bar' ? (
-          <>
-            <p><strong>Order By:</strong></p>
-            <FormControl sx={{ m: 0, minWidth: 175 }}>
+          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <p><strong>Sort:</strong></p>
+            <FormControl sx={{ m: 0, minWidth: 125 }} size="small">
               <Select
                 value={sortBy}
                 onChange={handleSortByChange}
               >
                 <MenuItem value={'metric'}>{metric}</MenuItem>
-                <MenuItem value={'size'}>Sample Size</MenuItem>
+                <MenuItem value={'size'}>Slice Size</MenuItem>
               </Select>
             </FormControl>
-          </>
+          </div>
         ) : (
-          <>
-            <p><strong>Radius Function:</strong></p>
-            <FormControl sx={{ s: 1, minWidth: 175 }}>
-              <Select
-                value={radius}
+            <>
+              <p><strong>Size Represents</strong></p>
+              <FormControl sx={{ s: 1, minWidth: 175 }} size="small">
+                <Select
+                  value={nodeSize}
+                  onChange={(event) => {
+                    setNodeSize(event.target.value);
+                    setShowConvexHull(false);
+                  }}
+                >
+                  <MenuItem value={'size'}>Slice Sample Size</MenuItem>
+                  <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
+                </Select>
+              </FormControl>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <div style={{width: '75%'}}>
+                  <p><strong>Convex Hull:</strong></p>
+                </div>
+              <Switch
+                checked={showConvexHull}
                 onChange={(event) => {
-                  setRadius(event.target.value);
-                  setShowConvexHull(false);
+                  if (event.target.checked) {
+                    setSwitchDisabled(true);
+                    setTimeout(() => {
+                      setSwitchDisabled(false);
+                    }, 4000);
+                  }
+                  setShowConvexHull(event.target.checked);
                 }}
-              >
-                <MenuItem value={'log'}>Log</MenuItem>
-                <MenuItem value={'sqrt'}>Square Root</MenuItem>
-              </Select>
-            </FormControl>
-            <p><strong>Show Convex Hull:</strong></p>
-            <Switch
-              checked={showConvexHull}
-              onChange={(event) => {
-                if (event.target.checked) {
-                  setSwitchDisabled(true);
-                  setTimeout(() => {
-                    setSwitchDisabled(false);
-                  }, 4000);
-                }
-                setShowConvexHull(event.target.checked);
-              }}
-              label='Show Convex Hull'
-              className='switch'
-              disabled={switchDisabled}
-            />
-          </>
+                label='Show Convex Hull'
+                className='switch'
+                disabled={switchDisabled}
+              />
+              </div>
+            </>
         )}
-        <p><strong>Overperforming Slices:</strong></p>
-        <Switch
-          checked={overperforming}
-          onChange={handleSwitchChange}
-          label='Overperforming Slices'
-        />
-        <p><strong>Select Features:</strong></p>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{width: '75%'}}>
+            <p><strong>Overperforming:</strong></p>
+          </div>
+          <Switch
+            checked={overperforming}
+            onChange={handleSwitchChange}
+            label='Overperforming Slices'
+            />
+        </div>
+        <p><strong>Minimum Slice Size:</strong></p>
+        <Box sx={{width: '10rem', margin: '1rem'}}>
+          <Slider
+            size='small'
+            defaultValue={100}
+            aria-label='Small'
+            value={sampleSize}
+            valueLabelDisplay='auto'
+            min={0}
+            max={250}
+            step={10}
+            onChange={handleSizeChange}
+          />
+        </Box>
+        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <p><strong>Show</strong></p>
+          <FormControl sx={{ s: 1, minWidth: 125 }} size="small">
+            <Select
+              value={show}
+              onChange={(event) => {
+                setShow(event.target.value);
+                setShowConvexHull(false);
+              }}
+            >
+              <MenuItem value={'ten'}>Top 10 Slices</MenuItem>
+              <MenuItem value={'all'}>All Slices</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <p><strong>Features:</strong></p>
         <FormGroup style={{ marginLeft: '1rem' }}>
           {featuresData.features.sort().map((feature) => {
             return <FormControlLabel
