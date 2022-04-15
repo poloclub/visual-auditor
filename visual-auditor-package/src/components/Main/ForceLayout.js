@@ -11,8 +11,9 @@ function ForceLayout({
   model,
   overperforming,
   setDetails,
-  radius,
+  radiusType,
   setShowConvexHull,
+  nodeSize,
 }) {
   const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const width = 800;
@@ -118,7 +119,7 @@ function ForceLayout({
       }
       const nodes = data.map((obj) => {
         return {
-          radius: radius === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
+          radius: nodeSize === 'size' ? radiusType === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size) : obj.accuracy * 10,
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],

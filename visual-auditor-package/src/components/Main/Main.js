@@ -98,6 +98,7 @@ const Main = ({
           setDetails={setDetails}
           radius={radius}
           setShowConvexHull={setShowConvexHull}
+          nodeSize={nodeSize}
         />
       ) : (
         <GraphLayout
@@ -113,6 +114,7 @@ const Main = ({
           cursorMode={cursorMode}
           algorithm={algorithm}
           setShowConvexHull={setShowConvexHull}
+          nodeSize={nodeSize}
         />
       )}
     </div>

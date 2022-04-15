@@ -20,6 +20,7 @@ function GraphLayout({
   cursorMode,
   algorithm,
   setShowConvexHull,
+  nodeSize
 }) {
   const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const [value, setValue] = React.useState(0);
@@ -145,7 +146,7 @@ function GraphLayout({
 
   const nodes = data.map((obj) => {
     return {
-      radius: radiusType === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
+      radius: nodeSize === 'size' ? radiusType === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size) : obj.accuracy * 10,
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
