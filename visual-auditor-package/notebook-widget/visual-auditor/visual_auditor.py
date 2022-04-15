@@ -124,7 +124,8 @@ class SliceFinder:
                 "effect_size": s.effect_size,
                 "metric": s.metric,
                 "size": s.size,
-                "degree": len(s.get_filter().keys())
+                "degree": len(s.get_filter().keys()),
+                "data_idx": list(s.data_idx)
             }
             slices.append(slice)
         data = {}
