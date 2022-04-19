@@ -15,7 +15,7 @@ function App() {
   const [sampleSize, setSampleSize] = React.useState(0);
   const [metric, setMetric] = React.useState('Log Loss');
   const [view, setView] = React.useState('force');
-  const [sortBy, setSortBy] = React.useState('metric');
+  const [sortBy, setSortBy] = React.useState('loss');
   const [overperforming, setOverperforming] = React.useState(false);
   const [radius, setRadius] = React.useState('log');
   const [edgeFiltering, setEdgeFiltering] = React.useState(500);
@@ -24,6 +24,7 @@ function App() {
   const [cursorMode, setCursorMode] = React.useState('select');
   const [show, setShow] = React.useState('ten');
   const [nodeSize, setNodeSize] = React.useState('size')
+  const [nodeColor, setNodeColor] = React.useState('loss')
   const [features, setFeatures] = React.useState(featuresData.features);
   const [details, setDetails] = React.useState(null);
   const setDetailsCallback = React.useCallback((details) => {
@@ -65,16 +66,18 @@ function App() {
         setShow={setShow}
         nodeSize={nodeSize}
         setNodeSize={setNodeSize}
+        nodeColor={nodeColor}
+        setNodeColor={setNodeColor}
         showConvexHull={showConvexHull}
         setShowConvexHull={setShowConvexHull}
       />
-      <RightDrawer
+      {/* <RightDrawer
         details={details}
         metric={metric}
         overperforming={overperforming}
         view={view}
         convexHull={showConvexHull}
-      />
+      /> */}
       <Main
         numFeatures={numFeatures}
         sampleSize={sampleSize}
@@ -92,6 +95,7 @@ function App() {
         algorithm={algorithm}
         setShowConvexHull={setShowConvexHull}
         nodeSize={nodeSize}
+        nodeColor={nodeColor}
       />
     </div>
   );

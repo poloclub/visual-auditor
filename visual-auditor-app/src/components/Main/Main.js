@@ -23,7 +23,8 @@ const Main = ({
   show,
   algorithm,
   setShowConvexHull,
-  nodeSize
+  nodeSize,
+  nodeColor
 }) => {
   let data;
   let reversedata;
@@ -62,18 +63,20 @@ const Main = ({
     .filter((obj) => obj.degree <= numFeatures)
     .sort(function (a, b) {
       if (sortBy === 'size') return b.size - a.size;
-      if (metric === 'Log Loss') {
+      if (sortBy === 'loss') {
         if (overperforming) return a.metric - b.metric;
         return b.metric - a.metric;
-      } else {
-        if (overperforming) return b.metric - a.metric;
-        return a.metric - b.metric;
       }
+      if (sortBy === 'accuracy') {
+        return b.accuracy - a.accuracy;
+      }  
+      if (overperforming) return a.metric - b.metric;
+        return b.metric - a.metric;
     });
   if (view === 'bar') {
     filteredData = filteredData.slice(0, 10);
   } else {
-    filteredData = show === 'ten' ? filteredData.slice(0, 10) : filteredData;
+    filteredData = filteredData.slice(0, show);
   }
   return (
     <div className='main-container' style={{ display: 'block', margin: 'auto', width: '75%'}}>
@@ -86,6 +89,8 @@ const Main = ({
           overperforming={overperforming}
           metric={metric}
           setDetails={setDetails}
+          nodeSize={nodeSize}
+          nodeColor={nodeColor}
         />
       ) : view === 'force' ? (
         <ForceLayout
@@ -98,6 +103,8 @@ const Main = ({
           setDetails={setDetails}
           radius={radius}
           setShowConvexHull={setShowConvexHull}
+          nodeSize={nodeSize}
+          nodeColor={nodeColor}
         />
       ) : (
         <GraphLayout
@@ -113,6 +120,8 @@ const Main = ({
           cursorMode={cursorMode}
           algorithm={algorithm}
           setShowConvexHull={setShowConvexHull}
+          nodeSize={nodeSize}
+          nodeColor={nodeColor}
         />
       )}
     </div>

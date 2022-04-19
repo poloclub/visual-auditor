@@ -9,6 +9,7 @@ function SliceBarChart({
   overperforming,
   metric,
   setDetails,
+  nodeColor
 }) {
   const [selected, setSelected] = React.useState(null);
   const [doneAnimating, setDoneAnimating] = React.useState(false);
@@ -26,7 +27,7 @@ function SliceBarChart({
         .select('.tooltip')
         .style('opacity', 0)
         .style('width', '200px')
-        .style('height', '150px')
+        .style('height', '200px')
         .style('padding', '1rem 1rem 0rem 1rem')
         .style('border-radius', '20px');
 
@@ -85,8 +86,8 @@ function SliceBarChart({
           //   return d3.interpolateGreys(0.5);
           // }
           if (overperforming)
-            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
         })
         .on('mouseover', function (event, d) {
           d3.select(this).style('opacity', '0.7').style('cursor', 'pointer');
@@ -100,12 +101,12 @@ function SliceBarChart({
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
               d.slice +
-              '<br>' +
+              '<br><br>' +
               '<strong>Size: </strong>' +
               '<br>' +
               d.size +
               ' samples' +
-              '<br>' +
+              '<br><br>' +
               '<strong>' +
               metric +
               ': ' +

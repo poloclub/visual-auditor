@@ -16,3 +16,11 @@
 .node.fixed {
   fill: #f00;
 }
+
+.xAxis .tick line{
+  visibility:hidden;
+}
+
+.yAxis .tick line{
+  visibility:hidden;
+}

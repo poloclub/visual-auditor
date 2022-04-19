@@ -20,6 +20,8 @@ function GraphLayout({
   cursorMode,
   algorithm,
   setShowConvexHull,
+  nodeSize,
+  nodeColor
 }) {
   const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const [value, setValue] = React.useState(0);
@@ -104,6 +106,7 @@ function GraphLayout({
   const xAxis = (g) =>
     g
       .attr('transform', `translate(0,${height - margin.bottom - 670})`)
+      .attr('class', 'xAxis')
       .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font-size", "14px")
@@ -113,6 +116,7 @@ function GraphLayout({
   const yAxis = (g) =>
     g
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
+      .attr('class', 'xAxis')
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font-size", "14px")
@@ -219,8 +223,8 @@ function GraphLayout({
         })
         .style('fill', function (d) {
           if (overperforming)
-            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
@@ -249,12 +253,12 @@ function GraphLayout({
             '<strong>Slice Description: </strong>' +
               '<br><div style={{margin: "1rem"}}> </div>' +
               d.slice +
-              '<br>' +
+              '<br><br>' +
               '<strong>Size: </strong>' +
               '<br>' +
               d.size +
               ' samples' +
-              '<br>' +
+              '<br><br>' +
               '<strong>' +
               metric +
               ': ' +
@@ -298,7 +302,7 @@ function GraphLayout({
         .force(
           'link',
           d3.forceLink(graph.links).strength((d) => {
-            return (d.count / 10000) * edgeForce;
+            return (d.count / 100000) * edgeForce;
           })
         )
         .force(
@@ -346,8 +350,8 @@ function GraphLayout({
               return '#FFD600';
             }
             if (overperforming)
-              return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-            return d3.interpolateReds(Math.abs((d.metric - model) / model));
+              return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+            return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
           });
           setDetails({
             slice: d.slice,
@@ -378,8 +382,8 @@ function GraphLayout({
           d3.select(this).classed('fixed', false);
           d3.select(this).style('fill', () => {
             if (overperforming)
-              return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-            return d3.interpolateReds(Math.abs((d.metric - model) / model));
+              return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+            return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
           });
           simulation.alpha(1).restart();
         }

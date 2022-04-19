@@ -11,9 +11,10 @@ function ForceLayout({
   model,
   overperforming,
   setDetails,
-  radiusType,
+  radius,
   setShowConvexHull,
   nodeSize,
+  nodeColor,
 }) {
   const margin = { top: 50, right: 30, bottom: 70, left: 85 };
   const width = 800;
@@ -60,6 +61,7 @@ function ForceLayout({
   const xAxis = (g) =>
     g
       .attr('transform', `translate(0,${height - margin.bottom - 670})`)
+      .attr('class', 'xAxis')
       .call(d3.axisTop(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font-size", "14px")
@@ -69,6 +71,7 @@ function ForceLayout({
   const yAxis = (g) =>
     g
       .attr('transform', `translate(${margin.left},${30 - margin.bottom})`)
+      .attr('class', 'xAxis')
       .call(d3.axisLeft(x).tickSizeOuter(0))
       .selectAll('text')
       .style("font-size", "14px")
@@ -108,7 +111,7 @@ function ForceLayout({
         .select('.tooltip')
         .style('opacity', 0)
         .style('width', '200px')
-        .style('height', '150px')
+        .style('height', '200px')
         .style('padding', '1rem 1rem 0 1rem')
         .style('border-radius', '20px');
       const xCenter = [];
@@ -119,13 +122,14 @@ function ForceLayout({
       }
       const nodes = data.map((obj) => {
         return {
-          radius: nodeSize === 'size' ? Math.log(obj.size) * 2 : obj.accuracy * 10,
+          radius: radius === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],
           slice: obj.slice,
           size: obj.size,
           metric: obj.metric,
+          accuracy: obj.accuracy,
         };
       });
 
@@ -167,8 +171,8 @@ function ForceLayout({
         })
         .style('fill', function (d) {
           if (overperforming)
-            return d3.interpolateBlues(Math.abs((d.metric - model) / model));
-          return d3.interpolateReds(Math.abs((d.metric - model) / model));
+            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric: d.accuracy) - model) / model));
         })
         .style('opacity', function (d) {
           return '1';
@@ -194,15 +198,15 @@ function ForceLayout({
               .style('left', (event.clientX + 50) + 'px')
               .style('top', (event.clientY) + 'px')
             div.html(
-              '<strong>Slice Description: </strong>' +
+                '<strong>Slice Description: </strong>' +
                 '<br><div style={{margin: "1rem"}}> </div>' +
                 d.slice +
-                '<br>' +
+                '<br><br>' +
                 '<strong>Size: </strong>' +
                 '<br>' +
                 d.size +
                 ' samples' +
-                '<br>' +
+                '<br><br>' +
                 '<strong>' +
                 metric +
                 ': ' +
@@ -229,10 +233,8 @@ function ForceLayout({
                 return "#FFD600"
               }
               if (overperforming)
-                return d3.interpolateBlues(
-                  Math.abs((d.metric - model) / model)
-                );
-              return d3.interpolateReds(Math.abs((d.metric - model) / model));
+                return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model);
+              return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model);
             });
             setDetails({
               slice: d.slice,

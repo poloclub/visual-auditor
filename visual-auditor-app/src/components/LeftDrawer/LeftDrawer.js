@@ -40,6 +40,8 @@ const LeftDrawer = ({
   setCursorMode,
   nodeSize,
   setNodeSize,
+  nodeColor,
+  setNodeColor,
   show,
   setShow,
   showConvexHull,
@@ -54,6 +56,11 @@ const LeftDrawer = ({
 
   const handleSizeChange = (event) => {
     setSampleSize(event.target.value);
+    setShowConvexHull(false);
+  };
+
+  const handleShowChange = (event) => {
+    setShow(event.target.value);
     setShowConvexHull(false);
   };
 
@@ -91,6 +98,8 @@ const LeftDrawer = ({
     setEdgeFiltering(500);
     setEdgeForce(1);
     setShowConvexHull(false);
+    setNodeSize('size')
+    setNodeColor('loss')
   };
 
   return (
@@ -173,6 +182,49 @@ const LeftDrawer = ({
                   <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
                 </Select>
               </FormControl>
+              <p><strong>Color Represents</strong></p>
+              <FormControl sx={{ s: 1, minWidth: 175 }} size="small">
+                <Select
+                  value={nodeColor}
+                  onChange={(event) => {
+                    setNodeColor(event.target.value);
+                    setShowConvexHull(false);
+                  }}
+                >
+                  <MenuItem value={'loss'}>Log Loss</MenuItem>
+                  <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
+                </Select>
+              </FormControl>
+              <Divider style={{ padding: '1rem' }} />
+              <p><strong>Show top {show} slices</strong></p>
+              <Box sx={{width: '10rem', margin: '1rem'}}>
+                <Slider
+                  size='small'
+                  defaultValue={100}
+                  aria-label='Small'
+                  value={show}
+                  valueLabelDisplay='auto'
+                  min={0}
+                  max={100}
+                  step={10}
+                  onChange={handleShowChange}
+                />
+              </Box>
+              <p><strong>sorted by</strong></p>
+              <FormControl sx={{ s: 1, minWidth: 175 }} size="small">
+                <Select
+                  value={sortBy}
+                  onChange={(event) => {
+                    setSortBy(event.target.value);
+                    setShowConvexHull(false);
+                  }}
+                >
+                  <MenuItem value={'loss'}>Log Loss</MenuItem>
+                  <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
+                  <MenuItem value={'size'}>Sample Size</MenuItem>
+                </Select>
+              </FormControl>
+              <Divider style={{ padding: '1rem' }} />
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <div style={{width: '75%'}}>
                   <p><strong>Convex Hull:</strong></p>
@@ -219,21 +271,6 @@ const LeftDrawer = ({
             onChange={handleSizeChange}
           />
         </Box>
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-          <p><strong>Show</strong></p>
-          <FormControl sx={{ s: 1, minWidth: 125 }} size="small">
-            <Select
-              value={show}
-              onChange={(event) => {
-                setShow(event.target.value);
-                setShowConvexHull(false);
-              }}
-            >
-              <MenuItem value={'ten'}>Top 10 Slices</MenuItem>
-              <MenuItem value={'all'}>All Slices</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
         <p><strong>Features:</strong></p>
         <FormGroup style={{ marginLeft: '1rem' }}>
           {featuresData.features.sort().map((feature) => {

@@ -9,3 +9,11 @@
   stroke-width: 32px;
   stroke-linejoin: round;
 }
+
+.xAxis .tick line{
+  visibility:hidden;
+}
+
+.yAxis .tick line{
+  visibility:hidden;
+}
