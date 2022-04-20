@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import featuresData from '../../data/features.json'
 import './LeftDrawer.css';
+import ColorLegend from './ColorLegend'
 
 const LeftDrawer = ({
   numFeatures,
@@ -196,6 +197,7 @@ const LeftDrawer = ({
                   <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
                 </Select>
               </FormControl>
+              <ColorLegend overperforming={overperforming} nodeColor={nodeColor}/>
               <Divider style={{ padding: '1rem' }} />
               <p><strong>Show top {show} slices</strong></p>
               <Box sx={{width: '10rem', margin: '1rem'}}>

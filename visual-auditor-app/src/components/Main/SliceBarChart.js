@@ -98,23 +98,20 @@ function SliceBarChart({
             .style('right', '20%')
             .style('top', '100px');
           div.html(
-            '<strong>Slice Description: </strong>' +
-              '<br><div style={{margin: "1rem"}}> </div>' +
+            '<strong>Description: </strong>' +
               d.slice +
               '<br><br>' +
               '<strong>Size: </strong>' +
-              '<br>' +
               d.size +
               ' samples' +
               '<br><br>' +
-              '<strong>' +
-              metric +
-              ': ' +
-              '</strong>' +
-              '<br>' +
+              '<strong>Log Loss: </strong>' +
               d.metric.toFixed(2) +
               ' ' +
-              `(${Math.round(((d.metric - model) / model) * 100)}% difference)`
+              `(${Math.round(((d.metric - model) / model) * 100)}% difference)` +
+              '<br><br>' +
+              '<strong>Accuracy: </strong>' +
+              d.accuracy?.toFixed(2)
           );
         })
         .on('mouseout', function (d) {

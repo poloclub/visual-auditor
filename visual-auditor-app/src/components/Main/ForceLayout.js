@@ -198,25 +198,20 @@ function ForceLayout({
               .style('left', (event.clientX + 50) + 'px')
               .style('top', (event.clientY) + 'px')
             div.html(
-                '<strong>Slice Description: </strong>' +
-                '<br><div style={{margin: "1rem"}}> </div>' +
-                d.slice +
-                '<br><br>' +
-                '<strong>Size: </strong>' +
-                '<br>' +
-                d.size +
-                ' samples' +
-                '<br><br>' +
-                '<strong>' +
-                metric +
-                ': ' +
-                '</strong>' +
-                '<br>' +
-                d.metric.toFixed(2) +
-                ' ' +
-                `(${Math.round(
-                  ((d.metric - model) / model) * 100
-                )}% difference)`
+              '<strong>Description: </strong>' +
+              d.slice +
+              '<br><br>' +
+              '<strong>Size: </strong>' +
+              d.size +
+              ' samples' +
+              '<br><br>' +
+              '<strong>Log Loss: </strong>' +
+              d.metric.toFixed(2) +
+              ' ' +
+              `(${Math.round(((d.metric - model) / model) * 100)}% difference)` +
+              '<br><br>' +
+              '<strong>Accuracy: </strong>' +
+              d.accuracy?.toFixed(2)
             );
           })
           .on('mouseout', function (event, d) {
