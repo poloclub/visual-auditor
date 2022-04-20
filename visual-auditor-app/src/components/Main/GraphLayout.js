@@ -149,7 +149,7 @@ function GraphLayout({
 
   const nodes = data.map((obj) => {
     return {
-      radius: radiusType === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
+      radius: nodeSize === 'size' ? Math.log(obj.size) * 2 : Math.sqrt(obj.accuracy) * 10,
       category: obj.degree,
       xFeature: obj.classifiers[0],
       yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -223,8 +223,8 @@ function GraphLayout({
         })
         .style('fill', function (d) {
           if (overperforming)
-            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
-          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+            return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
@@ -350,8 +350,8 @@ function GraphLayout({
               return '#FFD600';
             }
             if (overperforming)
-              return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
-            return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+              return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+            return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
           });
           setDetails({
             slice: d.slice,
@@ -382,8 +382,8 @@ function GraphLayout({
           d3.select(this).classed('fixed', false);
           d3.select(this).style('fill', () => {
             if (overperforming)
-              return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
-            return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+              return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+            return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
           });
           simulation.alpha(1).restart();
         }

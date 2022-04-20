@@ -22,7 +22,7 @@ function App() {
   const [edgeThickness, setEdgeThickness] = React.useState(1);
   const [edgeForce, setEdgeForce] = React.useState(1);
   const [cursorMode, setCursorMode] = React.useState('select');
-  const [show, setShow] = React.useState('ten');
+  const [show, setShow] = React.useState(100);
   const [nodeSize, setNodeSize] = React.useState('size')
   const [nodeColor, setNodeColor] = React.useState('loss')
   const [features, setFeatures] = React.useState(featuresData.features);

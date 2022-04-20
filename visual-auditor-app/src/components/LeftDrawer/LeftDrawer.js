@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import featuresData from '../../data/features.json'
 import './LeftDrawer.css';
+import ColorLegend from './ColorLegend'
 
 const LeftDrawer = ({
   numFeatures,
@@ -155,18 +156,19 @@ const LeftDrawer = ({
           </div>
         )}
         {view === 'bar' ? (
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <p><strong>Sort:</strong></p>
-            <FormControl sx={{ m: 0, minWidth: 125 }} size="small">
+          <>
+            <p><strong>Sort By:</strong></p>
+            <FormControl sx={{ m: 0, minWidth: 175 }} size="small">
               <Select
                 value={sortBy}
                 onChange={handleSortByChange}
               >
-                <MenuItem value={'metric'}>{metric}</MenuItem>
-                <MenuItem value={'size'}>Slice Size</MenuItem>
+                <MenuItem value={'loss'}>Log Loss</MenuItem>
+                <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
+                <MenuItem value={'size'}>Sample Size</MenuItem>
               </Select>
             </FormControl>
-          </div>
+          </>
         ) : (
             <>
               <p><strong>Size Represents</strong></p>
@@ -195,6 +197,7 @@ const LeftDrawer = ({
                   <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
                 </Select>
               </FormControl>
+              <ColorLegend overperforming={overperforming} nodeColor={nodeColor}/>
               <Divider style={{ padding: '1rem' }} />
               <p><strong>Show top {show} slices</strong></p>
               <Box sx={{width: '10rem', margin: '1rem'}}>
@@ -204,7 +207,7 @@ const LeftDrawer = ({
                   aria-label='Small'
                   value={show}
                   valueLabelDisplay='auto'
-                  min={0}
+                  min={10}
                   max={100}
                   step={10}
                   onChange={handleShowChange}

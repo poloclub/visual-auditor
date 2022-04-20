@@ -122,7 +122,7 @@ function ForceLayout({
       }
       const nodes = data.map((obj) => {
         return {
-          radius: radius === 'log' ? Math.log(obj.size) * 2 : Math.sqrt(obj.size),
+          radius: nodeSize === 'size' ? Math.log(obj.size) * 2 : Math.sqrt(obj.accuracy) * 10,
           category: obj.degree,
           xFeature: obj.classifiers[0],
           yFeature: obj.classifiers[1] ?? obj.classifiers[0],
@@ -171,8 +171,8 @@ function ForceLayout({
         })
         .style('fill', function (d) {
           if (overperforming)
-            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
-          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric: d.accuracy) - model) / model));
+            return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
         })
         .style('opacity', function (d) {
           return '1';
@@ -233,8 +233,8 @@ function ForceLayout({
                 return "#FFD600"
               }
               if (overperforming)
-                return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model);
-              return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model);
+                return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)))
+              return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)))
             });
             setDetails({
               slice: d.slice,
