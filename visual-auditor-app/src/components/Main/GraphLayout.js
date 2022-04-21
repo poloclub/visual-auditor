@@ -224,7 +224,7 @@ function GraphLayout({
         .style('fill', function (d) {
           if (overperforming)
             return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
-          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : 1 - d.accuracy)));
         })
         .classed('node', true)
         .classed('fixed', (d) => d.fx !== undefined)
@@ -348,7 +348,7 @@ function GraphLayout({
             }
             if (overperforming)
               return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
-            return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+            return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : 1 - d.accuracy)));
           });
           setDetails({
             slice: d.slice,

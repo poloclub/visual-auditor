@@ -26,7 +26,7 @@ function SliceBarChart({
       let div = d3
         .select('.tooltip')
         .style('opacity', 0)
-        .style('width', '200px')
+        .style('width', '250px')
         .style('height', '200px')
         .style('padding', '1rem 1rem 0rem 1rem')
         .style('border-radius', '20px');

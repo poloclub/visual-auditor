@@ -68,7 +68,8 @@ const Main = ({
         return b.metric - a.metric;
       }
       if (sortBy === 'accuracy') {
-        return b.accuracy - a.accuracy;
+        if (overperforming) return b.accuracy - a.accuracy;
+        return a.accuracy - b.accuracy;
       }  
       if (overperforming) return a.metric - b.metric;
         return b.metric - a.metric;

@@ -110,7 +110,7 @@ function ForceLayout({
       let div = d3
         .select('.tooltip')
         .style('opacity', 0)
-        .style('width', '200px')
+        .style('width', '250px')
         .style('height', '200px')
         .style('padding', '1rem 1rem 0 1rem')
         .style('border-radius', '20px');
@@ -172,7 +172,7 @@ function ForceLayout({
         .style('fill', function (d) {
           if (overperforming)
             return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
-          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : 1 - d.accuracy)));
         })
         .style('opacity', function (d) {
           return '1';
@@ -229,7 +229,7 @@ function ForceLayout({
               }
               if (overperforming)
                 return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)))
-              return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)))
+              return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : 1 - d.accuracy)))
             });
             setDetails({
               slice: d.slice,
