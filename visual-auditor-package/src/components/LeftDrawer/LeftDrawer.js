@@ -115,7 +115,7 @@ const LeftDrawer = ({
       <div className='left-container'>
         <div style={{margin: '2rem 0', lineHeight: '0.5rem'}}>
           <h1>Slice Settings</h1>
-          {view !== 'bar' && (<h2>Each slice is a node</h2>)}
+          {view !== 'bar' ? (<h2>Each slice is a node</h2>) : (<h2>Each slice is a bar</h2>)}
         </div>
         {view === 'bar' ? (
           <>
@@ -130,6 +130,20 @@ const LeftDrawer = ({
                 <MenuItem value={'size'}>Sample Size</MenuItem>
               </Select>
             </FormControl>
+            <p><strong>Color Represents</strong></p>
+            <FormControl sx={{ s: 1, minWidth: 175 }} size="small">
+              <Select
+                value={nodeColor}
+                onChange={(event) => {
+                  setNodeColor(event.target.value);
+                  setShowConvexHull(false);
+                }}
+              >
+                <MenuItem value={'loss'}>Log Loss</MenuItem>
+                <MenuItem value={'accuracy'}>Balanced Accuracy</MenuItem>
+              </Select>
+            </FormControl>
+            <ColorLegend overperforming={overperforming} nodeColor={nodeColor}/>
           </>
         ) : (
             <>

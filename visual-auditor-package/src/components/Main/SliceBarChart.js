@@ -8,7 +8,7 @@ function SliceBarChart({
   max,
   overperforming,
   metric,
-  average,
+  accuracy,
   setDetails,
   nodeColor
 }) {
@@ -111,7 +111,7 @@ function SliceBarChart({
               '<strong>Accuracy: </strong>' +
               d.accuracy?.toFixed(2) +
               ' ' +
-              `(${Math.round(((d.accuracy - average) / average) * 100)}% difference)`
+              `(${Math.round(((d.accuracy - accuracy) / accuracy) * 100)}% difference)`
           );
         })
         .on('mouseout', function (d) {

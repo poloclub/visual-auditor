@@ -9,7 +9,7 @@ function ForceLayout({
   view,
   metric,
   model,
-  average,
+  accuracy,
   overperforming,
   setDetails,
   radius,
@@ -214,7 +214,7 @@ function ForceLayout({
               '<strong>Accuracy: </strong>' +
               d.accuracy?.toFixed(2) +
               ' ' +
-              `(${Math.round(((d.accuracy - average) / average) * 100)}% difference)`
+              `(${Math.round(((d.accuracy - accuracy) / accuracy) * 100)}% difference)`
             );
           })
           .on('mouseout', function (event, d) {
