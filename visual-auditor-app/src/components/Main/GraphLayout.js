@@ -157,6 +157,7 @@ function GraphLayout({
       size: obj.size,
       metric: obj.metric,
       classifiers: obj.classifiers,
+      accuracy: obj.accuracy,
     };
   });
 

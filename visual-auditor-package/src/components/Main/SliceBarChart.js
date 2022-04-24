@@ -8,6 +8,7 @@ function SliceBarChart({
   max,
   overperforming,
   metric,
+  average,
   setDetails,
   nodeColor
 }) {
@@ -82,12 +83,9 @@ function SliceBarChart({
           }
         })
         .style('fill', (d) => {
-          // if (d.slice === selected) {
-          //   return d3.interpolateGreys(0.5);
-          // }
           if (overperforming)
-            return d3.interpolateBlues(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
-          return d3.interpolateReds(Math.abs(((nodeColor === 'loss' ? d.metric : d.accuracy) - model) / model));
+            return d3.interpolateBlues(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : d.accuracy)));
+          return d3.interpolateReds(Math.abs((nodeColor === 'loss' ? (d.metric - model) / model : 1 - d.accuracy)));
         })
         .on('mouseover', function (event, d) {
           d3.select(this).style('opacity', '0.7').style('cursor', 'pointer');
@@ -111,7 +109,9 @@ function SliceBarChart({
               `(${Math.round(((d.metric - model) / model) * 100)}% difference)` +
               '<br><br>' +
               '<strong>Accuracy: </strong>' +
-              d.accuracy?.toFixed(2)
+              d.accuracy?.toFixed(2) +
+              ' ' +
+              `(${Math.round(((d.accuracy - average) / average) * 100)}% difference)`
           );
         })
         .on('mouseout', function (d) {

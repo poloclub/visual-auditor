@@ -117,44 +117,6 @@ const LeftDrawer = ({
           <h1>Slice Settings</h1>
           {view !== 'bar' && (<h2>Each slice is a node</h2>)}
         </div>
-        {view === 'graph' && (
-          <div style={{lineHeight: '0.5'}}>
-            <p><strong>Edge Filtering:</strong></p>
-            <Box sx={{width: '10rem', margin: '0 1rem'}}>
-              <Slider
-                aria-label='Edge Filtering'
-                value={edgeFiltering}
-                valueLabelDisplay='auto'
-                defaultValue={500}
-                step={100}
-                min={0}
-                max={2000}
-                size='small'
-                onChange={(event) => {
-                  setEdgeFiltering(event.target.value);
-                  setShowConvexHull(false);
-                }}
-                />
-            </Box>
-            <p><strong>Edge Force Strength:</strong></p>
-            <Box sx={{width: '10rem', margin: '0 1rem'}}>
-`            <Slider
-              aria-label='Edge Force Strength'
-              defaultValue={1}
-              value={edgeForce}
-              valueLabelDisplay='auto'
-              step={0.01}
-              min={0}
-              max={5}
-              size='small'
-              onChange={(event) => {
-                setEdgeForce(event.target.value);
-                setShowConvexHull(false);
-              }}
-              />`
-            </Box>
-          </div>
-        )}
         {view === 'bar' ? (
           <>
             <p><strong>Sort By:</strong></p>
@@ -260,6 +222,44 @@ const LeftDrawer = ({
             label='Overperforming Slices'
             />
         </div>
+        {view === 'graph' && (
+          <div style={{lineHeight: '0.5'}}>
+            <p><strong>Edge Filtering:</strong></p>
+            <Box sx={{width: '10rem', margin: '0 1rem'}}>
+              <Slider
+                aria-label='Edge Filtering'
+                value={edgeFiltering}
+                valueLabelDisplay='auto'
+                defaultValue={500}
+                step={100}
+                min={0}
+                max={2000}
+                size='small'
+                onChange={(event) => {
+                  setEdgeFiltering(event.target.value);
+                  setShowConvexHull(false);
+                }}
+                />
+            </Box>
+            <p><strong>Edge Force Strength:</strong></p>
+            <Box sx={{width: '10rem', margin: '0 1rem'}}>
+`            <Slider
+              aria-label='Edge Force Strength'
+              defaultValue={1}
+              value={edgeForce}
+              valueLabelDisplay='auto'
+              step={0.01}
+              min={0}
+              max={5}
+              size='small'
+              onChange={(event) => {
+                setEdgeForce(event.target.value);
+                setShowConvexHull(false);
+              }}
+              />`
+            </Box>
+          </div>
+        )}
         <p><strong>Minimum Slice Size:</strong></p>
         <Box sx={{width: '10rem', margin: '1rem'}}>
           <Slider

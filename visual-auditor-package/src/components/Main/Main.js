@@ -29,6 +29,7 @@ const Main = ({
   let data;
   let reversedata;
   let modelMetric;
+  let modelAverage;
   if (overperforming) {
     data = Object.values(reverselogloss['data']).map(
       (obj) => Object.values(obj)[0]
@@ -44,6 +45,7 @@ const Main = ({
       (obj) => Object.values(obj)[0]
     );
     modelMetric = logloss['model']
+    modelAverage = logloss['model_average']
   }
   const metricArray = data.map((obj) => obj.metric);
   const reverseMetricArray = reversedata.map((obj) => obj.metric);
@@ -89,6 +91,7 @@ const Main = ({
           view={view}
           overperforming={overperforming}
           metric={metric}
+          average={modelAverage}
           setDetails={setDetails}
           nodeColor={nodeColor}
         />
@@ -99,6 +102,7 @@ const Main = ({
           view={view}
           metric={metric}
           model={modelMetric}
+          average={modelAverage}
           overperforming={overperforming}
           setDetails={setDetails}
           radius={radius}
@@ -112,6 +116,7 @@ const Main = ({
           degree={numFeatures}
           metric={metric}
           model={modelMetric}
+          average={modelAverage}
           overperforming={overperforming}
           radiusType={radius}
           edgeFiltering={edgeFiltering}

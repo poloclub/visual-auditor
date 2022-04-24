@@ -12,6 +12,7 @@ function GraphLayout({
   degree,
   metric,
   model,
+  average,
   overperforming,
   radiusType,
   edgeFiltering,
@@ -157,6 +158,7 @@ function GraphLayout({
       size: obj.size,
       metric: obj.metric,
       classifiers: obj.classifiers,
+      accuracy: obj.accuracy,
     };
   });
 
@@ -263,7 +265,9 @@ function GraphLayout({
               `(${Math.round(((d.metric - model) / model) * 100)}% difference)` +
               '<br><br>' +
               '<strong>Accuracy: </strong>' +
-              d.accuracy?.toFixed(2)
+              d.accuracy?.toFixed(2) +
+              ' ' +
+              `(${Math.round(((d.accuracy - average) / average) * 100)}% difference)`
           );
         })
         .on('mouseout', function (d, i) {
