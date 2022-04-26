@@ -5,4 +5,4 @@ __author__ = """David Munechika"""
 __email__ = 'david.munechika@gatech.edu'
 __version__ = '0.1.0'
 
-from visualauditor.visualauditor import *
+import visual_auditor.visual_auditor
