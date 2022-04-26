@@ -82,7 +82,7 @@ Builds the app for production to the `build` folder.\
 It bundles the application into a single `index.html` file.\
 To update the notebook widget, copy the contents of this file over to the `bundle.html` file within the `notebook-widget/visual-auditor` directory.
 
-## `Credits
+## Credits
 The **Visual Auditor** was developed and maintained by [David Munechika](https://github.com/davidmunechika), [Jay Wang](https://github.com/xiaohk), and [Polo Chau](https://www.cc.gatech.edu/~dchau/) from the [Polo Club of Data Science](https://poloclub.github.io/) at Georgia Tech.
 
 ## License
