@@ -3,6 +3,6 @@
 
 __author__ = """David Munechika"""
 __email__ = 'david.munechika@gatech.edu'
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 import visual_auditor.visual_auditor

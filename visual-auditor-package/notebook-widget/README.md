@@ -72,8 +72,8 @@ for column in adult_data.columns.difference(numerical_features):
 X, y = adult_data[adult_data.columns.difference(["Target"])], adult_data["Target"]
 
 # Train a classifier
-rfc = RandomForestClassifier(max_depth=5, n_estimators=10)
-rfc.fit(X, y)
+classifier = RandomForestClassifier(max_depth=5, n_estimators=10)
+classifier.fit(X, y)
 ```
 
 ```python
